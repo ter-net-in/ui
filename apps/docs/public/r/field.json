@@ -1,0 +1,20 @@
+{
+  "$schema": "https://internet-ui.dev/schema/registry-item.json",
+  "name": "field",
+  "type": "registry:ui",
+  "title": "Field",
+  "description": "Field built on Base UI.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/internet/ui/field.tsx",
+      "type": "registry:ui",
+      "content": "'use client';\n\nimport { Field as BaseField } from '@base-ui/react/field';\nimport type * as React from 'react';\n\nimport { cn } from '@/lib/utils';\n\nexport function Field({ className, ...props }: React.ComponentProps<typeof BaseField.Root>) {\n  return <BaseField.Root className={cn('flex flex-col gap-1.5', className)} {...props} />;\n}\n\nexport function FieldLabel({ className, ...props }: React.ComponentProps<typeof BaseField.Label>) {\n  return (\n    <BaseField.Label\n      className={cn('text-xs font-semibold uppercase tracking-[0.1em] text-foreground', className)}\n      {...props}\n    />\n  );\n}\n\nexport function FieldControl({ className, ...props }: React.ComponentProps<typeof BaseField.Control>) {\n  return (\n    <BaseField.Control\n      className={cn(\n        'flex h-10 w-full border border-input bg-background px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',\n        className\n      )}\n      {...props}\n    />\n  );\n}\n\nexport function FieldDescription({ className, ...props }: React.ComponentProps<typeof BaseField.Description>) {\n  return <BaseField.Description className={cn('text-xs text-muted-foreground', className)} {...props} />;\n}\n\nexport function FieldError({ className, ...props }: React.ComponentProps<typeof BaseField.Error>) {\n  return <BaseField.Error className={cn('text-xs text-destructive', className)} {...props} />;\n}\n"
+    }
+  ]
+}

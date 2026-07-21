@@ -1,0 +1,20 @@
+{
+  "$schema": "https://internet-ui.dev/schema/registry-item.json",
+  "name": "menubar",
+  "type": "registry:ui",
+  "title": "Menubar",
+  "description": "Menubar built on Base UI.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/internet/ui/menubar.tsx",
+      "type": "registry:ui",
+      "content": "'use client';\n\nimport { Menubar as BaseMenubar } from '@base-ui/react/menubar';\nimport type * as React from 'react';\n\nimport { cn } from '@/lib/utils';\n\nexport function Menubar({ className, ...props }: React.ComponentProps<typeof BaseMenubar>) {\n  return (\n    <BaseMenubar\n      className={cn('flex items-center gap-0 border border-border bg-background [&>*+*]:border-l', className)}\n      {...props}\n    />\n  );\n}\n"
+    }
+  ]
+}

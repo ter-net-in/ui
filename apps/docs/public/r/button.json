@@ -3,7 +3,7 @@
   "name": "button",
   "type": "registry:ui",
   "title": "Button",
-  "description": "Button with variants, built on Base UI.",
+  "description": "Button built on Base UI.",
   "dependencies": [
     "@base-ui/react",
     "class-variance-authority"

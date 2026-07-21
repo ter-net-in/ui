@@ -3,7 +3,7 @@
   "name": "select",
   "type": "registry:ui",
   "title": "Select",
-  "description": "Select menu built on Base UI.",
+  "description": "Select built on Base UI.",
   "dependencies": [
     "@base-ui/react"
   ],

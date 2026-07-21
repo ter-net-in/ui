@@ -3,7 +3,7 @@
   "name": "input",
   "type": "registry:ui",
   "title": "Input",
-  "description": "Text input built on Base UI.",
+  "description": "Input built on Base UI.",
   "dependencies": [
     "@base-ui/react"
   ],

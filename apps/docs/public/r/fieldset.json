@@ -1,0 +1,20 @@
+{
+  "$schema": "https://internet-ui.dev/schema/registry-item.json",
+  "name": "fieldset",
+  "type": "registry:ui",
+  "title": "Fieldset",
+  "description": "Fieldset built on Base UI.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/internet/ui/fieldset.tsx",
+      "type": "registry:ui",
+      "content": "'use client';\n\nimport { Fieldset as BaseFieldset } from '@base-ui/react/fieldset';\nimport type * as React from 'react';\n\nimport { cn } from '@/lib/utils';\n\nexport function Fieldset({ className, ...props }: React.ComponentProps<typeof BaseFieldset.Root>) {\n  return <BaseFieldset.Root className={cn('flex flex-col gap-4 border border-border p-4', className)} {...props} />;\n}\n\nexport function FieldsetLegend({ className, ...props }: React.ComponentProps<typeof BaseFieldset.Legend>) {\n  return (\n    <BaseFieldset.Legend\n      className={cn('px-1 text-sm font-bold uppercase tracking-wide text-foreground', className)}\n      {...props}\n    />\n  );\n}\n"
+    }
+  ]
+}

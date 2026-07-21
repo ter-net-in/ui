@@ -1,0 +1,20 @@
+{
+  "$schema": "https://internet-ui.dev/schema/registry-item.json",
+  "name": "toggle",
+  "type": "registry:ui",
+  "title": "Toggle",
+  "description": "Toggle built on Base UI.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/internet/ui/toggle.tsx",
+      "type": "registry:ui",
+      "content": "'use client';\n\nimport { Toggle as BaseToggle } from '@base-ui/react/toggle';\nimport type * as React from 'react';\n\nimport { cn } from '@/lib/utils';\n\nexport function Toggle({ className, ...props }: React.ComponentProps<typeof BaseToggle>) {\n  return (\n    <BaseToggle\n      className={cn(\n        'inline-flex h-10 items-center justify-center gap-2 border border-border bg-background px-3 text-sm font-medium uppercase tracking-wide text-foreground outline-none transition-colors',\n        'hover:bg-muted',\n        'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',\n        'data-[pressed]:bg-foreground data-[pressed]:text-background',\n        'disabled:pointer-events-none disabled:opacity-40',\n        className\n      )}\n      {...props}\n    />\n  );\n}\n"
+    }
+  ]
+}

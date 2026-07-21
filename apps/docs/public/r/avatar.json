@@ -1,0 +1,20 @@
+{
+  "$schema": "https://internet-ui.dev/schema/registry-item.json",
+  "name": "avatar",
+  "type": "registry:ui",
+  "title": "Avatar",
+  "description": "Avatar built on Base UI.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/internet/ui/avatar.tsx",
+      "type": "registry:ui",
+      "content": "'use client';\n\nimport { Avatar as BaseAvatar } from '@base-ui/react/avatar';\nimport type * as React from 'react';\n\nimport { cn } from '@/lib/utils';\n\nexport function Avatar({ className, ...props }: React.ComponentProps<typeof BaseAvatar.Root>) {\n  return (\n    <BaseAvatar.Root\n      className={cn(\n        'inline-flex size-10 shrink-0 select-none items-center justify-center overflow-hidden border border-border bg-muted align-middle text-sm font-medium uppercase',\n        className\n      )}\n      {...props}\n    />\n  );\n}\n\nexport function AvatarImage({ className, ...props }: React.ComponentProps<typeof BaseAvatar.Image>) {\n  return <BaseAvatar.Image className={cn('size-full object-cover', className)} {...props} />;\n}\n\nexport function AvatarFallback({ className, ...props }: React.ComponentProps<typeof BaseAvatar.Fallback>) {\n  return (\n    <BaseAvatar.Fallback\n      className={cn('flex size-full items-center justify-center text-muted-foreground', className)}\n      {...props}\n    />\n  );\n}\n"
+    }
+  ]
+}

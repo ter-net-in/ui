@@ -1,0 +1,20 @@
+{
+  "$schema": "https://internet-ui.dev/schema/registry-item.json",
+  "name": "toggle-group",
+  "type": "registry:ui",
+  "title": "Toggle Group",
+  "description": "Toggle Group built on Base UI.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/internet/ui/toggle-group.tsx",
+      "type": "registry:ui",
+      "content": "'use client';\n\nimport { ToggleGroup as BaseToggleGroup } from '@base-ui/react/toggle-group';\nimport type * as React from 'react';\n\nimport { cn } from '@/lib/utils';\n\nexport function ToggleGroup({ className, ...props }: React.ComponentProps<typeof BaseToggleGroup>) {\n  return (\n    <BaseToggleGroup\n      className={cn('inline-flex items-center gap-0 border border-border [&>*]:border-0 [&>*+*]:border-l', className)}\n      {...props}\n    />\n  );\n}\n"
+    }
+  ]
+}

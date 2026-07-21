@@ -3,7 +3,7 @@
   "name": "switch",
   "type": "registry:ui",
   "title": "Switch",
-  "description": "Toggle switch built on Base UI.",
+  "description": "Switch built on Base UI.",
   "dependencies": [
     "@base-ui/react"
   ],

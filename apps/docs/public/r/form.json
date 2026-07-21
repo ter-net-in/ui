@@ -1,0 +1,20 @@
+{
+  "$schema": "https://internet-ui.dev/schema/registry-item.json",
+  "name": "form",
+  "type": "registry:ui",
+  "title": "Form",
+  "description": "Form built on Base UI.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/internet/ui/form.tsx",
+      "type": "registry:ui",
+      "content": "'use client';\n\nimport { Form as BaseForm } from '@base-ui/react/form';\nimport type * as React from 'react';\n\nimport { cn } from '@/lib/utils';\n\nexport function Form({ className, ...props }: React.ComponentProps<typeof BaseForm>) {\n  return <BaseForm className={cn('flex flex-col gap-4', className)} {...props} />;\n}\n"
+    }
+  ]
+}

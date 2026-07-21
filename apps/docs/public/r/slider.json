@@ -1,0 +1,20 @@
+{
+  "$schema": "https://internet-ui.dev/schema/registry-item.json",
+  "name": "slider",
+  "type": "registry:ui",
+  "title": "Slider",
+  "description": "Slider built on Base UI.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/internet/ui/slider.tsx",
+      "type": "registry:ui",
+      "content": "'use client';\n\nimport { Slider as BaseSlider } from '@base-ui/react/slider';\nimport type * as React from 'react';\n\nimport { cn } from '@/lib/utils';\n\nexport function Slider({ className, ...props }: React.ComponentProps<typeof BaseSlider.Root>) {\n  return (\n    <BaseSlider.Root className={cn('relative w-full', className)} {...props}>\n      <BaseSlider.Control className=\"flex w-full items-center py-3\">\n        <BaseSlider.Track className=\"h-1.5 w-full bg-border\">\n          <BaseSlider.Indicator className=\"bg-primary\" />\n          <BaseSlider.Thumb className=\"size-4 border border-primary bg-background outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background\" />\n        </BaseSlider.Track>\n      </BaseSlider.Control>\n    </BaseSlider.Root>\n  );\n}\n\nexport function SliderValue({ className, ...props }: React.ComponentProps<typeof BaseSlider.Value>) {\n  return <BaseSlider.Value className={cn('text-xs tabular-nums text-muted-foreground', className)} {...props} />;\n}\n"
+    }
+  ]
+}

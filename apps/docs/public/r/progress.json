@@ -1,0 +1,20 @@
+{
+  "$schema": "https://internet-ui.dev/schema/registry-item.json",
+  "name": "progress",
+  "type": "registry:ui",
+  "title": "Progress",
+  "description": "Progress built on Base UI.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/internet/ui/progress.tsx",
+      "type": "registry:ui",
+      "content": "'use client';\n\nimport { Progress as BaseProgress } from '@base-ui/react/progress';\nimport type * as React from 'react';\n\nimport { cn } from '@/lib/utils';\n\nexport function Progress({ className, children, ...props }: React.ComponentProps<typeof BaseProgress.Root>) {\n  return (\n    <BaseProgress.Root className={cn('flex w-full flex-col gap-1', className)} {...props}>\n      <BaseProgress.Track className=\"h-2 w-full overflow-hidden border border-border bg-background\">\n        <BaseProgress.Indicator className=\"h-full bg-primary transition-all\" />\n      </BaseProgress.Track>\n      {children}\n    </BaseProgress.Root>\n  );\n}\n\nexport function ProgressLabel({ className, ...props }: React.ComponentProps<typeof BaseProgress.Label>) {\n  return (\n    <BaseProgress.Label\n      className={cn('text-xs font-medium uppercase tracking-wide text-muted-foreground', className)}\n      {...props}\n    />\n  );\n}\n\nexport function ProgressValue({ className, ...props }: React.ComponentProps<typeof BaseProgress.Value>) {\n  return <BaseProgress.Value className={cn('text-xs tabular-nums text-muted-foreground', className)} {...props} />;\n}\n"
+    }
+  ]
+}

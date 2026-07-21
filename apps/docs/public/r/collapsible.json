@@ -1,0 +1,20 @@
+{
+  "$schema": "https://internet-ui.dev/schema/registry-item.json",
+  "name": "collapsible",
+  "type": "registry:ui",
+  "title": "Collapsible",
+  "description": "Collapsible built on Base UI.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/internet/ui/collapsible.tsx",
+      "type": "registry:ui",
+      "content": "'use client';\n\nimport { Collapsible as BaseCollapsible } from '@base-ui/react/collapsible';\nimport type * as React from 'react';\n\nimport { cn } from '@/lib/utils';\n\nexport const Collapsible = BaseCollapsible.Root;\n\nexport function CollapsibleTrigger({ className, ...props }: React.ComponentProps<typeof BaseCollapsible.Trigger>) {\n  return (\n    <BaseCollapsible.Trigger\n      className={cn(\n        'flex items-center gap-2 text-sm font-medium uppercase tracking-wide outline-none focus-visible:ring-2 focus-visible:ring-ring',\n        className\n      )}\n      {...props}\n    />\n  );\n}\n\nexport function CollapsiblePanel({ className, ...props }: React.ComponentProps<typeof BaseCollapsible.Panel>) {\n  return (\n    <BaseCollapsible.Panel\n      className={cn('overflow-hidden text-sm text-muted-foreground transition-[height]', className)}\n      {...props}\n    />\n  );\n}\n"
+    }
+  ]
+}

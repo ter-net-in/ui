@@ -1,0 +1,20 @@
+{
+  "$schema": "https://internet-ui.dev/schema/registry-item.json",
+  "name": "combobox",
+  "type": "registry:ui",
+  "title": "Combobox",
+  "description": "Combobox built on Base UI.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/internet/ui/combobox.tsx",
+      "type": "registry:ui",
+      "content": "'use client';\n\nimport { Combobox as BaseCombobox } from '@base-ui/react/combobox';\nimport type * as React from 'react';\n\nimport { cn } from '@/lib/utils';\n\nexport const Combobox = BaseCombobox.Root;\nexport const ComboboxValue = BaseCombobox.Value;\n\nexport function ComboboxInput({ className, ...props }: React.ComponentProps<typeof BaseCombobox.Input>) {\n  return (\n    <BaseCombobox.Input\n      className={cn(\n        'flex h-10 w-full border border-input bg-background px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',\n        className\n      )}\n      {...props}\n    />\n  );\n}\n\nexport function ComboboxContent({\n  className,\n  children,\n  sideOffset = 4,\n  ...props\n}: React.ComponentProps<typeof BaseCombobox.Popup> & { sideOffset?: number }) {\n  return (\n    <BaseCombobox.Portal>\n      <BaseCombobox.Positioner sideOffset={sideOffset} className=\"z-50\">\n        <BaseCombobox.Popup\n          className={cn(\n            'max-h-64 min-w-[var(--anchor-width)] overflow-y-auto border border-border bg-popover p-1 text-popover-foreground shadow-[6px_6px_0_0_var(--color-foreground)] outline-none',\n            'transition-opacity duration-100 data-[starting-style]:opacity-0 data-[ending-style]:opacity-0',\n            className\n          )}\n          {...props}\n        >\n          <BaseCombobox.Empty className=\"px-3 py-2 text-sm text-muted-foreground\">No results.</BaseCombobox.Empty>\n          <BaseCombobox.List>{children}</BaseCombobox.List>\n        </BaseCombobox.Popup>\n      </BaseCombobox.Positioner>\n    </BaseCombobox.Portal>\n  );\n}\n\nexport function ComboboxItem({ className, children, ...props }: React.ComponentProps<typeof BaseCombobox.Item>) {\n  return (\n    <BaseCombobox.Item\n      className={cn(\n        'flex cursor-pointer select-none items-center justify-between gap-2 px-3 py-1.5 text-sm outline-none data-[highlighted]:bg-foreground data-[highlighted]:text-background',\n        className\n      )}\n      {...props}\n    >\n      {children}\n      <BaseCombobox.ItemIndicator>✓</BaseCombobox.ItemIndicator>\n    </BaseCombobox.Item>\n  );\n}\n"
+    }
+  ]
+}

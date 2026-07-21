@@ -1,0 +1,20 @@
+{
+  "$schema": "https://internet-ui.dev/schema/registry-item.json",
+  "name": "accordion",
+  "type": "registry:ui",
+  "title": "Accordion",
+  "description": "Accordion built on Base UI.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/internet/ui/accordion.tsx",
+      "type": "registry:ui",
+      "content": "'use client';\n\nimport { Accordion as BaseAccordion } from '@base-ui/react/accordion';\nimport type * as React from 'react';\n\nimport { cn } from '@/lib/utils';\n\nexport function Accordion({ className, ...props }: React.ComponentProps<typeof BaseAccordion.Root>) {\n  return <BaseAccordion.Root className={cn('w-full border border-border', className)} {...props} />;\n}\n\nexport function AccordionItem({ className, ...props }: React.ComponentProps<typeof BaseAccordion.Item>) {\n  return <BaseAccordion.Item className={cn('border-b border-border last:border-b-0', className)} {...props} />;\n}\n\nexport function AccordionTrigger({\n  className,\n  children,\n  ...props\n}: React.ComponentProps<typeof BaseAccordion.Trigger>) {\n  return (\n    <BaseAccordion.Header>\n      <BaseAccordion.Trigger\n        className={cn(\n          'flex w-full items-center justify-between gap-2 px-4 py-3 text-left text-sm font-medium uppercase tracking-wide outline-none transition-colors',\n          'hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset',\n          '[&>svg]:transition-transform [&[data-panel-open]>svg]:rotate-180',\n          className\n        )}\n        {...props}\n      >\n        {children}\n        <svg\n          viewBox=\"0 0 16 16\"\n          className=\"size-4 shrink-0\"\n          fill=\"none\"\n          stroke=\"currentColor\"\n          strokeWidth={2}\n          aria-hidden=\"true\"\n        >\n          <path d=\"M4 6l4 4 4-4\" />\n        </svg>\n      </BaseAccordion.Trigger>\n    </BaseAccordion.Header>\n  );\n}\n\nexport function AccordionPanel({ className, ...props }: React.ComponentProps<typeof BaseAccordion.Panel>) {\n  return (\n    <BaseAccordion.Panel\n      className={cn(\n        'overflow-hidden text-sm text-muted-foreground transition-[height] [&>*]:px-4 [&>*]:pb-3',\n        className\n      )}\n      {...props}\n    />\n  );\n}\n"
+    }
+  ]
+}

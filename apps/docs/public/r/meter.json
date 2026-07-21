@@ -1,0 +1,20 @@
+{
+  "$schema": "https://internet-ui.dev/schema/registry-item.json",
+  "name": "meter",
+  "type": "registry:ui",
+  "title": "Meter",
+  "description": "Meter built on Base UI.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/internet/ui/meter.tsx",
+      "type": "registry:ui",
+      "content": "'use client';\n\nimport { Meter as BaseMeter } from '@base-ui/react/meter';\nimport type * as React from 'react';\n\nimport { cn } from '@/lib/utils';\n\nexport function Meter({ className, children, ...props }: React.ComponentProps<typeof BaseMeter.Root>) {\n  return (\n    <BaseMeter.Root className={cn('flex w-full flex-col gap-1', className)} {...props}>\n      <BaseMeter.Track className=\"h-2 w-full overflow-hidden border border-border bg-background\">\n        <BaseMeter.Indicator className=\"h-full bg-primary\" />\n      </BaseMeter.Track>\n      {children}\n    </BaseMeter.Root>\n  );\n}\n\nexport function MeterLabel({ className, ...props }: React.ComponentProps<typeof BaseMeter.Label>) {\n  return (\n    <BaseMeter.Label\n      className={cn('text-xs font-medium uppercase tracking-wide text-muted-foreground', className)}\n      {...props}\n    />\n  );\n}\n\nexport function MeterValue({ className, ...props }: React.ComponentProps<typeof BaseMeter.Value>) {\n  return <BaseMeter.Value className={cn('text-xs tabular-nums text-muted-foreground', className)} {...props} />;\n}\n"
+    }
+  ]
+}

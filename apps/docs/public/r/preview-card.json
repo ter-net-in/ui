@@ -1,0 +1,20 @@
+{
+  "$schema": "https://internet-ui.dev/schema/registry-item.json",
+  "name": "preview-card",
+  "type": "registry:ui",
+  "title": "Preview Card",
+  "description": "Preview Card built on Base UI.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/internet/ui/preview-card.tsx",
+      "type": "registry:ui",
+      "content": "'use client';\n\nimport { PreviewCard as BasePreviewCard } from '@base-ui/react/preview-card';\nimport type * as React from 'react';\n\nimport { cn } from '@/lib/utils';\n\nexport const PreviewCard = BasePreviewCard.Root;\nexport const PreviewCardTrigger = BasePreviewCard.Trigger;\n\nexport function PreviewCardContent({\n  className,\n  children,\n  sideOffset = 8,\n  ...props\n}: React.ComponentProps<typeof BasePreviewCard.Popup> & { sideOffset?: number }) {\n  return (\n    <BasePreviewCard.Portal>\n      <BasePreviewCard.Positioner sideOffset={sideOffset} className=\"z-50\">\n        <BasePreviewCard.Popup\n          className={cn(\n            'w-72 border border-border bg-popover p-4 text-popover-foreground shadow-[6px_6px_0_0_var(--color-foreground)] outline-none',\n            'transition-all duration-100 data-[starting-style]:opacity-0 data-[ending-style]:opacity-0',\n            className\n          )}\n          {...props}\n        >\n          {children}\n        </BasePreviewCard.Popup>\n      </BasePreviewCard.Positioner>\n    </BasePreviewCard.Portal>\n  );\n}\n"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://internet-ui.dev/schema/registry-item.json",
+  "name": "toast",
+  "type": "registry:ui",
+  "title": "Toast",
+  "description": "Toast built on Base UI.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/internet/ui/toast.tsx",
+      "type": "registry:ui",
+      "content": "'use client';\n\nimport { Toast as BaseToast } from '@base-ui/react/toast';\nimport type * as React from 'react';\n\nimport { cn } from '@/lib/utils';\n\nexport const ToastProvider = BaseToast.Provider;\nexport const useToast = BaseToast.useToastManager;\n\nfunction ToastList() {\n  const { toasts } = BaseToast.useToastManager();\n  return toasts.map((toast) => (\n    <BaseToast.Root\n      key={toast.id}\n      toast={toast}\n      className={cn(\n        'w-80 border border-border bg-background p-4 text-foreground shadow-[6px_6px_0_0_var(--color-foreground)]',\n        'transition-all data-[starting-style]:translate-x-full data-[ending-style]:translate-x-full data-[starting-style]:opacity-0 data-[ending-style]:opacity-0'\n      )}\n    >\n      <BaseToast.Title className=\"text-sm font-bold uppercase tracking-wide\" />\n      <BaseToast.Description className=\"mt-1 text-sm text-muted-foreground\" />\n      <BaseToast.Close\n        className=\"absolute right-2 top-2 text-muted-foreground outline-none hover:text-foreground\"\n        aria-label=\"Close\"\n      >\n        ✕\n      </BaseToast.Close>\n    </BaseToast.Root>\n  ));\n}\n\nexport function Toaster() {\n  return (\n    <BaseToast.Portal>\n      <BaseToast.Viewport className=\"fixed bottom-4 right-4 z-50 flex flex-col gap-2 outline-none\">\n        <ToastList />\n      </BaseToast.Viewport>\n    </BaseToast.Portal>\n  );\n}\n"
+    }
+  ]
+}

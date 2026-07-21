@@ -1,4 +1,7 @@
+import { Accordion, AccordionItem, AccordionPanel, AccordionTrigger } from '@/ui/accordion';
+import { Avatar, AvatarFallback } from '@/ui/avatar';
 import { Button } from '@/ui/button';
+import { Checkbox } from '@/ui/checkbox';
 import {
   Dialog,
   DialogClose,
@@ -10,9 +13,14 @@ import {
   DialogTrigger
 } from '@/ui/dialog';
 import { Input } from '@/ui/input';
+import { Popover, PopoverContent, PopoverTrigger } from '@/ui/popover';
+import { Progress } from '@/ui/progress';
+import { RadioGroup, RadioGroupItem } from '@/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select';
+import { Slider } from '@/ui/slider';
 import { Switch } from '@/ui/switch';
 import { Tabs, TabsList, TabsPanel, TabsTab } from '@/ui/tabs';
+import { Toggle } from '@/ui/toggle';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/ui/tooltip';
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
@@ -103,6 +111,49 @@ export default function Page() {
             <TooltipContent>On the internet</TooltipContent>
           </Tooltip>
         </TooltipProvider>
+      </Section>
+
+      <Section title="Checkbox / Radio / Toggle">
+        <span className="flex items-center gap-2 text-sm">
+          <Checkbox defaultChecked /> Accept
+        </span>
+        <RadioGroup defaultValue="a" className="flex-row">
+          <span className="flex items-center gap-2 text-sm">
+            <RadioGroupItem value="a" /> A
+          </span>
+          <span className="flex items-center gap-2 text-sm">
+            <RadioGroupItem value="b" /> B
+          </span>
+        </RadioGroup>
+        <Toggle>Bold</Toggle>
+      </Section>
+
+      <Section title="Avatar / Progress / Slider">
+        <Avatar>
+          <AvatarFallback>VG</AvatarFallback>
+        </Avatar>
+        <Progress value={60} className="max-w-xs" />
+        <Slider defaultValue={40} className="max-w-xs" />
+      </Section>
+
+      <Section title="Popover">
+        <Popover>
+          <PopoverTrigger render={<Button variant="outline">Open popover</Button>} />
+          <PopoverContent>Anchored content on the internet.</PopoverContent>
+        </Popover>
+      </Section>
+
+      <Section title="Accordion">
+        <Accordion className="w-full">
+          <AccordionItem>
+            <AccordionTrigger>What is this?</AccordionTrigger>
+            <AccordionPanel>A copy-paste component library.</AccordionPanel>
+          </AccordionItem>
+          <AccordionItem>
+            <AccordionTrigger>Built on?</AccordionTrigger>
+            <AccordionPanel>Base UI + Tailwind.</AccordionPanel>
+          </AccordionItem>
+        </Accordion>
       </Section>
     </main>
   );

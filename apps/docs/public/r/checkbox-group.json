@@ -1,0 +1,20 @@
+{
+  "$schema": "https://internet-ui.dev/schema/registry-item.json",
+  "name": "checkbox-group",
+  "type": "registry:ui",
+  "title": "Checkbox Group",
+  "description": "Checkbox Group built on Base UI.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/internet/ui/checkbox-group.tsx",
+      "type": "registry:ui",
+      "content": "'use client';\n\nimport { CheckboxGroup as BaseCheckboxGroup } from '@base-ui/react/checkbox-group';\nimport type * as React from 'react';\n\nimport { cn } from '@/lib/utils';\n\nexport function CheckboxGroup({ className, ...props }: React.ComponentProps<typeof BaseCheckboxGroup>) {\n  return <BaseCheckboxGroup className={cn('flex flex-col gap-2', className)} {...props} />;\n}\n"
+    }
+  ]
+}

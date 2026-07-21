@@ -1,0 +1,92 @@
+{
+  "$schema": "https://internet-ui.dev/schema/registry.json",
+  "name": "internet-ui",
+  "homepage": "https://internet-ui.dev",
+  "items": [
+    {
+      "name": "theme",
+      "type": "registry:style",
+      "title": "Theme",
+      "description": "internet-ui design tokens (Tailwind v4). Import once from your global stylesheet.",
+      "dependencies": ["tailwindcss", "tw-animate-css"],
+      "files": [
+        {
+          "path": "registry/internet/theme/globals.css",
+          "type": "registry:style",
+          "target": "app/globals.css"
+        }
+      ]
+    },
+    {
+      "name": "utils",
+      "type": "registry:lib",
+      "title": "cn utility",
+      "description": "clsx + tailwind-merge class combiner used by every component.",
+      "dependencies": ["clsx", "tailwind-merge"],
+      "files": [{ "path": "registry/internet/lib/utils.ts", "type": "registry:lib" }]
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "Button with variants, built on Base UI.",
+      "dependencies": ["@base-ui/react", "class-variance-authority"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "registry/internet/ui/button.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "title": "Input",
+      "description": "Text input built on Base UI.",
+      "dependencies": ["@base-ui/react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "registry/internet/ui/input.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "switch",
+      "type": "registry:ui",
+      "title": "Switch",
+      "description": "Toggle switch built on Base UI.",
+      "dependencies": ["@base-ui/react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "registry/internet/ui/switch.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "dialog",
+      "type": "registry:ui",
+      "title": "Dialog",
+      "description": "Modal dialog built on Base UI.",
+      "dependencies": ["@base-ui/react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "registry/internet/ui/dialog.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "select",
+      "type": "registry:ui",
+      "title": "Select",
+      "description": "Select menu built on Base UI.",
+      "dependencies": ["@base-ui/react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "registry/internet/ui/select.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "tabs",
+      "type": "registry:ui",
+      "title": "Tabs",
+      "description": "Tabs built on Base UI.",
+      "dependencies": ["@base-ui/react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "registry/internet/ui/tabs.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "tooltip",
+      "type": "registry:ui",
+      "title": "Tooltip",
+      "description": "Tooltip built on Base UI.",
+      "dependencies": ["@base-ui/react"],
+      "registryDependencies": ["utils"],
+      "files": [{ "path": "registry/internet/ui/tooltip.tsx", "type": "registry:ui" }]
+    }
+  ]
+}

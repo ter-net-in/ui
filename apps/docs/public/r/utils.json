@@ -1,0 +1,19 @@
+{
+  "$schema": "https://internet-ui.dev/schema/registry-item.json",
+  "name": "utils",
+  "type": "registry:lib",
+  "title": "cn utility",
+  "description": "clsx + tailwind-merge class combiner used by every component.",
+  "dependencies": [
+    "clsx",
+    "tailwind-merge"
+  ],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "registry/internet/lib/utils.ts",
+      "type": "registry:lib",
+      "content": "import { type ClassValue, clsx } from 'clsx';\nimport { twMerge } from 'tailwind-merge';\n\nexport function cn(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs));\n}\n"
+    }
+  ]
+}

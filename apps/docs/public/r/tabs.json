@@ -1,0 +1,20 @@
+{
+  "$schema": "https://internet-ui.dev/schema/registry-item.json",
+  "name": "tabs",
+  "type": "registry:ui",
+  "title": "Tabs",
+  "description": "Tabs built on Base UI.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/internet/ui/tabs.tsx",
+      "type": "registry:ui",
+      "content": "'use client';\n\nimport { Tabs as BaseTabs } from '@base-ui/react/tabs';\nimport type * as React from 'react';\n\nimport { cn } from '@/lib/utils';\n\nexport const Tabs = BaseTabs.Root;\n\nexport function TabsList({ className, ...props }: React.ComponentProps<typeof BaseTabs.List>) {\n  return (\n    <BaseTabs.List\n      className={cn('relative inline-flex items-center gap-0 border border-border', className)}\n      {...props}\n    />\n  );\n}\n\nexport function TabsTab({ className, ...props }: React.ComponentProps<typeof BaseTabs.Tab>) {\n  return (\n    <BaseTabs.Tab\n      className={cn(\n        'px-4 py-2 text-sm font-medium uppercase tracking-wide text-muted-foreground transition-colors outline-none',\n        'hover:text-foreground',\n        'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset',\n        'data-[selected]:bg-foreground data-[selected]:text-background',\n        className\n      )}\n      {...props}\n    />\n  );\n}\n\nexport function TabsPanel({ className, ...props }: React.ComponentProps<typeof BaseTabs.Panel>) {\n  return (\n    <BaseTabs.Panel\n      className={cn('mt-4 outline-none focus-visible:ring-2 focus-visible:ring-ring', className)}\n      {...props}\n    />\n  );\n}\n"
+    }
+  ]
+}

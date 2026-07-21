@@ -1,0 +1,40 @@
+{
+  "name": "internet-ui",
+  "version": "0.1.0",
+  "description": "Add internet-ui components to your project. Base UI + Tailwind, shadcn-style.",
+  "type": "module",
+  "bin": {
+    "internet-ui": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "ui",
+    "base-ui",
+    "tailwind",
+    "registry",
+    "cli",
+    "components"
+  ],
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "cac": "^6.7.14",
+    "kleur": "^4.1.5",
+    "prompts": "^2.4.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.32",
+    "@types/prompts": "^2.4.9",
+    "tsup": "^8.5.1",
+    "typescript": "^5.8.3"
+  }
+}

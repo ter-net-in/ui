@@ -1,0 +1,20 @@
+{
+  "$schema": "https://internet-ui.dev/schema/registry-item.json",
+  "name": "tooltip",
+  "type": "registry:ui",
+  "title": "Tooltip",
+  "description": "Tooltip built on Base UI.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/internet/ui/tooltip.tsx",
+      "type": "registry:ui",
+      "content": "'use client';\n\nimport { Tooltip as BaseTooltip } from '@base-ui/react/tooltip';\nimport type * as React from 'react';\n\nimport { cn } from '@/lib/utils';\n\nexport const TooltipProvider = BaseTooltip.Provider;\nexport const Tooltip = BaseTooltip.Root;\nexport const TooltipTrigger = BaseTooltip.Trigger;\n\nexport function TooltipContent({\n  className,\n  sideOffset = 8,\n  children,\n  ...props\n}: React.ComponentProps<typeof BaseTooltip.Popup> & { sideOffset?: number }) {\n  return (\n    <BaseTooltip.Portal>\n      <BaseTooltip.Positioner sideOffset={sideOffset}>\n        <BaseTooltip.Popup\n          className={cn(\n            'z-50 border border-border bg-foreground px-2 py-1 text-xs font-medium uppercase tracking-wide text-background',\n            'transition-opacity duration-100',\n            'data-[starting-style]:opacity-0 data-[ending-style]:opacity-0',\n            className\n          )}\n          {...props}\n        >\n          {children}\n        </BaseTooltip.Popup>\n      </BaseTooltip.Positioner>\n    </BaseTooltip.Portal>\n  );\n}\n"
+    }
+  ]
+}

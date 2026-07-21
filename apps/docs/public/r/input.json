@@ -1,0 +1,20 @@
+{
+  "$schema": "https://internet-ui.dev/schema/registry-item.json",
+  "name": "input",
+  "type": "registry:ui",
+  "title": "Input",
+  "description": "Text input built on Base UI.",
+  "dependencies": [
+    "@base-ui/react"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/internet/ui/input.tsx",
+      "type": "registry:ui",
+      "content": "'use client';\n\nimport { Input as BaseInput } from '@base-ui/react/input';\nimport type * as React from 'react';\n\nimport { cn } from '@/lib/utils';\n\nexport type InputProps = React.ComponentProps<typeof BaseInput>;\n\nexport function Input({ className, ...props }: InputProps) {\n  return (\n    <BaseInput\n      className={cn(\n        'flex h-10 w-full border border-input bg-background px-3 py-2 text-sm text-foreground outline-none transition-colors',\n        'placeholder:text-muted-foreground',\n        'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',\n        'disabled:cursor-not-allowed disabled:opacity-40',\n        'data-[invalid]:border-destructive',\n        className\n      )}\n      {...props}\n    />\n  );\n}\n"
+    }
+  ]
+}

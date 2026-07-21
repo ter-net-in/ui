@@ -1,0 +1,21 @@
+{
+  "$schema": "https://internet-ui.dev/schema/registry-item.json",
+  "name": "button",
+  "type": "registry:ui",
+  "title": "Button",
+  "description": "Button with variants, built on Base UI.",
+  "dependencies": [
+    "@base-ui/react",
+    "class-variance-authority"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "registry/internet/ui/button.tsx",
+      "type": "registry:ui",
+      "content": "'use client';\n\nimport { Button as BaseButton } from '@base-ui/react/button';\nimport { cva, type VariantProps } from 'class-variance-authority';\nimport type * as React from 'react';\n\nimport { cn } from '@/lib/utils';\n\nconst buttonVariants = cva(\n  'inline-flex items-center justify-center gap-2 whitespace-nowrap border font-medium uppercase tracking-wide transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-40 [&_svg]:size-4 [&_svg]:shrink-0',\n  {\n    variants: {\n      variant: {\n        default: 'border-primary bg-primary text-primary-foreground hover:bg-background hover:text-primary',\n        outline: 'border-border bg-background text-foreground hover:bg-foreground hover:text-background',\n        ghost: 'border-transparent bg-transparent text-foreground hover:bg-muted',\n        destructive:\n          'border-destructive bg-destructive text-destructive-foreground hover:bg-background hover:text-destructive'\n      },\n      size: {\n        default: 'h-10 px-4 text-sm',\n        sm: 'h-8 px-3 text-xs',\n        lg: 'h-12 px-6 text-base',\n        icon: 'size-10'\n      }\n    },\n    defaultVariants: {\n      variant: 'default',\n      size: 'default'\n    }\n  }\n);\n\nexport interface ButtonProps extends React.ComponentProps<typeof BaseButton>, VariantProps<typeof buttonVariants> {}\n\nexport function Button({ className, variant, size, ...props }: ButtonProps) {\n  return <BaseButton className={cn(buttonVariants({ variant, size }), className)} {...props} />;\n}\n\nexport { buttonVariants };\n"
+    }
+  ]
+}

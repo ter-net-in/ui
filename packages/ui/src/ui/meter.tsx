@@ -3,13 +3,21 @@
 import { Meter as BaseMeter } from '@base-ui/react/meter';
 import type * as React from 'react';
 
-import { cn } from '@/lib/utils';
+import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
 
-export function Meter({ className, children, ...props }: React.ComponentProps<typeof BaseMeter.Root>) {
+export function Meter({
+  className,
+  children,
+  radius,
+  ...props
+}: React.ComponentProps<typeof BaseMeter.Root> & RadiusProps) {
   return (
     <BaseMeter.Root className={cn('flex w-full flex-col gap-1', className)} {...props}>
-      <BaseMeter.Track className="h-2 w-full overflow-hidden border border-border bg-background">
-        <BaseMeter.Indicator className="h-full bg-primary" />
+      <BaseMeter.Track
+        className={cn('h-2 w-full overflow-hidden border border-border bg-background', radiusVariants({ radius }))}
+      >
+        {/* Width is CSS-driven for the same reason as Progress — see progress.tsx. */}
+        <BaseMeter.Indicator className="h-full bg-primary transition-[width] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]" />
       </BaseMeter.Track>
       {children}
     </BaseMeter.Root>

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import type * as React from 'react';
 
-import '@/registry/internet/theme/globals.css';
+import '@/theme/globals.css';
 import './docs.css';
 
 export const metadata: Metadata = {

@@ -12,9 +12,9 @@
   ],
   "files": [
     {
-      "path": "registry/internet/ui/checkbox-group.tsx",
+      "path": "src/ui/checkbox-group.tsx",
       "type": "registry:ui",
-      "content": "'use client';\n\nimport { CheckboxGroup as BaseCheckboxGroup } from '@base-ui/react/checkbox-group';\nimport type * as React from 'react';\n\nimport { cn } from '@/lib/utils';\n\nexport function CheckboxGroup({ className, ...props }: React.ComponentProps<typeof BaseCheckboxGroup>) {\n  return <BaseCheckboxGroup className={cn('flex flex-col gap-2', className)} {...props} />;\n}\n"
+      "content": "'use client';\n\nimport { CheckboxGroup as BaseCheckboxGroup } from '@base-ui/react/checkbox-group';\nimport { cva, type VariantProps } from 'class-variance-authority';\nimport type * as React from 'react';\n\nimport { cn } from '@/lib/utils';\n\nconst checkboxGroupVariants = cva('flex gap-2', {\n  variants: {\n    orientation: {\n      vertical: 'flex-col',\n      horizontal: 'flex-row'\n    }\n  },\n  defaultVariants: {\n    orientation: 'vertical'\n  }\n});\n\nexport interface CheckboxGroupProps\n  extends React.ComponentProps<typeof BaseCheckboxGroup>,\n    VariantProps<typeof checkboxGroupVariants> {}\n\nexport function CheckboxGroup({ className, orientation, ...props }: CheckboxGroupProps) {\n  return <BaseCheckboxGroup className={cn(checkboxGroupVariants({ orientation }), className)} {...props} />;\n}\n\nexport { checkboxGroupVariants };\n"
     }
   ]
 }

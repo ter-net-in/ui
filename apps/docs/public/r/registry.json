@@ -9,10 +9,28 @@
       "description": "internet-ui design tokens (Tailwind v4). Import once from your global stylesheet."
     },
     {
+      "name": "ui-defaults",
+      "type": "registry:lib",
+      "title": "Variant defaults",
+      "description": "Project-wide default radius and shadow. Values are substituted from the `defaults` block of internet-ui.json at install time."
+    },
+    {
       "name": "utils",
       "type": "registry:lib",
       "title": "cn utility",
-      "description": "clsx + tailwind-merge class combiner used by every component."
+      "description": "clsx + tailwind-merge class combiner and shared radius variants used by every component."
+    },
+    {
+      "name": "motion",
+      "type": "registry:lib",
+      "title": "Motion presets",
+      "description": "Shared animation language: easing curves, duration and spring tokens, and the render-prop helpers that animate Base UI popups with Motion."
+    },
+    {
+      "name": "highlight",
+      "type": "registry:lib",
+      "title": "Syntax highlighter",
+      "description": "Dependency-free tokenizer behind the Code component's language prop. Shell, JS/TS/JSX, JSON, CSS and HTML."
     },
     {
       "name": "accordion",
@@ -45,6 +63,12 @@
       "description": "Button built on Base UI."
     },
     {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "Card",
+      "description": "Composable Card with variant, radius, padding and decorative corner-bracket options. Plain styled container — not a Base UI primitive."
+    },
+    {
       "name": "checkbox-group",
       "type": "registry:ui",
       "title": "Checkbox Group",
@@ -55,6 +79,12 @@
       "type": "registry:ui",
       "title": "Checkbox",
       "description": "Checkbox built on Base UI."
+    },
+    {
+      "name": "code",
+      "type": "registry:ui",
+      "title": "Code",
+      "description": "Single-line or multi-line code snippet with an optional title strip, syntax highlighting and a copy button. Plain styled container — not a Base UI primitive."
     },
     {
       "name": "collapsible",

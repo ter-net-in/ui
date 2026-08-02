@@ -10,8 +10,8 @@
   "scripts": {
     "dev": "bun run --filter '@internet-ui/docs' dev",
     "build": "bun run --filter '*' build",
-    "build:registry": "bun run --filter '@internet-ui/docs' build:registry",
-    "build:cli": "bun run --filter 'internet-ui' build",
+    "build:registry": "bun run scripts/registry/build-registry.ts",
+    "build:cli": "bun run --filter '@ternetin/ui' build",
     "typecheck": "bun run --filter '*' typecheck",
     "lint": "biome check .",
     "lint:fix": "biome check --write ."

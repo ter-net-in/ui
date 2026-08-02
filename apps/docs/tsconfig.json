@@ -13,8 +13,9 @@
     "plugins": [{ "name": "next" }],
     "types": ["node", "react"],
     "paths": {
-      "@/lib/*": ["./registry/internet/lib/*"],
-      "@/ui/*": ["./registry/internet/ui/*"],
+      "@/lib/*": ["../../packages/ui/src/lib/*"],
+      "@/ui/*": ["../../packages/ui/src/ui/*"],
+      "@/theme/*": ["../../packages/ui/src/theme/*"],
       "@/*": ["./*"]
     }
   },

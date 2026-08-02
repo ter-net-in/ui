@@ -12,7 +12,7 @@
   ],
   "files": [
     {
-      "path": "registry/internet/ui/form.tsx",
+      "path": "src/ui/form.tsx",
       "type": "registry:ui",
       "content": "'use client';\n\nimport { Form as BaseForm } from '@base-ui/react/form';\nimport type * as React from 'react';\n\nimport { cn } from '@/lib/utils';\n\nexport function Form({ className, ...props }: React.ComponentProps<typeof BaseForm>) {\n  return <BaseForm className={cn('flex flex-col gap-4', className)} {...props} />;\n}\n"
     }

@@ -3,4 +3,5 @@ dist
 .env
 .env.local
 .next
+storybook-static
 .DS_Store

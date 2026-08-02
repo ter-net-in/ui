@@ -12,9 +12,9 @@
   ],
   "files": [
     {
-      "path": "registry/internet/ui/toggle-group.tsx",
+      "path": "src/ui/toggle-group.tsx",
       "type": "registry:ui",
-      "content": "'use client';\n\nimport { ToggleGroup as BaseToggleGroup } from '@base-ui/react/toggle-group';\nimport type * as React from 'react';\n\nimport { cn } from '@/lib/utils';\n\nexport function ToggleGroup({ className, ...props }: React.ComponentProps<typeof BaseToggleGroup>) {\n  return (\n    <BaseToggleGroup\n      className={cn('inline-flex items-center gap-0 border border-border [&>*]:border-0 [&>*+*]:border-l', className)}\n      {...props}\n    />\n  );\n}\n"
+      "content": "'use client';\n\nimport { ToggleGroup as BaseToggleGroup } from '@base-ui/react/toggle-group';\nimport type * as React from 'react';\n\nimport { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';\n\nexport function ToggleGroup({\n  className,\n  radius,\n  ...props\n}: React.ComponentProps<typeof BaseToggleGroup> & ContainerRadiusProps) {\n  return (\n    <BaseToggleGroup\n      className={cn(\n        'inline-flex items-center gap-0 overflow-hidden border border-border [&>*]:border-0 [&>*+*]:border-l',\n        containerRadiusVariants({ radius }),\n        className\n      )}\n      {...props}\n    />\n  );\n}\n"
     }
   ]
 }

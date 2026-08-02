@@ -6,7 +6,7 @@ import prompts from 'prompts';
 import type { Config } from './config.js';
 import { detectPackageManager, installDeps } from './pm.js';
 import { type RegistryFile, resolveItems } from './registry.js';
-import { transformImports } from './transform.js';
+import { applyDefaults, DEFAULTS_FILE, transformImports } from './transform.js';
 import { c, log } from './utils.js';
 
 export interface AddOptions {
@@ -65,7 +65,8 @@ export async function addComponents(
     for (const file of item.files) {
       const dest = destFor(file, config, cwd);
       const rel = path.relative(cwd, dest);
-      const content = file.type === 'registry:style' ? file.content : transformImports(file.content, config);
+      let content = file.type === 'registry:style' ? file.content : transformImports(file.content, config);
+      if (path.basename(file.path) === DEFAULTS_FILE) content = applyDefaults(content, config);
 
       if (existsSync(dest)) {
         const ok = await confirmOverwrite(rel, opts);

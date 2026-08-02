@@ -1,0 +1,20 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "types": ["react"],
+    // the authoring aliases the CLI rewrites at install time (see apps/cli/src/transform.ts).
+    // these must stay `@/lib/*` and `@/ui/*` — they are part of the registry format.
+    "paths": {
+      "@/lib/*": ["./src/lib/*"],
+      "@/ui/*": ["./src/ui/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["node_modules"]
+}

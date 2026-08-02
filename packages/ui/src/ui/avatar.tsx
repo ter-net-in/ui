@@ -3,13 +3,14 @@
 import { Avatar as BaseAvatar } from '@base-ui/react/avatar';
 import type * as React from 'react';
 
-import { cn } from '@/lib/utils';
+import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
 
-export function Avatar({ className, ...props }: React.ComponentProps<typeof BaseAvatar.Root>) {
+export function Avatar({ className, radius, ...props }: React.ComponentProps<typeof BaseAvatar.Root> & RadiusProps) {
   return (
     <BaseAvatar.Root
       className={cn(
         'inline-flex size-10 shrink-0 select-none items-center justify-center overflow-hidden border border-border bg-muted align-middle text-sm font-medium uppercase',
+        radiusVariants({ radius }),
         className
       )}
       {...props}

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://internet-ui.dev/schema/registry-item.json",
+  "name": "ui-defaults",
+  "type": "registry:lib",
+  "title": "Variant defaults",
+  "description": "Project-wide default radius and shadow. Values are substituted from the `defaults` block of internet-ui.json at install time.",
+  "dependencies": [],
+  "registryDependencies": [],
+  "files": [
+    {
+      "path": "src/lib/ui-defaults.ts",
+      "type": "registry:lib",
+      "content": "/**\n * Project-wide default variants.\n *\n * The `internet-ui` CLI substitutes these values from the `defaults` block of your\n * internet-ui.json when it writes this file, so a project can pick its own house\n * style once instead of passing `radius`/`shadow` at every call site. Editing this\n * file by hand afterwards is expected and supported — it's your code.\n *\n * To re-apply internet-ui.json after changing it: `internet-ui add ui-defaults -o`\n *\n * Every component leaves its `radius`/`shadow` prop undefined by default, which makes\n * cva fall back to the `defaultVariants` in utils.ts — and those read from here.\n */\nexport const UI_DEFAULTS = {\n  /** default for pill/circle-friendly controls: none | sm | md | lg | full */\n  radius: 'none',\n  /** default for boxy surfaces (dialogs, menus, cards): none | sm | md | lg */\n  containerRadius: 'none',\n  /** default for raised surfaces (dialogs, popovers, toasts): none | sm | md | lg | xl */\n  shadow: 'md'\n} as const;\n"
+    }
+  ]
+}

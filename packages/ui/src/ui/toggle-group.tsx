@@ -3,12 +3,20 @@
 import { ToggleGroup as BaseToggleGroup } from '@base-ui/react/toggle-group';
 import type * as React from 'react';
 
-import { cn } from '@/lib/utils';
+import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
 
-export function ToggleGroup({ className, ...props }: React.ComponentProps<typeof BaseToggleGroup>) {
+export function ToggleGroup({
+  className,
+  radius,
+  ...props
+}: React.ComponentProps<typeof BaseToggleGroup> & ContainerRadiusProps) {
   return (
     <BaseToggleGroup
-      className={cn('inline-flex items-center gap-0 border border-border [&>*]:border-0 [&>*+*]:border-l', className)}
+      className={cn(
+        'inline-flex items-center gap-0 overflow-hidden border border-border [&>*]:border-0 [&>*+*]:border-l',
+        containerRadiusVariants({ radius }),
+        className
+      )}
       {...props}
     />
   );

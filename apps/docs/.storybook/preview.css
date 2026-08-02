@@ -1,0 +1,12 @@
+/*
+ * Storybook's stylesheet entry point.
+ *
+ * This wrapper has to live inside apps/docs: postcss-loader resolves its config by
+ * walking up from the CSS file's own directory, and packages/ui deliberately ships no
+ * build config (consumers bring their own). Importing packages/ui/src/theme/globals.css
+ * directly from preview.tsx silently skips Tailwind entirely — no tokens, no utilities.
+ */
+@import "../../../packages/ui/src/theme/globals.css";
+
+/* the components live outside this app, so name them for content detection */
+@source "../../../packages/ui/src";

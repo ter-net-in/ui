@@ -6,7 +6,8 @@
 /*
  * internet-ui — design tokens
  * Swiss / International-Typographic with a brutalist lean:
- * stark mono palette, oversized bold Helvetica, one loud accent, sharp corners.
+ * stark mono palette, oversized bold Helvetica, one loud accent, sharp corners,
+ * hairline borders.
  */
 :root {
   --background: #ffffff;
@@ -32,14 +33,31 @@
   --destructive: #e00000;
   --destructive-foreground: #ffffff;
 
-  --border: #000000;
-  --input: #000000;
+  /*
+   * Hairline borders, not black rules. Translucent so a border tints toward
+   * whatever surface it sits on (card, muted, an image) instead of stamping a
+   * fixed grey over it. Text and accents carry the contrast; edges only imply it.
+   */
+  --border: rgba(0, 0, 0, 0.16);
+  --input: rgba(0, 0, 0, 0.16);
   --ring: #0047ff;
+
+  /*
+   * Syntax colours, used only inside a highlighted Code block. Three inks and no
+   * more: the house blue for language keywords, a violet for names, a green for
+   * literals. Comments and punctuation borrow --muted-foreground, and everything
+   * else stays --foreground, so a snippet still reads as page text with accents
+   * rather than as a rainbow.
+   */
+  --syntax-keyword: #0047ff;
+  --syntax-name: #6c2bd9;
+  --syntax-literal: #0b6e4f;
 
   /* sharp corners by default */
   --radius: 0px;
 
   --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
 }
 
 .dark {
@@ -66,9 +84,14 @@
   --destructive: #ff4d4d;
   --destructive-foreground: #000000;
 
-  --border: #ffffff;
-  --input: #ffffff;
+  --border: rgba(255, 255, 255, 0.18);
+  --input: rgba(255, 255, 255, 0.18);
   --ring: #0047ff;
+
+  /* Lifted off the accent: #0047ff as *text* on black is barely legible. */
+  --syntax-keyword: #7aa2ff;
+  --syntax-name: #c4a8ff;
+  --syntax-literal: #3ddc97;
 }
 
 @theme inline {
@@ -91,8 +114,12 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-syntax-keyword: var(--syntax-keyword);
+  --color-syntax-name: var(--syntax-name);
+  --color-syntax-literal: var(--syntax-literal);
 
   --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
 
   --radius-sm: var(--radius);
   --radius-md: var(--radius);
@@ -116,5 +143,14 @@
     letter-spacing: -0.04em;
     line-height: 0.95;
     font-weight: 700;
+  }
+}
+
+@keyframes progress-indeterminate {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(300%);
   }
 }

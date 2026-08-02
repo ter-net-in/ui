@@ -11,9 +11,23 @@
       "dependencies": ["tailwindcss", "tw-animate-css"],
       "files": [
         {
-          "path": "registry/internet/theme/globals.css",
+          "path": "src/theme/globals.css",
           "type": "registry:style",
           "target": "app/globals.css"
+        }
+      ]
+    },
+    {
+      "name": "ui-defaults",
+      "type": "registry:lib",
+      "title": "Variant defaults",
+      "description": "Project-wide default radius and shadow. Values are substituted from the `defaults` block of internet-ui.json at install time.",
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/lib/ui-defaults.ts",
+          "type": "registry:lib"
         }
       ]
     },
@@ -21,11 +35,37 @@
       "name": "utils",
       "type": "registry:lib",
       "title": "cn utility",
-      "description": "clsx + tailwind-merge class combiner used by every component.",
-      "dependencies": ["clsx", "tailwind-merge"],
+      "description": "clsx + tailwind-merge class combiner and shared radius variants used by every component.",
+      "dependencies": ["clsx", "tailwind-merge", "class-variance-authority"],
       "files": [
         {
-          "path": "registry/internet/lib/utils.ts",
+          "path": "src/lib/utils.ts",
+          "type": "registry:lib"
+        }
+      ],
+      "registryDependencies": ["ui-defaults"]
+    },
+    {
+      "name": "motion",
+      "type": "registry:lib",
+      "title": "Motion presets",
+      "description": "Shared animation language: easing curves, duration and spring tokens, and the render-prop helpers that animate Base UI popups with Motion.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "src/lib/motion.tsx",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "highlight",
+      "type": "registry:lib",
+      "title": "Syntax highlighter",
+      "description": "Dependency-free tokenizer behind the Code component's language prop. Shell, JS/TS/JSX, JSON, CSS and HTML.",
+      "files": [
+        {
+          "path": "src/lib/highlight.ts",
           "type": "registry:lib"
         }
       ]
@@ -39,7 +79,7 @@
       "registryDependencies": ["utils"],
       "files": [
         {
-          "path": "registry/internet/ui/accordion.tsx",
+          "path": "src/ui/accordion.tsx",
           "type": "registry:ui"
         }
       ]
@@ -50,10 +90,10 @@
       "title": "Alert Dialog",
       "description": "Alert Dialog built on Base UI.",
       "dependencies": ["@base-ui/react"],
-      "registryDependencies": ["utils"],
+      "registryDependencies": ["utils", "motion"],
       "files": [
         {
-          "path": "registry/internet/ui/alert-dialog.tsx",
+          "path": "src/ui/alert-dialog.tsx",
           "type": "registry:ui"
         }
       ]
@@ -64,10 +104,10 @@
       "title": "Autocomplete",
       "description": "Autocomplete built on Base UI.",
       "dependencies": ["@base-ui/react"],
-      "registryDependencies": ["utils"],
+      "registryDependencies": ["utils", "motion"],
       "files": [
         {
-          "path": "registry/internet/ui/autocomplete.tsx",
+          "path": "src/ui/autocomplete.tsx",
           "type": "registry:ui"
         }
       ]
@@ -81,7 +121,7 @@
       "registryDependencies": ["utils"],
       "files": [
         {
-          "path": "registry/internet/ui/avatar.tsx",
+          "path": "src/ui/avatar.tsx",
           "type": "registry:ui"
         }
       ]
@@ -91,11 +131,25 @@
       "type": "registry:ui",
       "title": "Button",
       "description": "Button built on Base UI.",
-      "dependencies": ["@base-ui/react", "class-variance-authority"],
+      "dependencies": ["@base-ui/react", "class-variance-authority", "motion"],
+      "registryDependencies": ["utils", "motion"],
+      "files": [
+        {
+          "path": "src/ui/button.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "Card",
+      "description": "Composable Card with variant, radius, padding and decorative corner-bracket options. Plain styled container — not a Base UI primitive.",
+      "dependencies": ["class-variance-authority"],
       "registryDependencies": ["utils"],
       "files": [
         {
-          "path": "registry/internet/ui/button.tsx",
+          "path": "src/ui/card.tsx",
           "type": "registry:ui"
         }
       ]
@@ -109,7 +163,7 @@
       "registryDependencies": ["utils"],
       "files": [
         {
-          "path": "registry/internet/ui/checkbox-group.tsx",
+          "path": "src/ui/checkbox-group.tsx",
           "type": "registry:ui"
         }
       ]
@@ -119,11 +173,25 @@
       "type": "registry:ui",
       "title": "Checkbox",
       "description": "Checkbox built on Base UI.",
-      "dependencies": ["@base-ui/react"],
-      "registryDependencies": ["utils"],
+      "dependencies": ["@base-ui/react", "motion"],
+      "registryDependencies": ["utils", "motion"],
       "files": [
         {
-          "path": "registry/internet/ui/checkbox.tsx",
+          "path": "src/ui/checkbox.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "code",
+      "type": "registry:ui",
+      "title": "Code",
+      "description": "Single-line or multi-line code snippet with an optional title strip, syntax highlighting and a copy button. Plain styled container — not a Base UI primitive.",
+      "dependencies": ["@base-ui/react", "motion", "class-variance-authority"],
+      "registryDependencies": ["utils", "motion", "highlight"],
+      "files": [
+        {
+          "path": "src/ui/code.tsx",
           "type": "registry:ui"
         }
       ]
@@ -137,7 +205,7 @@
       "registryDependencies": ["utils"],
       "files": [
         {
-          "path": "registry/internet/ui/collapsible.tsx",
+          "path": "src/ui/collapsible.tsx",
           "type": "registry:ui"
         }
       ]
@@ -148,10 +216,10 @@
       "title": "Combobox",
       "description": "Combobox built on Base UI.",
       "dependencies": ["@base-ui/react"],
-      "registryDependencies": ["utils"],
+      "registryDependencies": ["utils", "motion"],
       "files": [
         {
-          "path": "registry/internet/ui/combobox.tsx",
+          "path": "src/ui/combobox.tsx",
           "type": "registry:ui"
         }
       ]
@@ -162,10 +230,10 @@
       "title": "Context Menu",
       "description": "Context Menu built on Base UI.",
       "dependencies": ["@base-ui/react"],
-      "registryDependencies": ["utils"],
+      "registryDependencies": ["utils", "motion"],
       "files": [
         {
-          "path": "registry/internet/ui/context-menu.tsx",
+          "path": "src/ui/context-menu.tsx",
           "type": "registry:ui"
         }
       ]
@@ -176,10 +244,10 @@
       "title": "Dialog",
       "description": "Dialog built on Base UI.",
       "dependencies": ["@base-ui/react"],
-      "registryDependencies": ["utils"],
+      "registryDependencies": ["utils", "motion"],
       "files": [
         {
-          "path": "registry/internet/ui/dialog.tsx",
+          "path": "src/ui/dialog.tsx",
           "type": "registry:ui"
         }
       ]
@@ -193,7 +261,7 @@
       "registryDependencies": ["utils"],
       "files": [
         {
-          "path": "registry/internet/ui/drawer.tsx",
+          "path": "src/ui/drawer.tsx",
           "type": "registry:ui"
         }
       ]
@@ -207,7 +275,7 @@
       "registryDependencies": ["utils"],
       "files": [
         {
-          "path": "registry/internet/ui/field.tsx",
+          "path": "src/ui/field.tsx",
           "type": "registry:ui"
         }
       ]
@@ -221,7 +289,7 @@
       "registryDependencies": ["utils"],
       "files": [
         {
-          "path": "registry/internet/ui/fieldset.tsx",
+          "path": "src/ui/fieldset.tsx",
           "type": "registry:ui"
         }
       ]
@@ -235,7 +303,7 @@
       "registryDependencies": ["utils"],
       "files": [
         {
-          "path": "registry/internet/ui/form.tsx",
+          "path": "src/ui/form.tsx",
           "type": "registry:ui"
         }
       ]
@@ -249,7 +317,7 @@
       "registryDependencies": ["utils"],
       "files": [
         {
-          "path": "registry/internet/ui/input.tsx",
+          "path": "src/ui/input.tsx",
           "type": "registry:ui"
         }
       ]
@@ -260,10 +328,10 @@
       "title": "Menu",
       "description": "Menu built on Base UI.",
       "dependencies": ["@base-ui/react"],
-      "registryDependencies": ["utils"],
+      "registryDependencies": ["utils", "motion"],
       "files": [
         {
-          "path": "registry/internet/ui/menu.tsx",
+          "path": "src/ui/menu.tsx",
           "type": "registry:ui"
         }
       ]
@@ -277,7 +345,7 @@
       "registryDependencies": ["utils"],
       "files": [
         {
-          "path": "registry/internet/ui/menubar.tsx",
+          "path": "src/ui/menubar.tsx",
           "type": "registry:ui"
         }
       ]
@@ -291,7 +359,7 @@
       "registryDependencies": ["utils"],
       "files": [
         {
-          "path": "registry/internet/ui/meter.tsx",
+          "path": "src/ui/meter.tsx",
           "type": "registry:ui"
         }
       ]
@@ -302,10 +370,10 @@
       "title": "Navigation Menu",
       "description": "Navigation Menu built on Base UI.",
       "dependencies": ["@base-ui/react"],
-      "registryDependencies": ["utils"],
+      "registryDependencies": ["utils", "motion"],
       "files": [
         {
-          "path": "registry/internet/ui/navigation-menu.tsx",
+          "path": "src/ui/navigation-menu.tsx",
           "type": "registry:ui"
         }
       ]
@@ -319,7 +387,7 @@
       "registryDependencies": ["utils"],
       "files": [
         {
-          "path": "registry/internet/ui/number-field.tsx",
+          "path": "src/ui/number-field.tsx",
           "type": "registry:ui"
         }
       ]
@@ -333,7 +401,7 @@
       "registryDependencies": ["utils"],
       "files": [
         {
-          "path": "registry/internet/ui/otp-field.tsx",
+          "path": "src/ui/otp-field.tsx",
           "type": "registry:ui"
         }
       ]
@@ -344,10 +412,10 @@
       "title": "Popover",
       "description": "Popover built on Base UI.",
       "dependencies": ["@base-ui/react"],
-      "registryDependencies": ["utils"],
+      "registryDependencies": ["utils", "motion"],
       "files": [
         {
-          "path": "registry/internet/ui/popover.tsx",
+          "path": "src/ui/popover.tsx",
           "type": "registry:ui"
         }
       ]
@@ -358,10 +426,10 @@
       "title": "Preview Card",
       "description": "Preview Card built on Base UI.",
       "dependencies": ["@base-ui/react"],
-      "registryDependencies": ["utils"],
+      "registryDependencies": ["utils", "motion"],
       "files": [
         {
-          "path": "registry/internet/ui/preview-card.tsx",
+          "path": "src/ui/preview-card.tsx",
           "type": "registry:ui"
         }
       ]
@@ -375,7 +443,7 @@
       "registryDependencies": ["utils"],
       "files": [
         {
-          "path": "registry/internet/ui/progress.tsx",
+          "path": "src/ui/progress.tsx",
           "type": "registry:ui"
         }
       ]
@@ -385,11 +453,11 @@
       "type": "registry:ui",
       "title": "Radio Group",
       "description": "Radio Group built on Base UI.",
-      "dependencies": ["@base-ui/react"],
-      "registryDependencies": ["utils"],
+      "dependencies": ["@base-ui/react", "motion"],
+      "registryDependencies": ["utils", "motion"],
       "files": [
         {
-          "path": "registry/internet/ui/radio-group.tsx",
+          "path": "src/ui/radio-group.tsx",
           "type": "registry:ui"
         }
       ]
@@ -403,7 +471,7 @@
       "registryDependencies": ["utils"],
       "files": [
         {
-          "path": "registry/internet/ui/scroll-area.tsx",
+          "path": "src/ui/scroll-area.tsx",
           "type": "registry:ui"
         }
       ]
@@ -414,10 +482,10 @@
       "title": "Select",
       "description": "Select built on Base UI.",
       "dependencies": ["@base-ui/react"],
-      "registryDependencies": ["utils"],
+      "registryDependencies": ["utils", "motion"],
       "files": [
         {
-          "path": "registry/internet/ui/select.tsx",
+          "path": "src/ui/select.tsx",
           "type": "registry:ui"
         }
       ]
@@ -431,7 +499,7 @@
       "registryDependencies": ["utils"],
       "files": [
         {
-          "path": "registry/internet/ui/separator.tsx",
+          "path": "src/ui/separator.tsx",
           "type": "registry:ui"
         }
       ]
@@ -441,11 +509,11 @@
       "type": "registry:ui",
       "title": "Slider",
       "description": "Slider built on Base UI.",
-      "dependencies": ["@base-ui/react"],
-      "registryDependencies": ["utils"],
+      "dependencies": ["@base-ui/react", "motion"],
+      "registryDependencies": ["utils", "motion"],
       "files": [
         {
-          "path": "registry/internet/ui/slider.tsx",
+          "path": "src/ui/slider.tsx",
           "type": "registry:ui"
         }
       ]
@@ -455,11 +523,11 @@
       "type": "registry:ui",
       "title": "Switch",
       "description": "Switch built on Base UI.",
-      "dependencies": ["@base-ui/react"],
-      "registryDependencies": ["utils"],
+      "dependencies": ["@base-ui/react", "motion"],
+      "registryDependencies": ["utils", "motion"],
       "files": [
         {
-          "path": "registry/internet/ui/switch.tsx",
+          "path": "src/ui/switch.tsx",
           "type": "registry:ui"
         }
       ]
@@ -469,11 +537,11 @@
       "type": "registry:ui",
       "title": "Tabs",
       "description": "Tabs built on Base UI.",
-      "dependencies": ["@base-ui/react"],
-      "registryDependencies": ["utils"],
+      "dependencies": ["@base-ui/react", "motion"],
+      "registryDependencies": ["utils", "motion"],
       "files": [
         {
-          "path": "registry/internet/ui/tabs.tsx",
+          "path": "src/ui/tabs.tsx",
           "type": "registry:ui"
         }
       ]
@@ -487,7 +555,7 @@
       "registryDependencies": ["utils"],
       "files": [
         {
-          "path": "registry/internet/ui/toast.tsx",
+          "path": "src/ui/toast.tsx",
           "type": "registry:ui"
         }
       ]
@@ -501,7 +569,7 @@
       "registryDependencies": ["utils"],
       "files": [
         {
-          "path": "registry/internet/ui/toggle-group.tsx",
+          "path": "src/ui/toggle-group.tsx",
           "type": "registry:ui"
         }
       ]
@@ -511,11 +579,11 @@
       "type": "registry:ui",
       "title": "Toggle",
       "description": "Toggle built on Base UI.",
-      "dependencies": ["@base-ui/react"],
-      "registryDependencies": ["utils"],
+      "dependencies": ["@base-ui/react", "motion"],
+      "registryDependencies": ["utils", "motion"],
       "files": [
         {
-          "path": "registry/internet/ui/toggle.tsx",
+          "path": "src/ui/toggle.tsx",
           "type": "registry:ui"
         }
       ]
@@ -529,7 +597,7 @@
       "registryDependencies": ["utils"],
       "files": [
         {
-          "path": "registry/internet/ui/toolbar.tsx",
+          "path": "src/ui/toolbar.tsx",
           "type": "registry:ui"
         }
       ]
@@ -540,10 +608,10 @@
       "title": "Tooltip",
       "description": "Tooltip built on Base UI.",
       "dependencies": ["@base-ui/react"],
-      "registryDependencies": ["utils"],
+      "registryDependencies": ["utils", "motion"],
       "files": [
         {
-          "path": "registry/internet/ui/tooltip.tsx",
+          "path": "src/ui/tooltip.tsx",
           "type": "registry:ui"
         }
       ]

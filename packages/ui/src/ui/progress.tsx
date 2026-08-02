@@ -3,13 +3,32 @@
 import { Progress as BaseProgress } from '@base-ui/react/progress';
 import type * as React from 'react';
 
-import { cn } from '@/lib/utils';
+import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
 
-export function Progress({ className, children, ...props }: React.ComponentProps<typeof BaseProgress.Root>) {
+export function Progress({
+  className,
+  children,
+  radius,
+  ...props
+}: React.ComponentProps<typeof BaseProgress.Root> & RadiusProps) {
   return (
     <BaseProgress.Root className={cn('flex w-full flex-col gap-1', className)} {...props}>
-      <BaseProgress.Track className="h-2 w-full overflow-hidden border border-border bg-background">
-        <BaseProgress.Indicator className="h-full bg-primary transition-all" />
+      <BaseProgress.Track
+        className={cn('h-2 w-full overflow-hidden border border-border bg-background', radiusVariants({ radius }))}
+      >
+        {/*
+          Width stays in CSS: Base UI writes the filled width as an inline style
+          from the current value, and a transition on that property is what makes
+          value changes glide instead of jumping. Motion would need to own the
+          width to animate it, and it has no access to the value.
+        */}
+        <BaseProgress.Indicator
+          className={cn(
+            'h-full bg-primary',
+            'transition-[width] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]',
+            'data-[indeterminate]:w-1/3 data-[indeterminate]:animate-[progress-indeterminate_1.2s_ease-in-out_infinite]'
+          )}
+        />
       </BaseProgress.Track>
       {children}
     </BaseProgress.Root>

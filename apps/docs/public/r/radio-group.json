@@ -5,16 +5,18 @@
   "title": "Radio Group",
   "description": "Radio Group built on Base UI.",
   "dependencies": [
-    "@base-ui/react"
+    "@base-ui/react",
+    "motion"
   ],
   "registryDependencies": [
-    "utils"
+    "utils",
+    "motion"
   ],
   "files": [
     {
-      "path": "registry/internet/ui/radio-group.tsx",
+      "path": "src/ui/radio-group.tsx",
       "type": "registry:ui",
-      "content": "'use client';\n\nimport { Radio as BaseRadio } from '@base-ui/react/radio';\nimport { RadioGroup as BaseRadioGroup } from '@base-ui/react/radio-group';\nimport type * as React from 'react';\n\nimport { cn } from '@/lib/utils';\n\nexport function RadioGroup({ className, ...props }: React.ComponentProps<typeof BaseRadioGroup>) {\n  return <BaseRadioGroup className={cn('flex flex-col gap-2', className)} {...props} />;\n}\n\nexport function RadioGroupItem({ className, ...props }: React.ComponentProps<typeof BaseRadio.Root>) {\n  return (\n    <BaseRadio.Root\n      className={cn(\n        'flex size-5 shrink-0 items-center justify-center rounded-full border border-input bg-background outline-none transition-colors',\n        'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',\n        'data-[checked]:border-primary',\n        'disabled:cursor-not-allowed disabled:opacity-40',\n        className\n      )}\n      {...props}\n    >\n      <BaseRadio.Indicator className=\"size-2.5 rounded-full bg-primary data-[unchecked]:hidden\" />\n    </BaseRadio.Root>\n  );\n}\n"
+      "content": "'use client';\n\nimport { Radio as BaseRadio } from '@base-ui/react/radio';\nimport { RadioGroup as BaseRadioGroup } from '@base-ui/react/radio-group';\nimport { cva, type VariantProps } from 'class-variance-authority';\nimport { type HTMLMotionProps, motion } from 'motion/react';\nimport type * as React from 'react';\n\nimport { useControlTransition } from '@/lib/motion';\nimport { cn } from '@/lib/utils';\n\nconst radioGroupVariants = cva('flex gap-2', {\n  variants: {\n    orientation: {\n      vertical: 'flex-col',\n      horizontal: 'flex-row'\n    }\n  },\n  defaultVariants: {\n    orientation: 'vertical'\n  }\n});\n\nexport interface RadioGroupProps\n  extends React.ComponentProps<typeof BaseRadioGroup>,\n    VariantProps<typeof radioGroupVariants> {}\n\nexport function RadioGroup({ className, orientation, ...props }: RadioGroupProps) {\n  return <BaseRadioGroup className={cn(radioGroupVariants({ orientation }), className)} {...props} />;\n}\n\nexport function RadioGroupItem({ className, ...props }: React.ComponentProps<typeof BaseRadio.Root>) {\n  const transition = useControlTransition();\n\n  return (\n    <BaseRadio.Root\n      className={cn(\n        'flex size-5 shrink-0 items-center justify-center rounded-full border border-input bg-background outline-none transition-colors',\n        'focus-visible:ring-2 focus-visible:ring-ring',\n        'data-[checked]:border-primary',\n        'disabled:cursor-not-allowed disabled:opacity-40',\n        className\n      )}\n      {...props}\n    >\n      {/* `keepMounted` so the dot can scale away as well as in — see checkbox.tsx. */}\n      <BaseRadio.Indicator\n        keepMounted\n        className=\"size-2.5 rounded-full bg-primary\"\n        render={(indicatorProps, state) => (\n          <motion.span\n            {...(indicatorProps as HTMLMotionProps<'span'>)}\n            initial={false}\n            animate={{ opacity: state.checked ? 1 : 0, scale: state.checked ? 1 : 0 }}\n            transition={transition}\n          />\n        )}\n      />\n    </BaseRadio.Root>\n  );\n}\n\nexport { radioGroupVariants };\n"
     }
   ]
 }

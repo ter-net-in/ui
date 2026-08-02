@@ -1,14 +1,18 @@
 /**
- * Reads registry.json + component source and emits one hostable JSON file per
- * item to public/r/<name>.json, plus a public/r/registry.json index.
- * Run with: bun run scripts/build-registry.ts
+ * Reads packages/ui/registry.json + component source and emits one hostable JSON
+ * file per item into the docs app's public/r/<name>.json, plus a registry.json index.
+ * Bridges the two packages, so it lives at the repo root rather than in either.
+ * Run with: bun run build:registry
  */
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const OUT_DIR = path.join(ROOT, 'public', 'r');
+const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+/** source of record: item `path` fields are relative to this */
+const ROOT = path.join(REPO_ROOT, 'packages', 'ui');
+/** the docs app hosts the built registry as static files */
+const OUT_DIR = path.join(REPO_ROOT, 'apps', 'docs', 'public', 'r');
 
 interface RegistryFile {
   path: string;

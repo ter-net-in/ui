@@ -5,16 +5,18 @@
   "title": "Checkbox",
   "description": "Checkbox built on Base UI.",
   "dependencies": [
-    "@base-ui/react"
+    "@base-ui/react",
+    "motion"
   ],
   "registryDependencies": [
-    "utils"
+    "utils",
+    "motion"
   ],
   "files": [
     {
-      "path": "registry/internet/ui/checkbox.tsx",
+      "path": "src/ui/checkbox.tsx",
       "type": "registry:ui",
-      "content": "'use client';\n\nimport { Checkbox as BaseCheckbox } from '@base-ui/react/checkbox';\nimport type * as React from 'react';\n\nimport { cn } from '@/lib/utils';\n\nexport function Checkbox({ className, ...props }: React.ComponentProps<typeof BaseCheckbox.Root>) {\n  return (\n    <BaseCheckbox.Root\n      className={cn(\n        'flex size-5 shrink-0 items-center justify-center border border-input bg-background outline-none transition-colors',\n        'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',\n        'data-[checked]:border-primary data-[checked]:bg-primary data-[checked]:text-primary-foreground',\n        'disabled:cursor-not-allowed disabled:opacity-40',\n        className\n      )}\n      {...props}\n    >\n      <BaseCheckbox.Indicator className=\"flex text-current data-[unchecked]:hidden\">\n        <svg\n          viewBox=\"0 0 16 16\"\n          className=\"size-3.5\"\n          fill=\"none\"\n          stroke=\"currentColor\"\n          strokeWidth={3}\n          aria-hidden=\"true\"\n        >\n          <path d=\"M3 8l3.5 3.5L13 4\" />\n        </svg>\n      </BaseCheckbox.Indicator>\n    </BaseCheckbox.Root>\n  );\n}\n"
+      "content": "'use client';\n\nimport { Checkbox as BaseCheckbox } from '@base-ui/react/checkbox';\nimport { type HTMLMotionProps, motion } from 'motion/react';\nimport type * as React from 'react';\n\nimport { transitions, useControlTransition } from '@/lib/motion';\nimport { cn, type RadiusProps, radiusVariants } from '@/lib/utils';\n\nexport function Checkbox({\n  className,\n  radius,\n  ...props\n}: React.ComponentProps<typeof BaseCheckbox.Root> & RadiusProps) {\n  const transition = useControlTransition();\n\n  return (\n    <BaseCheckbox.Root\n      className={cn(\n        'flex size-5 shrink-0 items-center justify-center border border-input bg-background outline-none transition-colors',\n        'focus-visible:ring-2 focus-visible:ring-ring',\n        'data-[checked]:border-primary data-[checked]:bg-primary data-[checked]:text-primary-foreground',\n        'disabled:cursor-not-allowed disabled:opacity-40',\n        radiusVariants({ radius }),\n        className\n      )}\n      {...props}\n    >\n      {/*\n        `keepMounted` so the tick can animate both ways. Without it Base UI drops\n        the indicator from the DOM the moment the box is unticked, and there's\n        nothing left to animate out.\n      */}\n      <BaseCheckbox.Indicator\n        keepMounted\n        className=\"flex text-current\"\n        render={(indicatorProps, state) => (\n          <motion.span\n            {...(indicatorProps as HTMLMotionProps<'span'>)}\n            initial={false}\n            animate={{ opacity: state.checked ? 1 : 0, scale: state.checked ? 1 : 0.6 }}\n            transition={transition}\n          >\n            <svg\n              viewBox=\"0 0 16 16\"\n              className=\"size-3.5\"\n              fill=\"none\"\n              stroke=\"currentColor\"\n              strokeWidth={3}\n              aria-hidden=\"true\"\n            >\n              {/* The tick draws itself on rather than just fading in. */}\n              <motion.path\n                d=\"M3 8l3.5 3.5L13 4\"\n                strokeLinecap=\"square\"\n                initial={false}\n                animate={{ pathLength: state.checked ? 1 : 0 }}\n                transition={state.checked ? transitions.enter : transitions.exit}\n              />\n            </svg>\n          </motion.span>\n        )}\n      />\n    </BaseCheckbox.Root>\n  );\n}\n"
     }
   ]
 }

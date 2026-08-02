@@ -3,31 +3,39 @@
 import { Dialog as BaseDialog } from '@base-ui/react/dialog';
 import type * as React from 'react';
 
-import { cn } from '@/lib/utils';
+import { useMotionBackdropRender, useMotionPopupRender } from '@/lib/motion';
+import { type ContainerRadiusProps, cn, containerRadiusVariants, type ShadowProps, shadowVariants } from '@/lib/utils';
 
 export const Dialog = BaseDialog.Root;
 export const DialogTrigger = BaseDialog.Trigger;
 export const DialogClose = BaseDialog.Close;
 export const DialogPortal = BaseDialog.Portal;
 
-export function DialogContent({ className, children, ...props }: React.ComponentProps<typeof BaseDialog.Popup>) {
+export function DialogContent({
+  className,
+  children,
+  radius,
+  shadow,
+  ...props
+}: React.ComponentProps<typeof BaseDialog.Popup> & ContainerRadiusProps & ShadowProps) {
+  const renderBackdrop = useMotionBackdropRender();
+  // A dialog has no anchor to grow from, so it scales in place rather than sliding.
+  const renderPopup = useMotionPopupRender({ scale: 0.97, offset: 0 });
+
   return (
     <BaseDialog.Portal>
-      <BaseDialog.Backdrop
-        className={cn(
-          'fixed inset-0 z-50 bg-foreground/40 transition-opacity duration-150',
-          'data-[starting-style]:opacity-0 data-[ending-style]:opacity-0'
-        )}
-      />
+      <BaseDialog.Backdrop className="fixed inset-0 z-50 bg-foreground/40" render={renderBackdrop} />
       <BaseDialog.Popup
         className={cn(
+          // Tailwind centres with the standalone `translate` property, which
+          // composes with the `transform` Motion writes — they don't collide.
           'fixed left-1/2 top-1/2 z-50 grid w-full max-w-md -translate-x-1/2 -translate-y-1/2 gap-4',
-          'border border-border bg-background p-6 shadow-[8px_8px_0_0_var(--color-foreground)]',
-          'outline-none transition-all duration-150',
-          'data-[starting-style]:scale-95 data-[starting-style]:opacity-0',
-          'data-[ending-style]:scale-95 data-[ending-style]:opacity-0',
+          'border border-border bg-background p-6 outline-none',
+          shadowVariants({ shadow }),
+          containerRadiusVariants({ radius }),
           className
         )}
+        render={renderPopup}
         {...props}
       >
         {children}

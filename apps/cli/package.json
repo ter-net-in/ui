@@ -1,5 +1,5 @@
 {
-  "name": "internet-ui",
+  "name": "@ternetin/ui",
   "version": "0.1.0",
   "description": "Add internet-ui components to your project. Base UI + Tailwind, shadcn-style.",
   "type": "module",

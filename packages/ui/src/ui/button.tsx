@@ -2,12 +2,14 @@
 
 import { Button as BaseButton } from '@base-ui/react/button';
 import { cva, type VariantProps } from 'class-variance-authority';
+import { type HTMLMotionProps, motion } from 'motion/react';
 import type * as React from 'react';
 
-import { cn } from '@/lib/utils';
+import { useTapMotion } from '@/lib/motion';
+import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 whitespace-nowrap border font-medium uppercase tracking-wide transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:pointer-events-none disabled:opacity-40 [&_svg]:size-4 [&_svg]:shrink-0',
+  'inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap border font-medium uppercase tracking-wide transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:pointer-events-none disabled:opacity-40 [&_svg]:size-4 [&_svg]:shrink-0',
   {
     variants: {
       variant: {
@@ -31,10 +33,21 @@ const buttonVariants = cva(
   }
 );
 
-export interface ButtonProps extends React.ComponentProps<typeof BaseButton>, VariantProps<typeof buttonVariants> {}
+export interface ButtonProps
+  extends React.ComponentProps<typeof BaseButton>,
+    VariantProps<typeof buttonVariants>,
+    RadiusProps {}
 
-export function Button({ className, variant, size, ...props }: ButtonProps) {
-  return <BaseButton className={cn(buttonVariants({ variant, size }), className)} {...props} />;
+export function Button({ className, variant, size, radius, ...props }: ButtonProps) {
+  const tap = useTapMotion();
+
+  return (
+    <BaseButton
+      className={cn(buttonVariants({ variant, size }), radiusVariants({ radius }), className)}
+      render={(buttonProps) => <motion.button {...(buttonProps as HTMLMotionProps<'button'>)} {...tap} />}
+      {...props}
+    />
+  );
 }
 
 export { buttonVariants };

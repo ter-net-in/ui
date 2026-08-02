@@ -3,7 +3,7 @@
 import { Field as BaseField } from '@base-ui/react/field';
 import type * as React from 'react';
 
-import { cn } from '@/lib/utils';
+import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
 
 export function Field({ className, ...props }: React.ComponentProps<typeof BaseField.Root>) {
   return <BaseField.Root className={cn('flex flex-col gap-1.5', className)} {...props} />;
@@ -18,11 +18,16 @@ export function FieldLabel({ className, ...props }: React.ComponentProps<typeof 
   );
 }
 
-export function FieldControl({ className, ...props }: React.ComponentProps<typeof BaseField.Control>) {
+export function FieldControl({
+  className,
+  radius,
+  ...props
+}: React.ComponentProps<typeof BaseField.Control> & RadiusProps) {
   return (
     <BaseField.Control
       className={cn(
-        'flex h-10 w-full border border-input bg-background px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+        'flex h-10 w-full border border-input bg-background px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        radiusVariants({ radius }),
         className
       )}
       {...props}

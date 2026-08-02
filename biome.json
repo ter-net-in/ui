@@ -5,6 +5,7 @@
       "**",
       "!**/node_modules",
       "!**/dist",
+      "!**/deploy",
       "!**/.next",
       "!**/out",
       "!**/storybook-static",

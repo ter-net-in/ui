@@ -23,6 +23,69 @@ export default function Page() {
           </div>
           <span className="font-mono text-sm">storybook.ui.ter.net.in</span>
         </a>
+
+        <section className="grid border-t border-border lg:grid-cols-2">
+          <div className="border-b border-border p-6 lg:border-r lg:border-b-0 lg:p-10">
+            <p className="mb-8 text-xs font-extrabold uppercase tracking-[0.14em] text-muted-foreground">CLI</p>
+            <h2 className="mb-4 text-3xl font-bold tracking-tight">Copy source, not dependency.</h2>
+            <p className="mb-8 max-w-xl text-sm leading-relaxed text-muted-foreground">
+              Initialize once, then add only components your project needs. CLI resolves shared registry files, rewrites
+              aliases, installs package dependencies, and leaves editable source in your repository.
+            </p>
+            <pre className="overflow-x-auto border border-border bg-muted p-4 font-mono text-sm leading-7">
+              <code>{`npx @ternetin/ui init
+npx @ternetin/ui add button input dialog`}</code>
+            </pre>
+          </div>
+
+          <div className="p-6 lg:p-10">
+            <p className="mb-8 text-xs font-extrabold uppercase tracking-[0.14em] text-muted-foreground">
+              internet-ui.json
+            </p>
+            <h2 className="mb-4 text-3xl font-bold tracking-tight">Your paths. Your defaults.</h2>
+            <p className="mb-8 max-w-xl text-sm leading-relaxed text-muted-foreground">
+              Config records registry URL, TypeScript mode, import aliases, output paths, and project-wide visual
+              defaults. Components compile these values into local source; no runtime config package remains.
+            </p>
+            <pre className="overflow-x-auto border border-border bg-muted p-4 font-mono text-sm leading-6">
+              <code>{`{
+  "registry": "https://ui.ter.net.in",
+  "tsx": true,
+  "aliases": {
+    "ui": "@/components/ui",
+    "lib": "@/lib",
+    "utils": "@/lib/utils"
+  },
+  "paths": {
+    "ui": "src/components/ui",
+    "lib": "src/lib",
+    "css": "src/app/globals.css"
+  },
+  "defaults": {
+    "radius": "md",
+    "containerRadius": "md",
+    "shadow": "sm"
+  }
+}`}</code>
+            </pre>
+          </div>
+        </section>
+
+        <section className="grid border-t border-border sm:grid-cols-3">
+          {[
+            ['1 / Init', 'Creates config, installs theme, utilities, and project defaults.'],
+            ['2 / Add', 'Fetches registry items, resolves dependencies, and writes component source.'],
+            ['3 / Own', 'Edit generated files directly. Updates never require a runtime library.']
+          ].map(([title, body]) => (
+            <div
+              key={title}
+              className="border-b border-border p-6 last:border-b-0 sm:border-r sm:border-b-0 sm:last:border-r-0"
+            >
+              <h3 className="mb-3 font-bold">{title}</h3>
+              <p className="text-sm leading-relaxed text-muted-foreground">{body}</p>
+            </div>
+          ))}
+        </section>
       </div>
     </main>
   );

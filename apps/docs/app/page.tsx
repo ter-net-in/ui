@@ -11,18 +11,32 @@ export default function Page() {
           </h1>
         </header>
 
-        <a
-          href="https://storybook.ui.ter.net.in"
-          className="group grid gap-8 p-6 transition-colors hover:bg-foreground hover:text-background focus-visible:bg-foreground focus-visible:text-background focus-visible:outline-none sm:grid-cols-[1fr_auto] sm:items-end sm:p-10"
-        >
-          <div>
-            <p className="mb-3 text-xs font-extrabold uppercase tracking-[0.14em] text-muted-foreground group-hover:text-background/60 group-focus-visible:text-background/60">
-              Component catalog
-            </p>
-            <p className="text-2xl font-bold sm:text-4xl">Open Storybook</p>
-          </div>
-          <span className="font-mono text-sm">storybook.ui.ter.net.in</span>
-        </a>
+        <div className="grid md:grid-cols-2">
+          <a
+            href="/components"
+            className="group grid gap-8 border-b border-border p-6 transition-colors hover:bg-foreground hover:text-background focus-visible:bg-foreground focus-visible:text-background focus-visible:outline-none md:border-r md:border-b-0 sm:grid-cols-[1fr_auto] sm:items-end sm:p-10"
+          >
+            <div>
+              <p className="mb-3 text-xs font-extrabold uppercase tracking-[0.14em] text-muted-foreground group-hover:text-background/60 group-focus-visible:text-background/60">
+                Docs
+              </p>
+              <p className="text-2xl font-bold sm:text-4xl">Browse components</p>
+            </div>
+            <span className="font-mono text-sm">39 items</span>
+          </a>
+          <a
+            href="https://storybook.ui.ter.net.in"
+            className="group grid gap-8 p-6 transition-colors hover:bg-foreground hover:text-background focus-visible:bg-foreground focus-visible:text-background focus-visible:outline-none sm:grid-cols-[1fr_auto] sm:items-end sm:p-10"
+          >
+            <div>
+              <p className="mb-3 text-xs font-extrabold uppercase tracking-[0.14em] text-muted-foreground group-hover:text-background/60 group-focus-visible:text-background/60">
+                Catalog
+              </p>
+              <p className="text-2xl font-bold sm:text-4xl">Open Storybook</p>
+            </div>
+            <span className="font-mono text-sm">External</span>
+          </a>
+        </div>
 
         <section className="grid border-t border-border lg:grid-cols-2">
           <div className="border-b border-border p-6 lg:border-r lg:border-b-0 lg:p-10">

@@ -3,7 +3,7 @@
 Source-owned React components built with [Base UI](https://base-ui.com), Tailwind CSS v4, and Motion. Components are copied into your project through a CLI instead of installed as a runtime component package, so the resulting code stays local and editable.
 
 - Documentation and registry: [ui.ter.net.in](https://ui.ter.net.in)
-- Storybook: [storybook.ter.net.in](https://storybook.ter.net.in)
+- Storybook: [storybook.ui.ter.net.in](https://storybook.ui.ter.net.in)
 - CLI: [`@ternetin/ui`](https://www.npmjs.com/package/@ternetin/ui)
 
 ## Quick start
@@ -99,7 +99,7 @@ deploy/ui         Next.js static export
 deploy/storybook  Storybook static export
 ```
 
-Point main server Caddy at those directories for `ui.ter.net.in` and `storybook.ter.net.in`. No web server or port binding runs inside this project.
+Point main server Caddy at those directories for `ui.ter.net.in` and `storybook.ui.ter.net.in`. No web server or port binding runs inside this project.
 
 Run locally:
 

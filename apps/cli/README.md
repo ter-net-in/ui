@@ -18,4 +18,4 @@ npx @ternetin/ui add button --no-install
 npx @ternetin/ui add button --registry https://ui.ter.net.in
 ```
 
-See [full documentation](https://ui.ter.net.in) and [Storybook](https://storybook.ter.net.in).
+See [full documentation](https://ui.ter.net.in) and [Storybook](https://storybook.ui.ter.net.in).

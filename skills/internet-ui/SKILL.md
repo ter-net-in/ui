@@ -12,7 +12,7 @@ Use internet-ui as source-owned code. The CLI copies files into the target proje
 1. Work from the target project root.
 2. Read `internet-ui.json` if it exists. Respect its registry, aliases, output paths, TypeScript mode, and defaults.
 3. Check target component files for local edits before adding or updating anything.
-4. Inspect available items at `https://ui.ter.net.in/r/registry.json` when component names are unknown.
+4. Read `https://ui.ter.net.in/llms.txt` when component names are unknown. Use its full source catalog only when source inspection is needed.
 
 ## Initialize
 

@@ -21,7 +21,7 @@ jobs:
       - run: bun install --frozen-lockfile
       - run: bun run build:registry
       - name: Verify generated registry is current
-        run: git diff --exit-code -- apps/docs/public/r
+        run: git diff --exit-code -- apps/docs/public
       - run: bun run lint
       - run: bun run typecheck
       - run: bun run build

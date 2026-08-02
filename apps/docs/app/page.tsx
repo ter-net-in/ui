@@ -86,6 +86,19 @@ npx @ternetin/ui add button input dialog`}</code>
             </div>
           ))}
         </section>
+
+        <a
+          href="/llms.txt"
+          className="group flex flex-col justify-between gap-6 border-t border-border p-6 transition-colors hover:bg-foreground hover:text-background focus-visible:bg-foreground focus-visible:text-background focus-visible:outline-none sm:flex-row sm:items-center lg:p-10"
+        >
+          <div>
+            <p className="mb-2 text-xs font-extrabold uppercase tracking-[0.14em] text-muted-foreground group-hover:text-background/60 group-focus-visible:text-background/60">
+              For agents and LLMs
+            </p>
+            <p className="text-2xl font-bold">Read plain-text registry</p>
+          </div>
+          <span className="font-mono text-sm">/llms.txt</span>
+        </a>
       </div>
     </main>
   );

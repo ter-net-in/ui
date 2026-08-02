@@ -1,0 +1,63 @@
+# internet-ui
+
+> Source-owned React components built with Base UI, Tailwind CSS v4, and Motion.
+
+Use the CLI to copy component source into a project. Do not install `@internet-ui/ui` as a runtime dependency.
+
+```bash
+npx @ternetin/ui init
+npx @ternetin/ui add button input dialog
+```
+
+## Resources
+
+- [Full source catalog](https://ui.ter.net.in/llms-full.txt): component metadata and complete source files
+- [JSON registry](https://ui.ter.net.in/r/registry.json): machine-readable component index
+- [Storybook](https://storybook.ui.ter.net.in): rendered component examples
+
+## Components
+
+- [Theme](https://ui.ter.net.in/r/theme.json): internet-ui design tokens (Tailwind v4). Import once from your global stylesheet.
+- [Variant defaults](https://ui.ter.net.in/r/ui-defaults.json): Project-wide default radius and shadow. Values are substituted from the `defaults` block of internet-ui.json at install time.
+- [cn utility](https://ui.ter.net.in/r/utils.json): clsx + tailwind-merge class combiner and shared radius variants used by every component.
+- [Motion presets](https://ui.ter.net.in/r/motion.json): Shared animation language: easing curves, duration and spring tokens, and the render-prop helpers that animate Base UI popups with Motion.
+- [Syntax highlighter](https://ui.ter.net.in/r/highlight.json): Dependency-free tokenizer behind the Code component's language prop. Shell, JS/TS/JSX, JSON, CSS and HTML.
+- [Accordion](https://ui.ter.net.in/r/accordion.json): Accordion built on Base UI.
+- [Alert Dialog](https://ui.ter.net.in/r/alert-dialog.json): Alert Dialog built on Base UI.
+- [Autocomplete](https://ui.ter.net.in/r/autocomplete.json): Autocomplete built on Base UI.
+- [Avatar](https://ui.ter.net.in/r/avatar.json): Avatar built on Base UI.
+- [Button](https://ui.ter.net.in/r/button.json): Button built on Base UI.
+- [Card](https://ui.ter.net.in/r/card.json): Composable Card with variant, radius, padding and decorative corner-bracket options. Plain styled container — not a Base UI primitive.
+- [Checkbox Group](https://ui.ter.net.in/r/checkbox-group.json): Checkbox Group built on Base UI.
+- [Checkbox](https://ui.ter.net.in/r/checkbox.json): Checkbox built on Base UI.
+- [Code](https://ui.ter.net.in/r/code.json): Single-line or multi-line code snippet with an optional title strip, syntax highlighting and a copy button. Plain styled container — not a Base UI primitive.
+- [Collapsible](https://ui.ter.net.in/r/collapsible.json): Collapsible built on Base UI.
+- [Combobox](https://ui.ter.net.in/r/combobox.json): Combobox built on Base UI.
+- [Context Menu](https://ui.ter.net.in/r/context-menu.json): Context Menu built on Base UI.
+- [Dialog](https://ui.ter.net.in/r/dialog.json): Dialog built on Base UI.
+- [Drawer](https://ui.ter.net.in/r/drawer.json): Drawer built on Base UI.
+- [Field](https://ui.ter.net.in/r/field.json): Field built on Base UI.
+- [Fieldset](https://ui.ter.net.in/r/fieldset.json): Fieldset built on Base UI.
+- [Form](https://ui.ter.net.in/r/form.json): Form built on Base UI.
+- [Input](https://ui.ter.net.in/r/input.json): Input built on Base UI.
+- [Menu](https://ui.ter.net.in/r/menu.json): Menu built on Base UI.
+- [Menubar](https://ui.ter.net.in/r/menubar.json): Menubar built on Base UI.
+- [Meter](https://ui.ter.net.in/r/meter.json): Meter built on Base UI.
+- [Navigation Menu](https://ui.ter.net.in/r/navigation-menu.json): Navigation Menu built on Base UI.
+- [Number Field](https://ui.ter.net.in/r/number-field.json): Number Field built on Base UI.
+- [OTP Field](https://ui.ter.net.in/r/otp-field.json): OTP Field built on Base UI.
+- [Popover](https://ui.ter.net.in/r/popover.json): Popover built on Base UI.
+- [Preview Card](https://ui.ter.net.in/r/preview-card.json): Preview Card built on Base UI.
+- [Progress](https://ui.ter.net.in/r/progress.json): Progress built on Base UI.
+- [Radio Group](https://ui.ter.net.in/r/radio-group.json): Radio Group built on Base UI.
+- [Scroll Area](https://ui.ter.net.in/r/scroll-area.json): Scroll Area built on Base UI.
+- [Select](https://ui.ter.net.in/r/select.json): Select built on Base UI.
+- [Separator](https://ui.ter.net.in/r/separator.json): Separator built on Base UI.
+- [Slider](https://ui.ter.net.in/r/slider.json): Slider built on Base UI.
+- [Switch](https://ui.ter.net.in/r/switch.json): Switch built on Base UI.
+- [Tabs](https://ui.ter.net.in/r/tabs.json): Tabs built on Base UI.
+- [Toast](https://ui.ter.net.in/r/toast.json): Toast built on Base UI.
+- [Toggle Group](https://ui.ter.net.in/r/toggle-group.json): Toggle Group built on Base UI.
+- [Toggle](https://ui.ter.net.in/r/toggle.json): Toggle built on Base UI.
+- [Toolbar](https://ui.ter.net.in/r/toolbar.json): Toolbar built on Base UI.
+- [Tooltip](https://ui.ter.net.in/r/tooltip.json): Tooltip built on Base UI.

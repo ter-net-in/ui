@@ -1,0 +1,3977 @@
+# internet-ui full registry
+
+> Complete component catalog for coding agents and other LLM clients.
+
+Initialize a target project before adding components:
+
+```bash
+npx @ternetin/ui init
+npx @ternetin/ui add <component...>
+```
+
+The CLI resolves registry dependencies, rewrites `@/lib/*` and `@/ui/*` imports to target aliases, installs npm dependencies, and writes editable local source.
+
+## Theme (`theme`)
+
+internet-ui design tokens (Tailwind v4). Import once from your global stylesheet.
+
+- Type: `registry:style`
+- Install: `npx @ternetin/ui add theme`
+- npm dependencies: `tailwindcss`, `tw-animate-css`
+- Registry dependencies: none
+
+### `src/theme/globals.css`
+
+````css
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * internet-ui — design tokens
+ * Swiss / International-Typographic with a brutalist lean:
+ * stark mono palette, oversized bold Helvetica, one loud accent, sharp corners,
+ * hairline borders.
+ */
+:root {
+  --background: #ffffff;
+  --foreground: #000000;
+
+  --card: #ffffff;
+  --card-foreground: #000000;
+  --popover: #ffffff;
+  --popover-foreground: #000000;
+
+  --primary: #0047ff;
+  --primary-foreground: #ffffff;
+
+  --secondary: #f4f4f4;
+  --secondary-foreground: #000000;
+
+  --muted: #f4f4f4;
+  --muted-foreground: #888888;
+
+  --accent: #0047ff;
+  --accent-foreground: #ffffff;
+
+  --destructive: #e00000;
+  --destructive-foreground: #ffffff;
+
+  /*
+   * Hairline borders, not black rules. Translucent so a border tints toward
+   * whatever surface it sits on (card, muted, an image) instead of stamping a
+   * fixed grey over it. Text and accents carry the contrast; edges only imply it.
+   */
+  --border: rgba(0, 0, 0, 0.16);
+  --input: rgba(0, 0, 0, 0.16);
+  --ring: #0047ff;
+
+  /*
+   * Syntax colours, used only inside a highlighted Code block. Three inks and no
+   * more: the house blue for language keywords, a violet for names, a green for
+   * literals. Comments and punctuation borrow --muted-foreground, and everything
+   * else stays --foreground, so a snippet still reads as page text with accents
+   * rather than as a rainbow.
+   */
+  --syntax-keyword: #0047ff;
+  --syntax-name: #6c2bd9;
+  --syntax-literal: #0b6e4f;
+
+  /* sharp corners by default */
+  --radius: 0px;
+
+  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+.dark {
+  --background: #000000;
+  --foreground: #ffffff;
+
+  --card: #000000;
+  --card-foreground: #ffffff;
+  --popover: #000000;
+  --popover-foreground: #ffffff;
+
+  --primary: #0047ff;
+  --primary-foreground: #ffffff;
+
+  --secondary: #141414;
+  --secondary-foreground: #ffffff;
+
+  --muted: #141414;
+  --muted-foreground: #888888;
+
+  --accent: #0047ff;
+  --accent-foreground: #ffffff;
+
+  --destructive: #ff4d4d;
+  --destructive-foreground: #000000;
+
+  --border: rgba(255, 255, 255, 0.18);
+  --input: rgba(255, 255, 255, 0.18);
+  --ring: #0047ff;
+
+  /* Lifted off the accent: #0047ff as *text* on black is barely legible. */
+  --syntax-keyword: #7aa2ff;
+  --syntax-name: #c4a8ff;
+  --syntax-literal: #3ddc97;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-syntax-keyword: var(--syntax-keyword);
+  --color-syntax-name: var(--syntax-name);
+  --color-syntax-literal: var(--syntax-literal);
+
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  --radius-sm: var(--radius);
+  --radius-md: var(--radius);
+  --radius-lg: var(--radius);
+  --radius-xl: var(--radius);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+    font-weight: 700;
+  }
+}
+
+@keyframes progress-indeterminate {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(300%);
+  }
+}
+````
+
+## Variant defaults (`ui-defaults`)
+
+Project-wide default radius and shadow. Values are substituted from the `defaults` block of internet-ui.json at install time.
+
+- Type: `registry:lib`
+- Install: `npx @ternetin/ui add ui-defaults`
+- npm dependencies: none
+- Registry dependencies: none
+
+### `src/lib/ui-defaults.ts`
+
+````ts
+/**
+ * Project-wide default variants.
+ *
+ * The `internet-ui` CLI substitutes these values from the `defaults` block of your
+ * internet-ui.json when it writes this file, so a project can pick its own house
+ * style once instead of passing `radius`/`shadow` at every call site. Editing this
+ * file by hand afterwards is expected and supported — it's your code.
+ *
+ * To re-apply internet-ui.json after changing it: `internet-ui add ui-defaults -o`
+ *
+ * Every component leaves its `radius`/`shadow` prop undefined by default, which makes
+ * cva fall back to the `defaultVariants` in utils.ts — and those read from here.
+ */
+export const UI_DEFAULTS = {
+  /** default for pill/circle-friendly controls: none | sm | md | lg | full */
+  radius: 'none',
+  /** default for boxy surfaces (dialogs, menus, cards): none | sm | md | lg */
+  containerRadius: 'none',
+  /** default for raised surfaces (dialogs, popovers, toasts): none | sm | md | lg | xl */
+  shadow: 'md'
+} as const;
+````
+
+## cn utility (`utils`)
+
+clsx + tailwind-merge class combiner and shared radius variants used by every component.
+
+- Type: `registry:lib`
+- Install: `npx @ternetin/ui add utils`
+- npm dependencies: `clsx`, `tailwind-merge`, `class-variance-authority`
+- Registry dependencies: `ui-defaults`
+
+### `src/lib/utils.ts`
+
+````ts
+import { cva, type VariantProps } from 'class-variance-authority';
+import { type ClassValue, clsx } from 'clsx';
+import type * as React from 'react';
+import { twMerge } from 'tailwind-merge';
+
+import { UI_DEFAULTS } from '@/lib/ui-defaults';
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+
+/**
+ * Shared radius scale for every component's `radius` prop.
+ *
+ * NOTE: the theme zeroes --radius-sm/md/lg/xl, so Tailwind's rounded-sm/md/lg all
+ * render flat. These literal radii let a component opt out of the sharp default.
+ */
+export const radiusVariants = cva('', {
+  variants: {
+    radius: {
+      none: 'rounded-none',
+      sm: 'rounded-[0.25rem]',
+      md: 'rounded-[0.5rem]',
+      lg: 'rounded-[1rem]',
+      full: 'rounded-full'
+    }
+  },
+  defaultVariants: {
+    radius: UI_DEFAULTS.radius
+  }
+});
+
+export type RadiusProps = VariantProps<typeof radiusVariants>;
+export type Radius = NonNullable<RadiusProps['radius']>;
+
+/**
+ * Capped radius scale for large container surfaces (dialogs, menus, cards, panels).
+ * Excludes `full` — a 9999px radius turns a rectangle into a lozenge. Max is `lg`.
+ * Use this for boxy surfaces; use radiusVariants for pill/circle-friendly controls.
+ */
+export const containerRadiusVariants = cva('', {
+  variants: {
+    radius: {
+      none: 'rounded-none',
+      sm: 'rounded-[0.25rem]',
+      md: 'rounded-[0.5rem]',
+      lg: 'rounded-[1rem]'
+    }
+  },
+  defaultVariants: {
+    radius: UI_DEFAULTS.containerRadius
+  }
+});
+
+export type ContainerRadiusProps = VariantProps<typeof containerRadiusVariants>;
+export type ContainerRadius = NonNullable<ContainerRadiusProps['radius']>;
+
+/**
+ * Shared shadow scale for raised surfaces (dialogs, popovers, toasts).
+ *
+ * The house shadow is a hard offset block, not a blur — it reads as a second
+ * printed layer rather than depth. Sizes are the offset in px.
+ */
+export const shadowVariants = cva('', {
+  variants: {
+    shadow: {
+      none: 'shadow-none',
+      sm: 'shadow-[4px_4px_0_0_var(--color-foreground)]',
+      md: 'shadow-[6px_6px_0_0_var(--color-foreground)]',
+      lg: 'shadow-[8px_8px_0_0_var(--color-foreground)]',
+      xl: 'shadow-[12px_12px_0_0_var(--color-foreground)]'
+    }
+  },
+  defaultVariants: {
+    shadow: UI_DEFAULTS.shadow
+  }
+});
+
+export type ShadowProps = VariantProps<typeof shadowVariants>;
+export type Shadow = NonNullable<ShadowProps['shadow']>;
+
+/**
+ * Radius for an item sitting inside a padded container, so that the item's corner
+ * stays concentric with the container's: inner radius = outer radius − padding.
+ *
+ * The container publishes its radius as `--content-radius` and the item subtracts
+ * its own inset, clamped at 0 so a square container can't produce a negative
+ * radius. Menus, selects and comboboxes all pad their popup by `0.25rem`.
+ */
+export const NESTED_RADIUS = 'rounded-[max(0px,calc(var(--content-radius,0px)-0.25rem))]';
+
+/** Inline style that publishes a container's radius for {@link NESTED_RADIUS}. */
+export function contentRadiusStyle(radius: ContainerRadius | null | undefined): React.CSSProperties {
+  return {
+    '--content-radius': { none: '0px', sm: '0.25rem', md: '0.5rem', lg: '1rem' }[radius ?? 'none']
+  } as React.CSSProperties;
+}
+````
+
+## Motion presets (`motion`)
+
+Shared animation language: easing curves, duration and spring tokens, and the render-prop helpers that animate Base UI popups with Motion.
+
+- Type: `registry:lib`
+- Install: `npx @ternetin/ui add motion`
+- npm dependencies: `motion`
+- Registry dependencies: none
+
+### `src/lib/motion.tsx`
+
+````tsx
+'use client';
+
+import { type HTMLMotionProps, motion, type Transition, useReducedMotion, type Variants } from 'motion/react';
+import * as React from 'react';
+
+/**
+ * Shared motion language for internet-ui.
+ *
+ * Every component here is still a Base UI component: Motion is applied through
+ * Base UI's `render` prop, so the primitive keeps its behaviour, accessibility and
+ * state attributes, and only gains an animated element to render into.
+ *
+ * The house style is crisp, not bouncy: short ease-out curves for surfaces that
+ * appear, springs reserved for controls the user toggles or drags. Sharp corners
+ * and Helvetica don't want overshoot.
+ *
+ * HOW POPUP EXIT ANIMATIONS WORK — read this before changing anything here.
+ *
+ * Base UI unmounts a closed popup only once `element.getAnimations()` reports
+ * nothing running. That one behaviour is what lets these components animate out
+ * while staying uncontrolled — no `AnimatePresence`, no `keepMounted`, and no
+ * `open` state lifted into the consumer's component. Two rules fall out of it:
+ *
+ *  1. Every exit animation must include `opacity`. It's the property Base UI can
+ *     reliably see, because Motion drives it through the Web Animations API. A
+ *     transform-only or height-only animation is invisible to that check, and the
+ *     element gets torn out of the DOM on the frame it starts leaving.
+ *  2. Popups use duration-based tweens, never springs. Springs settle
+ *     asymptotically, so `getAnimations()` stays non-empty for ~250ms after a
+ *     spring *looks* done — leaving an invisible popup mounted, still holding its
+ *     focus scope. Springs are free to use anywhere that stays mounted.
+ *
+ * WHAT DELIBERATELY ISN'T HERE
+ *
+ * A few parts animate in CSS instead, and not for lack of trying:
+ *
+ *  - Accordion and Collapsible panels. Base UI tears an in-flow panel out of the
+ *    DOM as soon as its CSS transition ends, and checks for one earlier than
+ *    Motion — which starts animating in an effect after paint — can register. A
+ *    Motion panel expands correctly and then vanishes instead of collapsing.
+ *  - Drawer and Toast. Both implement swipe gestures by publishing the pointer
+ *    delta as CSS variables and expecting `transform` to be composed from them.
+ *    A `motion.div` owns `transform`, so the sheet would stop tracking the finger.
+ *  - The Tabs indicator, and Progress/Meter fills. Their target geometry arrives
+ *    as a CSS variable or an inline style. Motion can't re-run an animation when
+ *    the value behind a `var()` changes, because the target string it compares
+ *    never changes.
+ *
+ * Each of those files says so at the point of use.
+ */
+
+/** Cubic-bezier curves used across the library. */
+export const easings = {
+  /** Decelerate hard. Default for anything entering. */
+  out: [0.22, 1, 0.36, 1],
+  /**
+   * Accelerate away. Default for anything leaving. Kept mild on purpose — a
+   * steeper ease-in barely moves for the first half of a 150ms exit, which reads
+   * as the popup hesitating before it closes.
+   */
+  in: [0.4, 0, 1, 1],
+  /** Symmetric. For size and position changes on things already on screen. */
+  inOut: [0.32, 0.72, 0, 1]
+} as const satisfies Record<string, [number, number, number, number]>;
+
+/** Seconds. Deliberately short — this library should feel immediate. */
+export const durations = {
+  instant: 0.1,
+  fast: 0.15,
+  base: 0.2,
+  slow: 0.28
+} as const;
+
+export const transitions = {
+  /** A surface appearing: popovers, menus, dialogs, tooltips. */
+  enter: { duration: durations.base, ease: easings.out },
+  /** The same surface leaving. Quicker than entering — get out of the way. */
+  exit: { duration: durations.fast, ease: easings.in },
+  /** Opacity-only crossfades: backdrops, indicators, text swaps. */
+  fade: { duration: durations.fast, ease: 'linear' },
+  /** Height and width changes: accordion and collapsible panels. */
+  size: { duration: durations.slow, ease: easings.inOut },
+  /** Toggle controls that stay mounted: switch thumb, checkbox tick. */
+  control: { type: 'spring', stiffness: 700, damping: 32, mass: 0.5 },
+  /** Indicators that travel between siblings: tabs, toggle groups. */
+  indicator: { type: 'spring', stiffness: 550, damping: 42, mass: 0.9 },
+  /** Larger surfaces sliding into place: toasts. */
+  surface: { type: 'spring', stiffness: 420, damping: 38, mass: 0.9 }
+} as const satisfies Record<string, Transition>;
+
+/**
+ * Minimal shape of the state Base UI passes to a `render` callback. `side` is
+ * typed loosely so this stays assignable to every component's own state type.
+ */
+export interface PopupMotionState {
+  open: boolean;
+  side?: string;
+}
+
+export interface PopupMotionOptions {
+  /**
+   * Scale the surface grows from. `1` opts out of scaling.
+   * @default 0.96
+   */
+  scale?: number;
+  /**
+   * Distance in px the surface travels toward its anchor as it appears. The
+   * direction comes from the `side` the positioner reports, so a popup anchored
+   * below its trigger slides down into place.
+   * @default 4
+   */
+  offset?: number;
+  /** Overrides the enter transition. */
+  transition?: Transition;
+  /** Overrides the exit transition. */
+  exitTransition?: Transition;
+}
+
+/** Motion props derived from a Base UI open state. */
+export interface StateMotionProps {
+  initial: string;
+  animate: string;
+  variants: Variants;
+}
+
+function offsetFor(side: string | undefined, offset: number) {
+  switch (side) {
+    case 'top':
+      return { y: offset };
+    case 'bottom':
+      return { y: -offset };
+    case 'left':
+    case 'inline-start':
+      return { x: offset };
+    case 'right':
+    case 'inline-end':
+      return { x: -offset };
+    default:
+      return {};
+  }
+}
+
+/**
+ * Enter/exit animation for a popup surface, driven by Base UI's open state.
+ *
+ * Prefer {@link useMotionPopupRender}, which wires this into a `render` prop.
+ * Reach for this hook directly when a popup needs extra motion props of its own.
+ *
+ * Honours `prefers-reduced-motion` by collapsing to a plain crossfade — which
+ * keeps unmount deferral intact, since opacity is still animated.
+ */
+export function usePopupMotion(options: PopupMotionOptions = {}) {
+  const { scale = 0.96, offset = 4, transition = transitions.enter, exitTransition = transitions.exit } = options;
+  const reduceMotion = useReducedMotion();
+
+  return React.useCallback(
+    (state: PopupMotionState): StateMotionProps => ({
+      initial: 'closed',
+      animate: state.open ? 'open' : 'closed',
+      variants: {
+        closed: reduceMotion
+          ? { opacity: 0, transition: exitTransition }
+          : { opacity: 0, scale, ...offsetFor(state.side, offset), transition: exitTransition },
+        open: { opacity: 1, scale: 1, x: 0, y: 0, transition }
+      }
+    }),
+    [reduceMotion, scale, offset, transition, exitTransition]
+  );
+}
+
+/**
+ * `render` prop that animates a popup surface in and out.
+ *
+ * ```tsx
+ * const renderPopup = useMotionPopupRender();
+ * return <Popover.Popup render={renderPopup} className="..." />;
+ * ```
+ */
+export function useMotionPopupRender(options?: PopupMotionOptions) {
+  const popupMotion = usePopupMotion(options);
+
+  return React.useCallback(
+    (props: React.HTMLAttributes<HTMLElement>, state: PopupMotionState) => (
+      <motion.div {...(props as HTMLMotionProps<'div'>)} {...popupMotion(state)} />
+    ),
+    [popupMotion]
+  );
+}
+
+/**
+ * `render` prop for backdrops and scrims, where scaling or sliding would be
+ * wrong and only a crossfade is wanted.
+ */
+export function useMotionBackdropRender(transition: Transition = transitions.fade) {
+  const backdropMotion = React.useCallback(
+    (state: { open: boolean }): StateMotionProps => ({
+      initial: 'closed',
+      animate: state.open ? 'open' : 'closed',
+      variants: {
+        closed: { opacity: 0, transition },
+        open: { opacity: 1, transition }
+      }
+    }),
+    [transition]
+  );
+
+  return React.useCallback(
+    (props: React.HTMLAttributes<HTMLElement>, state: { open: boolean }) => (
+      <motion.div {...(props as HTMLMotionProps<'div'>)} {...backdropMotion(state)} />
+    ),
+    [backdropMotion]
+  );
+}
+
+/**
+ * Press feedback for buttons and other pressable controls.
+ *
+ * Returns props for a `motion` element. Disabled entirely under reduced motion —
+ * a scale on press is exactly the kind of movement that setting asks us to drop.
+ */
+export function useTapMotion(scale = 0.97) {
+  const reduceMotion = useReducedMotion();
+
+  return React.useMemo(
+    () =>
+      reduceMotion
+        ? {}
+        : {
+            whileTap: { scale },
+            transition: { duration: durations.instant, ease: easings.out } satisfies Transition
+          },
+    [reduceMotion, scale]
+  );
+}
+
+/**
+ * Spring config for a control that stays mounted, softened to a quick fade when
+ * the user asks for reduced motion.
+ */
+export function useControlTransition(transition: Transition = transitions.control): Transition {
+  const reduceMotion = useReducedMotion();
+  return reduceMotion ? transitions.fade : transition;
+}
+````
+
+## Syntax highlighter (`highlight`)
+
+Dependency-free tokenizer behind the Code component's language prop. Shell, JS/TS/JSX, JSON, CSS and HTML.
+
+- Type: `registry:lib`
+- Install: `npx @ternetin/ui add highlight`
+- npm dependencies: none
+- Registry dependencies: none
+
+### `src/lib/highlight.ts`
+
+````ts
+/**
+ * Tiny syntax highlighter for the Code component.
+ *
+ * Deliberately not a parser. It scans left to right and takes the first rule that
+ * matches at the cursor, which is enough for the snippets a docs page shows — an
+ * install command, an import, a config object. Long or unusual code will come out
+ * subtly wrong in places, and that's the trade for shipping zero dependencies
+ * instead of pulling a grammar-based highlighter into a copy-paste component.
+ *
+ * The token stream is lossless: joining every `value` back together reproduces the
+ * input exactly. That's what lets the copy button keep reading the rendered text.
+ */
+
+export type TokenKind = 'plain' | 'comment' | 'keyword' | 'literal' | 'name' | 'punctuation';
+
+export interface Token {
+  kind: TokenKind;
+  value: string;
+  /** Character offset in the source. Unique per token, so it keys rendered spans. */
+  start: number;
+}
+
+/** Languages the `language` prop accepts. Aliases resolve onto a shared ruleset. */
+export type Language =
+  | 'shell'
+  | 'bash'
+  | 'sh'
+  | 'zsh'
+  | 'console'
+  | 'js'
+  | 'javascript'
+  | 'jsx'
+  | 'ts'
+  | 'typescript'
+  | 'tsx'
+  | 'json'
+  | 'css'
+  | 'html';
+
+interface Cursor {
+  /** Character before the cursor; `undefined` at the start of the snippet. */
+  previous: string | undefined;
+  /** True when only whitespace stands between the cursor and the start of its line. */
+  atLineStart: boolean;
+}
+
+interface Rule {
+  kind: Exclude<TokenKind, 'plain'>;
+  /**
+   * Must carry the sticky flag. The scanner sets `lastIndex` and matches *at* the
+   * cursor rather than searching ahead of it, so rule order decides precedence.
+   */
+  pattern: RegExp;
+  /** Extra condition on where a match may start. */
+  where?: (cursor: Cursor) => boolean;
+}
+
+/** Not in the middle of a word — keeps `1` in `h1` from reading as a number. */
+const notInWord = ({ previous }: Cursor) => previous === undefined || !/[\w$]/.test(previous);
+
+/** Preceded by whitespace — a shell flag or comment starts its own word. */
+const afterSpace = ({ previous }: Cursor) => previous === undefined || /\s/.test(previous);
+
+/**
+ * Somewhere a JSX tag could legally open. Without this, the `<` of `a<b` reads as
+ * the start of a `<b>` element.
+ */
+const beforeTag = ({ previous }: Cursor) => previous === undefined || /[\s([{},;=>:&|!?+]/.test(previous);
+
+/** Shared by js, ts, jsx and tsx — the differences don't survive this level of detail. */
+const JS_RULES: Rule[] = [
+  { kind: 'comment', pattern: /\/\/[^\n]*|\/\*[\s\S]*?\*\//y },
+  { kind: 'literal', pattern: /'(?:[^'\\\n]|\\.)*'|"(?:[^"\\\n]|\\.)*"|`(?:[^`\\]|\\.)*`/y },
+  {
+    kind: 'keyword',
+    pattern:
+      /\b(?:as|async|await|break|case|catch|class|const|continue|default|delete|do|else|enum|export|extends|finally|for|from|function|if|implements|import|in|instanceof|interface|let|new|of|private|protected|public|readonly|return|satisfies|static|switch|this|throw|try|type|typeof|var|void|while|yield)\b/y
+  },
+  { kind: 'literal', pattern: /\b(?:true|false|null|undefined|NaN|Infinity)\b/y },
+  { kind: 'name', pattern: /<\/?[A-Za-z][\w.:-]*/y, where: beforeTag },
+  { kind: 'literal', pattern: /0[xX][\da-fA-F]+|\d+(?:\.\d+)?(?:[eE][+-]?\d+)?/y, where: notInWord },
+  // A call, then anything else in PascalCase: components, classes, types.
+  { kind: 'name', pattern: /[A-Za-z_$][\w$]*(?=\s*\()/y, where: notInWord },
+  { kind: 'name', pattern: /[A-Z][\w$]*/y, where: notInWord },
+  // Angle brackets are matched one at a time, and last. Folded into the run above
+  // they'd swallow the `<` of `}</Code>` before the tag rule ever saw it.
+  { kind: 'punctuation', pattern: /[{}[\]().,;:?!=+\-*/%&|^~]+/y },
+  { kind: 'punctuation', pattern: /[<>]/y }
+];
+
+const SHELL_RULES: Rule[] = [
+  { kind: 'comment', pattern: /#[^\n]*/y, where: afterSpace },
+  { kind: 'literal', pattern: /'[^'\n]*'|"(?:[^"\\\n]|\\.)*"/y },
+  { kind: 'name', pattern: /\$\{[^}\n]*\}|\$[A-Za-z_]\w*/y },
+  {
+    kind: 'keyword',
+    pattern: /\b(?:case|do|done|elif|else|esac|export|fi|for|function|if|in|local|return|sudo|then|while)\b/y
+  },
+  { kind: 'keyword', pattern: /--?[A-Za-z][\w-]*/y, where: afterSpace },
+  // The first word of a line is the program being run. Subcommands and paths after
+  // it stay plain, which keeps a long command from turning into confetti.
+  { kind: 'name', pattern: /[A-Za-z_][\w./-]*/y, where: ({ atLineStart }) => atLineStart },
+  { kind: 'literal', pattern: /\d[\w.]*/y, where: notInWord },
+  { kind: 'punctuation', pattern: /[|&;<>()]+/y }
+];
+
+const JSON_RULES: Rule[] = [
+  { kind: 'name', pattern: /"(?:[^"\\\n]|\\.)*"(?=\s*:)/y },
+  { kind: 'literal', pattern: /"(?:[^"\\\n]|\\.)*"/y },
+  { kind: 'keyword', pattern: /\b(?:true|false|null)\b/y },
+  { kind: 'literal', pattern: /-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?/y, where: notInWord },
+  { kind: 'punctuation', pattern: /[{}[\],:]+/y }
+];
+
+const CSS_RULES: Rule[] = [
+  { kind: 'comment', pattern: /\/\*[\s\S]*?\*\//y },
+  { kind: 'keyword', pattern: /@[\w-]+/y },
+  { kind: 'name', pattern: /--[\w-]+/y },
+  { kind: 'literal', pattern: /'[^'\n]*'|"[^"\n]*"/y },
+  { kind: 'literal', pattern: /#[0-9a-fA-F]{3,8}\b/y },
+  { kind: 'name', pattern: /[a-zA-Z-][\w-]*(?=\s*:)/y, where: notInWord },
+  { kind: 'name', pattern: /[\w-]+(?=\()/y, where: notInWord },
+  { kind: 'literal', pattern: /-?(?:\d+\.?\d*|\.\d+)(?:[a-z%]+)?/y, where: notInWord },
+  { kind: 'punctuation', pattern: /[{}()[\];:,.>+~*]+/y }
+];
+
+const HTML_RULES: Rule[] = [
+  { kind: 'comment', pattern: /<!--[\s\S]*?-->/y },
+  { kind: 'keyword', pattern: /<!\w+/y },
+  { kind: 'name', pattern: /<\/?[a-zA-Z][\w-]*/y },
+  { kind: 'literal', pattern: /"[^"\n]*"|'[^'\n]*'/y },
+  { kind: 'keyword', pattern: /[a-zA-Z-][\w-]*(?=\s*=)/y, where: notInWord },
+  { kind: 'punctuation', pattern: /[/=]+/y },
+  { kind: 'punctuation', pattern: /[<>]/y }
+];
+
+const RULES = {
+  shell: SHELL_RULES,
+  js: JS_RULES,
+  json: JSON_RULES,
+  css: CSS_RULES,
+  html: HTML_RULES
+} as const;
+
+const RULESET: Record<Language, keyof typeof RULES> = {
+  shell: 'shell',
+  bash: 'shell',
+  sh: 'shell',
+  zsh: 'shell',
+  console: 'shell',
+  js: 'js',
+  javascript: 'js',
+  jsx: 'js',
+  ts: 'js',
+  typescript: 'js',
+  tsx: 'js',
+  json: 'json',
+  css: 'css',
+  html: 'html'
+};
+
+function atLineStart(code: string, cursor: number) {
+  for (let index = cursor - 1; index >= 0; index--) {
+    const char = code[index];
+    if (char === '\n') return true;
+    if (char !== ' ' && char !== '\t') return false;
+  }
+  return true;
+}
+
+/**
+ * Split `code` into coloured tokens. Unmatched text comes back as `plain` runs
+ * rather than being dropped, so the result always reassembles into the input.
+ */
+export function tokenize(code: string, language: Language): Token[] {
+  const rules = RULES[RULESET[language]];
+  const tokens: Token[] = [];
+  let cursor = 0;
+  let plainStart = -1;
+
+  function flushPlain(end: number) {
+    if (plainStart < 0) return;
+    tokens.push({ kind: 'plain', value: code.slice(plainStart, end), start: plainStart });
+    plainStart = -1;
+  }
+
+  while (cursor < code.length) {
+    const position: Cursor = {
+      previous: cursor > 0 ? code[cursor - 1] : undefined,
+      atLineStart: atLineStart(code, cursor)
+    };
+
+    let match: Token | undefined;
+    for (const rule of rules) {
+      if (rule.where && !rule.where(position)) continue;
+      rule.pattern.lastIndex = cursor;
+      const found = rule.pattern.exec(code);
+      // A zero-length match would never advance the cursor.
+      if (found && found[0].length > 0) {
+        match = { kind: rule.kind, value: found[0], start: cursor };
+        break;
+      }
+    }
+
+    if (!match) {
+      if (plainStart < 0) plainStart = cursor;
+      cursor += 1;
+      continue;
+    }
+
+    flushPlain(cursor);
+    tokens.push(match);
+    cursor += match.value.length;
+  }
+
+  flushPlain(code.length);
+  return tokens;
+}
+````
+
+## Accordion (`accordion`)
+
+Accordion built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add accordion`
+- npm dependencies: `@base-ui/react`
+- Registry dependencies: `utils`
+
+### `src/ui/accordion.tsx`
+
+````tsx
+'use client';
+
+import { Accordion as BaseAccordion } from '@base-ui/react/accordion';
+import { cva, type VariantProps } from 'class-variance-authority';
+import type * as React from 'react';
+
+import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
+
+const accordionVariants = cva('w-full', {
+  variants: {
+    variant: {
+      default: 'border border-border',
+      ghost: 'border-none bg-transparent'
+    }
+  },
+  defaultVariants: {
+    variant: 'default'
+  }
+});
+
+export interface AccordionProps
+  extends React.ComponentProps<typeof BaseAccordion.Root>,
+    VariantProps<typeof accordionVariants>,
+    ContainerRadiusProps {}
+
+export function Accordion({ className, variant, radius, ...props }: AccordionProps) {
+  return (
+    <BaseAccordion.Root
+      className={cn(
+        accordionVariants({ variant }),
+        // The root is the element with the border, so it owns the radius. Items
+        // are clipped to it — rounding an item on its own does nothing, because
+        // the root's square corners still draw over it.
+        'overflow-hidden',
+        containerRadiusVariants({ radius }),
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
+/**
+ * `radius` here only shows up on the `ghost` variant, where items are separate
+ * surfaces. Inside the default bordered `Accordion` the root's radius wins — set
+ * it there instead.
+ */
+export function AccordionItem({
+  className,
+  radius,
+  ...props
+}: React.ComponentProps<typeof BaseAccordion.Item> & ContainerRadiusProps) {
+  return (
+    <BaseAccordion.Item
+      className={cn('border-b border-border last:border-b-0', containerRadiusVariants({ radius }), className)}
+      {...props}
+    />
+  );
+}
+
+export function AccordionTrigger({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<typeof BaseAccordion.Trigger>) {
+  return (
+    <BaseAccordion.Header>
+      <BaseAccordion.Trigger
+        className={cn(
+          'flex w-full items-center justify-between gap-2 px-4 py-3 text-left text-sm font-medium uppercase tracking-wide outline-none transition-colors',
+          'hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset',
+          '[&>svg]:transition-transform [&[data-panel-open]>svg]:rotate-180',
+          className
+        )}
+        {...props}
+      >
+        {children}
+        <svg
+          viewBox="0 0 16 16"
+          className="size-4 shrink-0"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          aria-hidden="true"
+        >
+          <path d="M4 6l4 4 4-4" />
+        </svg>
+      </BaseAccordion.Trigger>
+    </BaseAccordion.Header>
+  );
+}
+
+export function AccordionPanel({ className, ...props }: React.ComponentProps<typeof BaseAccordion.Panel>) {
+  return (
+    <BaseAccordion.Panel
+      className={cn(
+        // This panel animates in CSS rather than with Motion, and it has to.
+        // Base UI measures the content and publishes the target height as
+        // `--accordion-panel-height`, then removes the panel from the DOM once
+        // its CSS transition finishes. Motion starts its animations in an effect
+        // after paint, which is too late for that check — the panel is already
+        // gone, so a collapse never plays. A CSS transition is declared up front
+        // and is visible to Base UI immediately, so it animates both ways.
+        //
+        // `overflow-hidden` makes the height change read as a reveal instead of a
+        // squash: the content keeps its natural size and is clipped as it grows.
+        'h-[var(--accordion-panel-height)] overflow-hidden bg-muted/50 text-sm text-muted-foreground',
+        'transition-[height,opacity] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none',
+        'data-[starting-style]:h-0 data-[starting-style]:opacity-0',
+        'data-[ending-style]:h-0 data-[ending-style]:opacity-0',
+        '[&>*]:px-4 [&>*]:py-3',
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
+export { accordionVariants };
+````
+
+## Alert Dialog (`alert-dialog`)
+
+Alert Dialog built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add alert-dialog`
+- npm dependencies: `@base-ui/react`
+- Registry dependencies: `utils`, `motion`
+
+### `src/ui/alert-dialog.tsx`
+
+````tsx
+'use client';
+
+import { AlertDialog as BaseAlertDialog } from '@base-ui/react/alert-dialog';
+import type * as React from 'react';
+
+import { useMotionBackdropRender, useMotionPopupRender } from '@/lib/motion';
+import { type ContainerRadiusProps, cn, containerRadiusVariants, type ShadowProps, shadowVariants } from '@/lib/utils';
+
+export const AlertDialog = BaseAlertDialog.Root;
+export const AlertDialogTrigger = BaseAlertDialog.Trigger;
+export const AlertDialogClose = BaseAlertDialog.Close;
+
+export function AlertDialogContent({
+  className,
+  children,
+  radius,
+  shadow,
+  ...props
+}: React.ComponentProps<typeof BaseAlertDialog.Popup> & ContainerRadiusProps & ShadowProps) {
+  const renderBackdrop = useMotionBackdropRender();
+  // No anchor to grow from, so it scales in place rather than sliding.
+  const renderPopup = useMotionPopupRender({ scale: 0.97, offset: 0 });
+
+  return (
+    <BaseAlertDialog.Portal>
+      <BaseAlertDialog.Backdrop className="fixed inset-0 z-50 bg-foreground/40" render={renderBackdrop} />
+      <BaseAlertDialog.Popup
+        className={cn(
+          'fixed left-1/2 top-1/2 z-50 grid w-full max-w-md -translate-x-1/2 -translate-y-1/2 gap-4',
+          'border border-border bg-background p-6 outline-none',
+          shadowVariants({ shadow }),
+          containerRadiusVariants({ radius }),
+          className
+        )}
+        render={renderPopup}
+        {...props}
+      >
+        {children}
+      </BaseAlertDialog.Popup>
+    </BaseAlertDialog.Portal>
+  );
+}
+
+export function AlertDialogTitle({ className, ...props }: React.ComponentProps<typeof BaseAlertDialog.Title>) {
+  return <BaseAlertDialog.Title className={cn('text-lg font-bold uppercase tracking-tight', className)} {...props} />;
+}
+
+export function AlertDialogDescription({
+  className,
+  ...props
+}: React.ComponentProps<typeof BaseAlertDialog.Description>) {
+  return <BaseAlertDialog.Description className={cn('text-sm text-muted-foreground', className)} {...props} />;
+}
+
+export function AlertDialogFooter({ className, ...props }: React.ComponentProps<'div'>) {
+  return <div className={cn('flex flex-col-reverse gap-2 sm:flex-row sm:justify-end', className)} {...props} />;
+}
+````
+
+## Autocomplete (`autocomplete`)
+
+Autocomplete built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add autocomplete`
+- npm dependencies: `@base-ui/react`
+- Registry dependencies: `utils`, `motion`
+
+### `src/ui/autocomplete.tsx`
+
+````tsx
+'use client';
+
+import { Autocomplete as BaseAutocomplete } from '@base-ui/react/autocomplete';
+import type * as React from 'react';
+
+import { useMotionPopupRender } from '@/lib/motion';
+import {
+  type ContainerRadiusProps,
+  cn,
+  containerRadiusVariants,
+  contentRadiusStyle,
+  NESTED_RADIUS,
+  type RadiusProps,
+  radiusVariants,
+  type ShadowProps,
+  shadowVariants
+} from '@/lib/utils';
+
+export const Autocomplete = BaseAutocomplete.Root;
+
+export function AutocompleteInput({
+  className,
+  radius,
+  ...props
+}: React.ComponentProps<typeof BaseAutocomplete.Input> & RadiusProps) {
+  return (
+    <BaseAutocomplete.Input
+      className={cn(
+        'flex h-10 w-full border border-input bg-background px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        radiusVariants({ radius }),
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
+export function AutocompleteContent({
+  className,
+  children,
+  sideOffset = 4,
+  radius,
+  shadow,
+  style,
+  ...props
+}: React.ComponentProps<typeof BaseAutocomplete.Popup> & { sideOffset?: number } & ContainerRadiusProps & ShadowProps) {
+  // Matches Combobox: slide and fade, no scale on a live results list.
+  const renderPopup = useMotionPopupRender({ scale: 1, offset: 6 });
+
+  return (
+    <BaseAutocomplete.Portal>
+      <BaseAutocomplete.Positioner sideOffset={sideOffset} className="z-50">
+        <BaseAutocomplete.Popup
+          // Publishes `--content-radius` so items can stay concentric with the popup.
+          style={{ ...contentRadiusStyle(radius), ...style }}
+          className={cn(
+            'max-h-64 min-w-[var(--anchor-width)] overflow-y-auto border border-border bg-popover p-1 text-popover-foreground outline-none',
+            shadowVariants({ shadow }),
+            containerRadiusVariants({ radius }),
+            className
+          )}
+          render={renderPopup}
+          {...props}
+        >
+          <BaseAutocomplete.Empty className="px-3 py-2 text-sm text-muted-foreground empty:p-0">
+            No results.
+          </BaseAutocomplete.Empty>
+          <BaseAutocomplete.List>{children}</BaseAutocomplete.List>
+        </BaseAutocomplete.Popup>
+      </BaseAutocomplete.Positioner>
+    </BaseAutocomplete.Portal>
+  );
+}
+
+export function AutocompleteItem({ className, ...props }: React.ComponentProps<typeof BaseAutocomplete.Item>) {
+  return (
+    <BaseAutocomplete.Item
+      className={cn(
+        'flex cursor-pointer select-none items-center gap-2 px-3 py-1.5 text-sm outline-none data-[highlighted]:bg-foreground data-[highlighted]:text-background',
+        NESTED_RADIUS,
+        className
+      )}
+      {...props}
+    />
+  );
+}
+````
+
+## Avatar (`avatar`)
+
+Avatar built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add avatar`
+- npm dependencies: `@base-ui/react`
+- Registry dependencies: `utils`
+
+### `src/ui/avatar.tsx`
+
+````tsx
+'use client';
+
+import { Avatar as BaseAvatar } from '@base-ui/react/avatar';
+import type * as React from 'react';
+
+import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
+
+export function Avatar({ className, radius, ...props }: React.ComponentProps<typeof BaseAvatar.Root> & RadiusProps) {
+  return (
+    <BaseAvatar.Root
+      className={cn(
+        'inline-flex size-10 shrink-0 select-none items-center justify-center overflow-hidden border border-border bg-muted align-middle text-sm font-medium uppercase',
+        radiusVariants({ radius }),
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
+export function AvatarImage({ className, ...props }: React.ComponentProps<typeof BaseAvatar.Image>) {
+  return <BaseAvatar.Image className={cn('size-full object-cover', className)} {...props} />;
+}
+
+export function AvatarFallback({ className, ...props }: React.ComponentProps<typeof BaseAvatar.Fallback>) {
+  return (
+    <BaseAvatar.Fallback
+      className={cn('flex size-full items-center justify-center text-muted-foreground', className)}
+      {...props}
+    />
+  );
+}
+````
+
+## Button (`button`)
+
+Button built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add button`
+- npm dependencies: `@base-ui/react`, `class-variance-authority`, `motion`
+- Registry dependencies: `utils`, `motion`
+
+### `src/ui/button.tsx`
+
+````tsx
+'use client';
+
+import { Button as BaseButton } from '@base-ui/react/button';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { type HTMLMotionProps, motion } from 'motion/react';
+import type * as React from 'react';
+
+import { useTapMotion } from '@/lib/motion';
+import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
+
+const buttonVariants = cva(
+  'inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap border font-medium uppercase tracking-wide transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:pointer-events-none disabled:opacity-40 [&_svg]:size-4 [&_svg]:shrink-0',
+  {
+    variants: {
+      variant: {
+        default: 'border-primary bg-primary text-primary-foreground hover:bg-background hover:text-primary',
+        outline: 'border-border bg-background text-foreground hover:bg-foreground hover:text-background',
+        ghost: 'border-transparent bg-transparent text-foreground hover:bg-muted',
+        destructive:
+          'border-destructive bg-destructive text-destructive-foreground hover:bg-background hover:text-destructive'
+      },
+      size: {
+        default: 'h-10 px-4 text-sm',
+        sm: 'h-8 px-3 text-xs',
+        lg: 'h-12 px-6 text-base',
+        icon: 'size-10'
+      }
+    },
+    defaultVariants: {
+      variant: 'default',
+      size: 'default'
+    }
+  }
+);
+
+export interface ButtonProps
+  extends React.ComponentProps<typeof BaseButton>,
+    VariantProps<typeof buttonVariants>,
+    RadiusProps {}
+
+export function Button({ className, variant, size, radius, ...props }: ButtonProps) {
+  const tap = useTapMotion();
+
+  return (
+    <BaseButton
+      className={cn(buttonVariants({ variant, size }), radiusVariants({ radius }), className)}
+      render={(buttonProps) => <motion.button {...(buttonProps as HTMLMotionProps<'button'>)} {...tap} />}
+      {...props}
+    />
+  );
+}
+
+export { buttonVariants };
+````
+
+## Card (`card`)
+
+Composable Card with variant, radius, padding and decorative corner-bracket options. Plain styled container — not a Base UI primitive.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add card`
+- npm dependencies: `class-variance-authority`
+- Registry dependencies: `utils`
+
+### `src/ui/card.tsx`
+
+````tsx
+'use client';
+
+import { cva, type VariantProps } from 'class-variance-authority';
+import type * as React from 'react';
+
+import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
+
+const cardVariants = cva('flex flex-col gap-4 text-card-foreground', {
+  variants: {
+    variant: {
+      default: 'border border-border bg-card',
+      outline: 'border border-border bg-transparent',
+      muted: 'border border-transparent bg-muted',
+      ghost: 'border border-transparent bg-transparent'
+    },
+    padding: {
+      none: 'p-0',
+      sm: 'p-3',
+      md: 'p-5',
+      lg: 'p-8'
+    },
+    corners: {
+      none: '',
+      diagonal: 'relative',
+      all: 'relative'
+    }
+  },
+  defaultVariants: {
+    variant: 'default',
+    padding: 'md',
+    corners: 'none'
+  }
+});
+
+/**
+ * Decorative corner brackets — L-shaped arms tracing a corner of the card.
+ *
+ * Each bracket sits 1px outside the card so its arm covers the border it traces.
+ * They are drawn for a sharp card: with `radius` set they cut across the curve.
+ *
+ * Tunable per instance through CSS variables, so a card can restyle its brackets
+ * without reaching into these classes:
+ *   --card-corner-size    arm length             (default 1.125rem)
+ *   --card-corner-width   arm thickness          (default 3px)
+ *   --card-corner-color   trailing bracket color (default foreground)
+ *   --card-corner-accent  leading bracket color  (default primary)
+ */
+const CORNER_BASE = 'pointer-events-none absolute size-[var(--card-corner-size,1.125rem)]';
+
+const CORNER_ARMS = {
+  'top-left':
+    '-top-px -left-px border-t-[length:var(--card-corner-width,3px)] border-l-[length:var(--card-corner-width,3px)]',
+  'top-right':
+    '-top-px -right-px border-t-[length:var(--card-corner-width,3px)] border-r-[length:var(--card-corner-width,3px)]',
+  'bottom-left':
+    '-bottom-px -left-px border-b-[length:var(--card-corner-width,3px)] border-l-[length:var(--card-corner-width,3px)]',
+  'bottom-right':
+    '-bottom-px -right-px border-b-[length:var(--card-corner-width,3px)] border-r-[length:var(--card-corner-width,3px)]'
+} as const;
+
+type Corner = keyof typeof CORNER_ARMS;
+
+/** Which brackets each `corners` value draws. */
+const CORNER_LAYOUT: Record<'none' | 'diagonal' | 'all', readonly Corner[]> = {
+  none: [],
+  diagonal: ['top-left', 'bottom-right'],
+  all: ['top-left', 'top-right', 'bottom-left', 'bottom-right']
+};
+
+const ACCENT_TINT = 'border-[color:var(--card-corner-accent,var(--color-primary))]';
+const PLAIN_TINT = 'border-[color:var(--card-corner-color,var(--color-foreground))]';
+
+/** `split` accents the leading (top-left) bracket only; the rest stay foreground. */
+function cornerTint(corner: Corner, tone: CornerTone) {
+  if (tone === 'primary') return ACCENT_TINT;
+  if (tone === 'foreground') return PLAIN_TINT;
+  return corner === 'top-left' ? ACCENT_TINT : PLAIN_TINT;
+}
+
+export type CornerTone = 'split' | 'primary' | 'foreground';
+
+export interface CardProps
+  extends React.ComponentProps<'div'>,
+    VariantProps<typeof cardVariants>,
+    ContainerRadiusProps {
+  /** Colour of the brackets drawn by `corners`. Ignored when `corners="none"`. */
+  cornerTone?: CornerTone;
+}
+
+export function Card({
+  className,
+  variant,
+  radius,
+  padding,
+  corners,
+  cornerTone = 'split',
+  children,
+  ...props
+}: CardProps) {
+  const placement = corners ?? 'none';
+
+  return (
+    <div
+      className={cn(
+        cardVariants({ variant, padding, corners: placement }),
+        containerRadiusVariants({ radius }),
+        className
+      )}
+      {...props}
+    >
+      {CORNER_LAYOUT[placement].map((corner) => (
+        <span
+          key={corner}
+          aria-hidden="true"
+          className={cn(CORNER_BASE, CORNER_ARMS[corner], cornerTint(corner, cornerTone))}
+        />
+      ))}
+      {children}
+    </div>
+  );
+}
+
+export function CardHeader({ className, ...props }: React.ComponentProps<'div'>) {
+  return <div className={cn('flex flex-col gap-1', className)} {...props} />;
+}
+
+export function CardTitle({ className, ...props }: React.ComponentProps<'div'>) {
+  return <div className={cn('text-lg font-bold uppercase tracking-tight', className)} {...props} />;
+}
+
+export function CardDescription({ className, ...props }: React.ComponentProps<'div'>) {
+  return <div className={cn('text-sm text-muted-foreground', className)} {...props} />;
+}
+
+export function CardContent({ className, ...props }: React.ComponentProps<'div'>) {
+  return <div className={cn('text-sm', className)} {...props} />;
+}
+
+export function CardFooter({ className, ...props }: React.ComponentProps<'div'>) {
+  return <div className={cn('flex items-center gap-2', className)} {...props} />;
+}
+
+export { cardVariants };
+````
+
+## Checkbox Group (`checkbox-group`)
+
+Checkbox Group built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add checkbox-group`
+- npm dependencies: `@base-ui/react`
+- Registry dependencies: `utils`
+
+### `src/ui/checkbox-group.tsx`
+
+````tsx
+'use client';
+
+import { CheckboxGroup as BaseCheckboxGroup } from '@base-ui/react/checkbox-group';
+import { cva, type VariantProps } from 'class-variance-authority';
+import type * as React from 'react';
+
+import { cn } from '@/lib/utils';
+
+const checkboxGroupVariants = cva('flex gap-2', {
+  variants: {
+    orientation: {
+      vertical: 'flex-col',
+      horizontal: 'flex-row'
+    }
+  },
+  defaultVariants: {
+    orientation: 'vertical'
+  }
+});
+
+export interface CheckboxGroupProps
+  extends React.ComponentProps<typeof BaseCheckboxGroup>,
+    VariantProps<typeof checkboxGroupVariants> {}
+
+export function CheckboxGroup({ className, orientation, ...props }: CheckboxGroupProps) {
+  return <BaseCheckboxGroup className={cn(checkboxGroupVariants({ orientation }), className)} {...props} />;
+}
+
+export { checkboxGroupVariants };
+````
+
+## Checkbox (`checkbox`)
+
+Checkbox built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add checkbox`
+- npm dependencies: `@base-ui/react`, `motion`
+- Registry dependencies: `utils`, `motion`
+
+### `src/ui/checkbox.tsx`
+
+````tsx
+'use client';
+
+import { Checkbox as BaseCheckbox } from '@base-ui/react/checkbox';
+import { type HTMLMotionProps, motion } from 'motion/react';
+import type * as React from 'react';
+
+import { transitions, useControlTransition } from '@/lib/motion';
+import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
+
+export function Checkbox({
+  className,
+  radius,
+  ...props
+}: React.ComponentProps<typeof BaseCheckbox.Root> & RadiusProps) {
+  const transition = useControlTransition();
+
+  return (
+    <BaseCheckbox.Root
+      className={cn(
+        'flex size-5 shrink-0 items-center justify-center border border-input bg-background outline-none transition-colors',
+        'focus-visible:ring-2 focus-visible:ring-ring',
+        'data-[checked]:border-primary data-[checked]:bg-primary data-[checked]:text-primary-foreground',
+        'disabled:cursor-not-allowed disabled:opacity-40',
+        radiusVariants({ radius }),
+        className
+      )}
+      {...props}
+    >
+      {/*
+        `keepMounted` so the tick can animate both ways. Without it Base UI drops
+        the indicator from the DOM the moment the box is unticked, and there's
+        nothing left to animate out.
+      */}
+      <BaseCheckbox.Indicator
+        keepMounted
+        className="flex text-current"
+        render={(indicatorProps, state) => (
+          <motion.span
+            {...(indicatorProps as HTMLMotionProps<'span'>)}
+            initial={false}
+            animate={{ opacity: state.checked ? 1 : 0, scale: state.checked ? 1 : 0.6 }}
+            transition={transition}
+          >
+            <svg
+              viewBox="0 0 16 16"
+              className="size-3.5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={3}
+              aria-hidden="true"
+            >
+              {/* The tick draws itself on rather than just fading in. */}
+              <motion.path
+                d="M3 8l3.5 3.5L13 4"
+                strokeLinecap="square"
+                initial={false}
+                animate={{ pathLength: state.checked ? 1 : 0 }}
+                transition={state.checked ? transitions.enter : transitions.exit}
+              />
+            </svg>
+          </motion.span>
+        )}
+      />
+    </BaseCheckbox.Root>
+  );
+}
+````
+
+## Code (`code`)
+
+Single-line or multi-line code snippet with an optional title strip, syntax highlighting and a copy button. Plain styled container — not a Base UI primitive.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add code`
+- npm dependencies: `@base-ui/react`, `motion`, `class-variance-authority`
+- Registry dependencies: `utils`, `motion`, `highlight`
+
+### `src/ui/code.tsx`
+
+````tsx
+'use client';
+
+import { Button as BaseButton } from '@base-ui/react/button';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { type HTMLMotionProps, motion } from 'motion/react';
+import * as React from 'react';
+
+import { type Language, type TokenKind, tokenize } from '@/lib/highlight';
+import { useTapMotion } from '@/lib/motion';
+import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
+
+const codeVariants = cva('flex w-full min-w-0 flex-col overflow-hidden font-mono font-bold', {
+  variants: {
+    variant: {
+      default: 'border-l-[3px] border-l-primary bg-primary/[0.06] text-foreground',
+      outline: 'border border-border border-l-[3px] border-l-primary bg-background text-primary',
+      muted: 'border-l-[3px] border-l-border bg-muted text-foreground',
+      ghost: 'border-l-[3px] border-l-transparent bg-transparent text-foreground'
+    },
+    size: {
+      sm: 'text-xs',
+      default: 'text-sm',
+      lg: 'text-base'
+    }
+  },
+  defaultVariants: {
+    variant: 'default',
+    size: 'default'
+  }
+});
+
+/**
+ * How each size packs its rows. Separate from the cva above, which only sets the
+ * type scale and the box's colours — these are the metrics the header, the snippet
+ * row and the copy button have to agree on.
+ *
+ *  header  the title strip, deliberately tighter than the snippet row
+ *  row     the snippet row
+ *  inset   tightens whichever row holds the copy button, since the button carries
+ *          its own optical padding around the icon
+ *  button  the button box; the negative margin lets a button taller than the line
+ *          it sits on bleed into the row's padding instead of growing the row
+ *  label   the title's own type scale — meta text, a step down from the code
+ */
+const SIZES = {
+  sm: {
+    header: 'px-2.5 py-1',
+    row: 'gap-1.5 px-2.5 py-1.5',
+    inset: 'pr-1',
+    button: '-my-1 size-6 [&_svg]:size-3.5',
+    label: 'text-[0.6875rem]'
+  },
+  default: {
+    header: 'px-3 py-1.5',
+    row: 'gap-2 px-3 py-2',
+    inset: 'pr-1.5',
+    button: '-my-1 size-7 [&_svg]:size-4',
+    label: 'text-xs'
+  },
+  lg: {
+    header: 'px-4 py-2',
+    row: 'gap-2.5 px-4 py-3',
+    inset: 'pr-2',
+    button: '-my-1 size-8 [&_svg]:size-4.5',
+    label: 'text-sm'
+  }
+} as const;
+
+/**
+ * `whitespace-pre` is the whole difference between the two modes: a block keeps
+ * its line breaks, and a one-liner is forbidden from wrapping — it scrolls
+ * sideways instead, so the row keeps its height and the copy button never moves.
+ */
+const CONTENT = 'min-w-0 flex-1 overflow-x-auto whitespace-pre';
+
+const HEADER = 'flex items-center justify-between gap-2 border-b border-border';
+
+/**
+ * Token colours. Three inks and no more, defined in the theme: the house blue for
+ * language keywords, a violet for names, a green for literals. Comments and
+ * punctuation recede into grey, and anything unclassified stays ink.
+ */
+const TOKEN_CLASS: Record<TokenKind, string> = {
+  plain: '',
+  comment: 'font-normal text-muted-foreground',
+  keyword: 'text-syntax-keyword',
+  literal: 'text-syntax-literal',
+  name: 'text-syntax-name',
+  punctuation: 'text-muted-foreground'
+};
+
+/**
+ * The confirmed state borrows --syntax-keyword rather than --primary: it's the
+ * same house blue in light mode, but lifted in dark, where #0047ff as a 16px icon
+ * on black sits at about 2.3:1.
+ */
+const COPY_BUTTON =
+  'inline-flex shrink-0 cursor-pointer items-center justify-center border border-transparent text-current transition-colors outline-none hover:bg-foreground/10 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset disabled:cursor-not-allowed disabled:opacity-40 data-[copied]:text-syntax-keyword [&_svg]:shrink-0';
+
+function CopyIcon() {
+  return (
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+      <path d="M11.5 6V2.5H2.5v9H6" />
+      <rect x="6" y="6" width="7.5" height="7.5" />
+    </svg>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+      <path d="M3 8.5 6.5 12 13 4.5" />
+    </svg>
+  );
+}
+
+export interface CodeCopyButtonProps extends Omit<React.ComponentProps<typeof BaseButton>, 'children'> {
+  /** Text to copy. Falls back to the text content of `target`. */
+  code?: string;
+  /** Element whose text content is copied when `code` isn't given. */
+  target?: React.RefObject<HTMLElement | null>;
+  /** Called with the text that reached the clipboard. Not called on a failed write. */
+  onCopied?: (code: string) => void;
+  /**
+   * Accessible name.
+   * @default 'Copy code'
+   */
+  label?: string;
+  /**
+   * Accessible name and announcement once the text is on the clipboard.
+   * @default 'Copied'
+   */
+  copiedLabel?: string;
+  /**
+   * How long the confirmation state stays on screen, in ms.
+   * @default 2000
+   */
+  copiedDuration?: number;
+}
+
+/**
+ * Copy-to-clipboard button. Rendered inside {@link Code} by default; export is
+ * for placing one somewhere else — a card header, a table row — against a
+ * `target` element or an explicit `code` string.
+ */
+export function CodeCopyButton({
+  className,
+  code,
+  target,
+  onCopied,
+  label = 'Copy code',
+  copiedLabel = 'Copied',
+  copiedDuration = 2000,
+  onClick,
+  ...props
+}: CodeCopyButtonProps) {
+  const [copied, setCopied] = React.useState(false);
+  const tap = useTapMotion();
+
+  React.useEffect(() => {
+    if (!copied) return;
+    const timer = window.setTimeout(() => setCopied(false), copiedDuration);
+    return () => window.clearTimeout(timer);
+  }, [copied, copiedDuration]);
+
+  async function writeToClipboard() {
+    const text = code ?? target?.current?.textContent ?? '';
+    if (!text) return;
+
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      // Clipboard writes are refused outside a secure context, and under some
+      // permission policies. Leave the button alone rather than confirm a copy
+      // that never landed.
+      return;
+    }
+
+    setCopied(true);
+    onCopied?.(text);
+  }
+
+  return (
+    <BaseButton
+      aria-label={copied ? copiedLabel : label}
+      data-copied={copied || undefined}
+      className={cn(COPY_BUTTON, className)}
+      onClick={(event) => {
+        onClick?.(event);
+        void writeToClipboard();
+      }}
+      render={(buttonProps) => <motion.button {...(buttonProps as HTMLMotionProps<'button'>)} {...tap} />}
+      {...props}
+    >
+      {copied ? <CheckIcon /> : <CopyIcon />}
+      {/* A swapped aria-label isn't announced on a button that already has focus. */}
+      <span aria-live="polite" className="sr-only">
+        {copied ? copiedLabel : ''}
+      </span>
+    </BaseButton>
+  );
+}
+
+export interface CodeProps
+  extends React.ComponentProps<'div'>,
+    VariantProps<typeof codeVariants>,
+    ContainerRadiusProps {
+  /**
+   * Text handed to the clipboard. Defaults to the rendered text content, so it
+   * only needs setting when the children aren't the literal snippet — a
+   * highlighted or truncated rendering, say.
+   */
+  code?: string;
+  /**
+   * Filename or label for the snippet, shown in a strip above it. The copy button
+   * moves up into that strip, off the code itself.
+   */
+  title?: string;
+  /**
+   * Colour the snippet's syntax. Only applies to plain-string children: there's
+   * nothing to tokenize in an already-rendered tree, so pass a string and let this
+   * do the highlighting, or pass your own spans and leave it off.
+   */
+  language?: Language;
+  /**
+   * Render as a block that keeps its line breaks. Inferred from the snippet when
+   * left unset: anything with a newline in it becomes a block, a one-liner stays
+   * a single row. Set it explicitly when the children aren't a plain string.
+   */
+  multiline?: boolean;
+  /**
+   * Show the copy button.
+   * @default true
+   */
+  copy?: boolean;
+  /** Called with the text that reached the clipboard. */
+  onCopied?: (code: string) => void;
+}
+
+/**
+ * A command, token or snippet, with a copy button and optional syntax colouring.
+ * Plain styled container — not a Base UI primitive.
+ */
+export function Code({
+  className,
+  variant,
+  size,
+  radius,
+  code,
+  title,
+  language,
+  multiline,
+  copy = true,
+  onCopied,
+  children,
+  ...props
+}: CodeProps) {
+  const contentRef = React.useRef<HTMLElement | null>(null);
+  const setContentRef = (element: HTMLElement | null) => {
+    contentRef.current = element;
+  };
+
+  const source = typeof children === 'string' ? children : undefined;
+  const block = multiline ?? (code ?? source)?.includes('\n') ?? false;
+  const metrics = SIZES[size ?? 'default'];
+
+  const tokens = React.useMemo(
+    () => (language && source !== undefined ? tokenize(source, language) : undefined),
+    [language, source]
+  );
+
+  // Plain runs stay bare strings: fewer elements, and the copy button reads the
+  // same text content either way.
+  const content = tokens
+    ? tokens.map((token) =>
+        token.kind === 'plain' ? (
+          token.value
+        ) : (
+          <span key={token.start} className={TOKEN_CLASS[token.kind]}>
+            {token.value}
+          </span>
+        )
+      )
+    : children;
+
+  const copyButton = copy ? (
+    <CodeCopyButton
+      code={code}
+      target={contentRef}
+      onCopied={onCopied}
+      label={title ? `Copy ${title}` : undefined}
+      className={metrics.button}
+    />
+  ) : null;
+
+  return (
+    <div
+      data-multiline={block || undefined}
+      className={cn(codeVariants({ variant, size }), containerRadiusVariants({ radius }), className)}
+      {...props}
+    >
+      {title ? (
+        <div className={cn(HEADER, metrics.header, copy && metrics.inset)}>
+          <span className={cn('truncate text-foreground', metrics.label)}>{title}</span>
+          {copyButton}
+        </div>
+      ) : null}
+      <div
+        className={cn(
+          'flex min-w-0',
+          // A one-liner centres its copy button against the single row of text; a
+          // block pins it to the first line so it stays put as the snippet grows.
+          block ? 'items-start' : 'items-center',
+          metrics.row,
+          !title && copy && metrics.inset
+        )}
+      >
+        {block ? (
+          <pre ref={setContentRef} className={CONTENT}>
+            <code>{content}</code>
+          </pre>
+        ) : (
+          <code ref={setContentRef} className={CONTENT}>
+            {content}
+          </code>
+        )}
+        {title ? null : copyButton}
+      </div>
+    </div>
+  );
+}
+
+/** Stacked snippets — a run of one-liners read as a sequence to type in order. */
+export function CodeStack({ className, ...props }: React.ComponentProps<'div'>) {
+  return <div className={cn('grid w-full gap-2', className)} {...props} />;
+}
+
+export { codeVariants };
+````
+
+## Collapsible (`collapsible`)
+
+Collapsible built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add collapsible`
+- npm dependencies: `@base-ui/react`
+- Registry dependencies: `utils`
+
+### `src/ui/collapsible.tsx`
+
+````tsx
+'use client';
+
+import { Collapsible as BaseCollapsible } from '@base-ui/react/collapsible';
+import { cva, type VariantProps } from 'class-variance-authority';
+import type * as React from 'react';
+
+import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
+
+const collapsibleVariants = cva('', {
+  variants: {
+    variant: {
+      default: 'border border-border',
+      ghost: 'border-none bg-transparent'
+    }
+  },
+  defaultVariants: {
+    variant: 'default'
+  }
+});
+
+export interface CollapsibleProps
+  extends React.ComponentProps<typeof BaseCollapsible.Root>,
+    VariantProps<typeof collapsibleVariants> {}
+
+export function Collapsible({ className, variant, ...props }: CollapsibleProps) {
+  return <BaseCollapsible.Root className={cn(collapsibleVariants({ variant }), className)} {...props} />;
+}
+
+export function CollapsibleTrigger({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<typeof BaseCollapsible.Trigger>) {
+  return (
+    <BaseCollapsible.Trigger
+      className={cn(
+        'flex items-center justify-between gap-2 text-sm font-medium uppercase tracking-wide outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        '[&>svg]:transition-transform [&[data-panel-open]>svg]:rotate-180',
+        className
+      )}
+      {...props}
+    >
+      {children}
+      <svg
+        viewBox="0 0 16 16"
+        className="size-4 shrink-0"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={2}
+        aria-hidden="true"
+      >
+        <path d="M4 6l4 4 4-4" />
+      </svg>
+    </BaseCollapsible.Trigger>
+  );
+}
+
+export function CollapsiblePanel({
+  className,
+  radius,
+  ...props
+}: React.ComponentProps<typeof BaseCollapsible.Panel> & ContainerRadiusProps) {
+  return (
+    <BaseCollapsible.Panel
+      className={cn(
+        // CSS rather than Motion, for the reason spelled out in accordion.tsx:
+        // Base UI unmounts this panel when its CSS transition ends, and Motion's
+        // animations start too late to be seen by that check.
+        'h-[var(--collapsible-panel-height)] overflow-hidden text-sm text-muted-foreground',
+        'transition-[height,opacity] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none',
+        'data-[starting-style]:h-0 data-[starting-style]:opacity-0',
+        'data-[ending-style]:h-0 data-[ending-style]:opacity-0',
+        containerRadiusVariants({ radius }),
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
+export { collapsibleVariants };
+````
+
+## Combobox (`combobox`)
+
+Combobox built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add combobox`
+- npm dependencies: `@base-ui/react`
+- Registry dependencies: `utils`, `motion`
+
+### `src/ui/combobox.tsx`
+
+````tsx
+'use client';
+
+import { Combobox as BaseCombobox } from '@base-ui/react/combobox';
+import type * as React from 'react';
+
+import { useMotionPopupRender } from '@/lib/motion';
+import {
+  type ContainerRadiusProps,
+  cn,
+  containerRadiusVariants,
+  contentRadiusStyle,
+  NESTED_RADIUS,
+  type RadiusProps,
+  radiusVariants
+} from '@/lib/utils';
+
+export const Combobox = BaseCombobox.Root;
+export const ComboboxValue = BaseCombobox.Value;
+
+export function ComboboxInput({
+  className,
+  radius,
+  ...props
+}: React.ComponentProps<typeof BaseCombobox.Input> & RadiusProps) {
+  return (
+    <BaseCombobox.Input
+      className={cn(
+        'flex h-10 w-full border border-input bg-background px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        radiusVariants({ radius }),
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
+export function ComboboxContent({
+  className,
+  children,
+  sideOffset = 4,
+  radius,
+  style,
+  ...props
+}: React.ComponentProps<typeof BaseCombobox.Popup> & { sideOffset?: number } & ContainerRadiusProps) {
+  // A results list appearing under an input: no scale, it would look like a
+  // zoom on text the user is actively reading. Just a short slide and fade.
+  const renderPopup = useMotionPopupRender({ scale: 1, offset: 6 });
+
+  return (
+    <BaseCombobox.Portal>
+      <BaseCombobox.Positioner sideOffset={sideOffset} className="z-50">
+        <BaseCombobox.Popup
+          // Publishes `--content-radius` so items can stay concentric with the popup.
+          style={{ ...contentRadiusStyle(radius), ...style }}
+          className={cn(
+            'max-h-64 min-w-[var(--anchor-width)] overflow-y-auto border border-border bg-popover p-1 text-popover-foreground shadow-[6px_6px_0_0_var(--color-foreground)] outline-none',
+            containerRadiusVariants({ radius }),
+            className
+          )}
+          render={renderPopup}
+          {...props}
+        >
+          <BaseCombobox.Empty className="px-3 py-2 text-sm text-muted-foreground empty:p-0">
+            No results.
+          </BaseCombobox.Empty>
+          <BaseCombobox.List>{children}</BaseCombobox.List>
+        </BaseCombobox.Popup>
+      </BaseCombobox.Positioner>
+    </BaseCombobox.Portal>
+  );
+}
+
+export function ComboboxItem({ className, children, ...props }: React.ComponentProps<typeof BaseCombobox.Item>) {
+  return (
+    <BaseCombobox.Item
+      className={cn(
+        'flex cursor-pointer select-none items-center justify-between gap-2 px-3 py-1.5 text-sm outline-none data-[highlighted]:bg-foreground data-[highlighted]:text-background',
+        NESTED_RADIUS,
+        className
+      )}
+      {...props}
+    >
+      {children}
+      <BaseCombobox.ItemIndicator>✓</BaseCombobox.ItemIndicator>
+    </BaseCombobox.Item>
+  );
+}
+````
+
+## Context Menu (`context-menu`)
+
+Context Menu built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add context-menu`
+- npm dependencies: `@base-ui/react`
+- Registry dependencies: `utils`, `motion`
+
+### `src/ui/context-menu.tsx`
+
+````tsx
+'use client';
+
+import { ContextMenu as BaseContextMenu } from '@base-ui/react/context-menu';
+import type * as React from 'react';
+
+import { useMotionPopupRender } from '@/lib/motion';
+import { type ContainerRadiusProps, cn, containerRadiusVariants, contentRadiusStyle, NESTED_RADIUS } from '@/lib/utils';
+
+export const ContextMenu = BaseContextMenu.Root;
+export const ContextMenuTrigger = BaseContextMenu.Trigger;
+export const ContextMenuGroup = BaseContextMenu.Group;
+
+export function ContextMenuContent({
+  className,
+  children,
+  radius,
+  style,
+  ...props
+}: React.ComponentProps<typeof BaseContextMenu.Popup> & ContainerRadiusProps) {
+  // Anchored to the pointer, so it grows from the click point with no slide.
+  const renderPopup = useMotionPopupRender({ scale: 0.95, offset: 0 });
+
+  return (
+    <BaseContextMenu.Portal>
+      <BaseContextMenu.Positioner className="z-50 outline-none">
+        <BaseContextMenu.Popup
+          style={{ ...contentRadiusStyle(radius), ...style }}
+          className={cn(
+            'min-w-40 border border-border bg-popover p-1 text-popover-foreground shadow-[6px_6px_0_0_var(--color-foreground)] outline-none',
+            '[transform-origin:var(--transform-origin)]',
+            containerRadiusVariants({ radius }),
+            className
+          )}
+          render={renderPopup}
+          {...props}
+        >
+          {children}
+        </BaseContextMenu.Popup>
+      </BaseContextMenu.Positioner>
+    </BaseContextMenu.Portal>
+  );
+}
+
+export function ContextMenuItem({ className, ...props }: React.ComponentProps<typeof BaseContextMenu.Item>) {
+  return (
+    <BaseContextMenu.Item
+      className={cn(
+        'flex cursor-pointer select-none items-center gap-2 px-3 py-1.5 text-sm outline-none',
+        NESTED_RADIUS,
+        'data-[highlighted]:bg-foreground data-[highlighted]:text-background',
+        'data-[disabled]:pointer-events-none data-[disabled]:opacity-40',
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
+export function ContextMenuSeparator({ className, ...props }: React.ComponentProps<'div'>) {
+  return <div className={cn('-mx-1 my-1 h-px bg-border', className)} {...props} />;
+}
+````
+
+## Dialog (`dialog`)
+
+Dialog built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add dialog`
+- npm dependencies: `@base-ui/react`
+- Registry dependencies: `utils`, `motion`
+
+### `src/ui/dialog.tsx`
+
+````tsx
+'use client';
+
+import { Dialog as BaseDialog } from '@base-ui/react/dialog';
+import type * as React from 'react';
+
+import { useMotionBackdropRender, useMotionPopupRender } from '@/lib/motion';
+import { type ContainerRadiusProps, cn, containerRadiusVariants, type ShadowProps, shadowVariants } from '@/lib/utils';
+
+export const Dialog = BaseDialog.Root;
+export const DialogTrigger = BaseDialog.Trigger;
+export const DialogClose = BaseDialog.Close;
+export const DialogPortal = BaseDialog.Portal;
+
+export function DialogContent({
+  className,
+  children,
+  radius,
+  shadow,
+  ...props
+}: React.ComponentProps<typeof BaseDialog.Popup> & ContainerRadiusProps & ShadowProps) {
+  const renderBackdrop = useMotionBackdropRender();
+  // A dialog has no anchor to grow from, so it scales in place rather than sliding.
+  const renderPopup = useMotionPopupRender({ scale: 0.97, offset: 0 });
+
+  return (
+    <BaseDialog.Portal>
+      <BaseDialog.Backdrop className="fixed inset-0 z-50 bg-foreground/40" render={renderBackdrop} />
+      <BaseDialog.Popup
+        className={cn(
+          // Tailwind centres with the standalone `translate` property, which
+          // composes with the `transform` Motion writes — they don't collide.
+          'fixed left-1/2 top-1/2 z-50 grid w-full max-w-md -translate-x-1/2 -translate-y-1/2 gap-4',
+          'border border-border bg-background p-6 outline-none',
+          shadowVariants({ shadow }),
+          containerRadiusVariants({ radius }),
+          className
+        )}
+        render={renderPopup}
+        {...props}
+      >
+        {children}
+      </BaseDialog.Popup>
+    </BaseDialog.Portal>
+  );
+}
+
+export function DialogHeader({ className, ...props }: React.ComponentProps<'div'>) {
+  return <div className={cn('flex flex-col gap-1', className)} {...props} />;
+}
+
+export function DialogFooter({ className, ...props }: React.ComponentProps<'div'>) {
+  return <div className={cn('flex flex-col-reverse gap-2 sm:flex-row sm:justify-end', className)} {...props} />;
+}
+
+export function DialogTitle({ className, ...props }: React.ComponentProps<typeof BaseDialog.Title>) {
+  return <BaseDialog.Title className={cn('text-lg font-bold uppercase tracking-tight', className)} {...props} />;
+}
+
+export function DialogDescription({ className, ...props }: React.ComponentProps<typeof BaseDialog.Description>) {
+  return <BaseDialog.Description className={cn('text-sm text-muted-foreground', className)} {...props} />;
+}
+````
+
+## Drawer (`drawer`)
+
+Drawer built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add drawer`
+- npm dependencies: `@base-ui/react`
+- Registry dependencies: `utils`
+
+### `src/ui/drawer.tsx`
+
+````tsx
+'use client';
+
+import { Drawer as BaseDrawer } from '@base-ui/react/drawer';
+import type * as React from 'react';
+
+import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
+
+/**
+ * Base UI dismisses a drawer along `swipeDirection`, which defaults to `'down'`.
+ * This drawer is styled as a right-hand panel, so the default would have the user
+ * swiping down to dismiss a sheet that slides in horizontally, and would leave the
+ * backdrop's swipe-progress fade inert — Base UI only reports movement along the
+ * configured axis. Override it if you restyle the drawer to enter from another edge.
+ */
+export function Drawer({ swipeDirection = 'right', ...props }: React.ComponentProps<typeof BaseDrawer.Root>) {
+  return <BaseDrawer.Root swipeDirection={swipeDirection} {...props} />;
+}
+
+export const DrawerTrigger = BaseDrawer.Trigger;
+export const DrawerClose = BaseDrawer.Close;
+
+export function DrawerContent({
+  className,
+  children,
+  radius,
+  ...props
+}: React.ComponentProps<typeof BaseDrawer.Popup> & ContainerRadiusProps) {
+  return (
+    <BaseDrawer.Portal>
+      <BaseDrawer.Backdrop
+        className={cn(
+          'fixed inset-0 z-50 bg-foreground/40',
+          // Base UI reports how far through a dismiss swipe the drawer is, as a
+          // 0–1 scalar. Feeding it into opacity lets the scrim lift under the
+          // finger instead of holding full strength until release.
+          'opacity-[calc(1-var(--drawer-swipe-progress,0))]',
+          'transition-opacity duration-200 ease-[cubic-bezier(0.22,1,0.36,1)]',
+          'data-[starting-style]:opacity-0 data-[ending-style]:opacity-0',
+          'data-[swiping]:transition-none'
+        )}
+      />
+      {/*
+        The viewport is required, not optional decoration: without it Base UI
+        disables swipe-to-close and touch scroll locking outright, which would
+        make the swipe-tracking styles below dead code.
+      */}
+      <BaseDrawer.Viewport className="fixed inset-y-0 right-0 z-50 flex">
+        <BaseDrawer.Popup
+          className={cn(
+            'flex w-80 max-w-[90vw] flex-col gap-4 border-l border-border bg-background p-6 outline-none',
+            // Drawer motion is CSS rather than Motion, and deliberately so: during a
+            // swipe Base UI drives this element by writing `transform` directly, so
+            // a `motion.div` — which owns `transform` — would stop the sheet
+            // tracking the finger. See lib/motion.tsx for where Motion is used.
+            //
+            // Enter and exit are ours to animate, via `translate`. Base UI's drag
+            // uses `transform`, and Tailwind compiles `translate-*` to the separate
+            // `translate` property, so the two never overwrite each other. Don't add
+            // `--drawer-swipe-movement-*` here: Base UI already applies that
+            // movement itself, and reapplying it moves the drawer twice as far.
+            'transition-[translate] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none',
+            'data-[starting-style]:[translate:100%_0] data-[ending-style]:[translate:100%_0]',
+            // No easing while the finger is down — the sheet must track it 1:1.
+            'data-[swiping]:transition-none',
+            containerRadiusVariants({ radius }),
+            className
+          )}
+          {...props}
+        >
+          {children}
+        </BaseDrawer.Popup>
+      </BaseDrawer.Viewport>
+    </BaseDrawer.Portal>
+  );
+}
+
+export function DrawerTitle({ className, ...props }: React.ComponentProps<typeof BaseDrawer.Title>) {
+  return <BaseDrawer.Title className={cn('text-lg font-bold uppercase tracking-tight', className)} {...props} />;
+}
+
+export function DrawerDescription({ className, ...props }: React.ComponentProps<typeof BaseDrawer.Description>) {
+  return <BaseDrawer.Description className={cn('text-sm text-muted-foreground', className)} {...props} />;
+}
+````
+
+## Field (`field`)
+
+Field built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add field`
+- npm dependencies: `@base-ui/react`
+- Registry dependencies: `utils`
+
+### `src/ui/field.tsx`
+
+````tsx
+'use client';
+
+import { Field as BaseField } from '@base-ui/react/field';
+import type * as React from 'react';
+
+import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
+
+export function Field({ className, ...props }: React.ComponentProps<typeof BaseField.Root>) {
+  return <BaseField.Root className={cn('flex flex-col gap-1.5', className)} {...props} />;
+}
+
+export function FieldLabel({ className, ...props }: React.ComponentProps<typeof BaseField.Label>) {
+  return (
+    <BaseField.Label
+      className={cn('text-xs font-semibold uppercase tracking-[0.1em] text-foreground', className)}
+      {...props}
+    />
+  );
+}
+
+export function FieldControl({
+  className,
+  radius,
+  ...props
+}: React.ComponentProps<typeof BaseField.Control> & RadiusProps) {
+  return (
+    <BaseField.Control
+      className={cn(
+        'flex h-10 w-full border border-input bg-background px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        radiusVariants({ radius }),
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
+export function FieldDescription({ className, ...props }: React.ComponentProps<typeof BaseField.Description>) {
+  return <BaseField.Description className={cn('text-xs text-muted-foreground', className)} {...props} />;
+}
+
+export function FieldError({ className, ...props }: React.ComponentProps<typeof BaseField.Error>) {
+  return <BaseField.Error className={cn('text-xs text-destructive', className)} {...props} />;
+}
+````
+
+## Fieldset (`fieldset`)
+
+Fieldset built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add fieldset`
+- npm dependencies: `@base-ui/react`
+- Registry dependencies: `utils`
+
+### `src/ui/fieldset.tsx`
+
+````tsx
+'use client';
+
+import { Fieldset as BaseFieldset } from '@base-ui/react/fieldset';
+import { cva, type VariantProps } from 'class-variance-authority';
+import type * as React from 'react';
+
+import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
+
+const fieldsetVariants = cva('relative flex flex-col gap-4 p-4', {
+  variants: {
+    variant: {
+      // `pt-6` leaves room for the legend, which sits on the top border line.
+      default: 'border border-border pt-6',
+      ghost: 'border-none bg-transparent'
+    }
+  },
+  defaultVariants: {
+    variant: 'default'
+  }
+});
+
+export interface FieldsetProps
+  extends React.ComponentProps<typeof BaseFieldset.Root>,
+    VariantProps<typeof fieldsetVariants>,
+    ContainerRadiusProps {}
+
+export function Fieldset({ className, variant, radius, ...props }: FieldsetProps) {
+  return (
+    <BaseFieldset.Root
+      className={cn(fieldsetVariants({ variant }), containerRadiusVariants({ radius }), className)}
+      {...props}
+    />
+  );
+}
+
+/**
+ * Sits astride the fieldset's top border, interrupting it — the native `<legend>`
+ * look. Base UI renders this part as a `<div>`, and a `<div>` gets none of the
+ * browser's legend behaviour, so the effect is built here: pull it up onto the
+ * border line and paint the page background behind it to punch out the gap.
+ *
+ * The background must match whatever the fieldset sits on. Override it (e.g.
+ * `className="bg-card"`) when the surface underneath isn't `--background`.
+ */
+export function FieldsetLegend({ className, ...props }: React.ComponentProps<typeof BaseFieldset.Legend>) {
+  return (
+    <BaseFieldset.Legend
+      className={cn(
+        'absolute -top-[0.6875rem] left-3 bg-background px-1.5',
+        'text-sm font-bold uppercase tracking-wide text-foreground',
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
+export { fieldsetVariants };
+````
+
+## Form (`form`)
+
+Form built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add form`
+- npm dependencies: `@base-ui/react`
+- Registry dependencies: `utils`
+
+### `src/ui/form.tsx`
+
+````tsx
+'use client';
+
+import { Form as BaseForm } from '@base-ui/react/form';
+import type * as React from 'react';
+
+import { cn } from '@/lib/utils';
+
+export function Form({ className, ...props }: React.ComponentProps<typeof BaseForm>) {
+  return <BaseForm className={cn('flex flex-col gap-4', className)} {...props} />;
+}
+````
+
+## Input (`input`)
+
+Input built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add input`
+- npm dependencies: `@base-ui/react`
+- Registry dependencies: `utils`
+
+### `src/ui/input.tsx`
+
+````tsx
+'use client';
+
+import { Input as BaseInput } from '@base-ui/react/input';
+import type * as React from 'react';
+
+import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
+
+export type InputProps = React.ComponentProps<typeof BaseInput> & RadiusProps;
+
+export function Input({ className, radius, ...props }: InputProps) {
+  return (
+    <BaseInput
+      className={cn(
+        'flex h-10 w-full border border-input bg-background px-3 py-2 text-sm text-foreground outline-none transition-colors',
+        'placeholder:text-muted-foreground',
+        'focus-visible:ring-2 focus-visible:ring-ring',
+        'disabled:cursor-not-allowed disabled:opacity-40',
+        'data-[invalid]:border-destructive',
+        radiusVariants({ radius }),
+        className
+      )}
+      {...props}
+    />
+  );
+}
+````
+
+## Menu (`menu`)
+
+Menu built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add menu`
+- npm dependencies: `@base-ui/react`
+- Registry dependencies: `utils`, `motion`
+
+### `src/ui/menu.tsx`
+
+````tsx
+'use client';
+
+import { Menu as BaseMenu } from '@base-ui/react/menu';
+import type * as React from 'react';
+
+import { useMotionPopupRender } from '@/lib/motion';
+import { type ContainerRadiusProps, cn, containerRadiusVariants, contentRadiusStyle, NESTED_RADIUS } from '@/lib/utils';
+
+export const Menu = BaseMenu.Root;
+export const MenuTrigger = BaseMenu.Trigger;
+export const MenuGroup = BaseMenu.Group;
+export const SubmenuRoot = BaseMenu.SubmenuRoot;
+
+export function MenuContent({
+  className,
+  children,
+  sideOffset = 6,
+  radius,
+  style,
+  ...props
+}: React.ComponentProps<typeof BaseMenu.Popup> & { sideOffset?: number } & ContainerRadiusProps) {
+  const renderPopup = useMotionPopupRender();
+
+  return (
+    <BaseMenu.Portal>
+      <BaseMenu.Positioner sideOffset={sideOffset} className="z-50 outline-none">
+        <BaseMenu.Popup
+          style={{ ...contentRadiusStyle(radius), ...style }}
+          className={cn(
+            'min-w-40 border border-border bg-popover p-1 text-popover-foreground shadow-[6px_6px_0_0_var(--color-foreground)] outline-none',
+            // Unfold from the trigger's edge instead of the popup's centre.
+            '[transform-origin:var(--transform-origin)]',
+            containerRadiusVariants({ radius }),
+            className
+          )}
+          render={renderPopup}
+          {...props}
+        >
+          {children}
+        </BaseMenu.Popup>
+      </BaseMenu.Positioner>
+    </BaseMenu.Portal>
+  );
+}
+
+const itemClasses = cn(
+  'flex cursor-pointer select-none items-center gap-2 px-3 py-1.5 text-sm outline-none',
+  NESTED_RADIUS,
+  'data-[highlighted]:bg-foreground data-[highlighted]:text-background',
+  'data-[disabled]:pointer-events-none data-[disabled]:opacity-40'
+);
+
+export function MenuItem({ className, ...props }: React.ComponentProps<typeof BaseMenu.Item>) {
+  return <BaseMenu.Item className={cn(itemClasses, className)} {...props} />;
+}
+
+export function MenuGroupLabel({ className, ...props }: React.ComponentProps<typeof BaseMenu.GroupLabel>) {
+  return (
+    <BaseMenu.GroupLabel
+      className={cn('px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.1em] text-muted-foreground', className)}
+      {...props}
+    />
+  );
+}
+
+export function MenuSeparator({ className, ...props }: React.ComponentProps<'div'>) {
+  return <div className={cn('-mx-1 my-1 h-px bg-border', className)} {...props} />;
+}
+
+export function MenuSubmenuTrigger({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<typeof BaseMenu.SubmenuTrigger>) {
+  return (
+    <BaseMenu.SubmenuTrigger className={cn(itemClasses, 'justify-between', className)} {...props}>
+      {children}
+      {/* Signals that this item opens a submenu rather than performing an action. */}
+      <svg
+        viewBox="0 0 16 16"
+        className="size-3.5 shrink-0"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={2}
+        aria-hidden="true"
+      >
+        <path d="M6 4l4 4-4 4" />
+      </svg>
+    </BaseMenu.SubmenuTrigger>
+  );
+}
+````
+
+## Menubar (`menubar`)
+
+Menubar built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add menubar`
+- npm dependencies: `@base-ui/react`
+- Registry dependencies: `utils`
+
+### `src/ui/menubar.tsx`
+
+````tsx
+'use client';
+
+import { Menubar as BaseMenubar } from '@base-ui/react/menubar';
+import type * as React from 'react';
+
+import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
+
+export function Menubar({
+  className,
+  radius,
+  ...props
+}: React.ComponentProps<typeof BaseMenubar> & ContainerRadiusProps) {
+  return (
+    <BaseMenubar
+      className={cn(
+        'flex items-center gap-0 overflow-hidden border border-border bg-background [&>*+*]:border-l',
+        containerRadiusVariants({ radius }),
+        className
+      )}
+      {...props}
+    />
+  );
+}
+````
+
+## Meter (`meter`)
+
+Meter built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add meter`
+- npm dependencies: `@base-ui/react`
+- Registry dependencies: `utils`
+
+### `src/ui/meter.tsx`
+
+````tsx
+'use client';
+
+import { Meter as BaseMeter } from '@base-ui/react/meter';
+import type * as React from 'react';
+
+import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
+
+export function Meter({
+  className,
+  children,
+  radius,
+  ...props
+}: React.ComponentProps<typeof BaseMeter.Root> & RadiusProps) {
+  return (
+    <BaseMeter.Root className={cn('flex w-full flex-col gap-1', className)} {...props}>
+      <BaseMeter.Track
+        className={cn('h-2 w-full overflow-hidden border border-border bg-background', radiusVariants({ radius }))}
+      >
+        {/* Width is CSS-driven for the same reason as Progress — see progress.tsx. */}
+        <BaseMeter.Indicator className="h-full bg-primary transition-[width] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]" />
+      </BaseMeter.Track>
+      {children}
+    </BaseMeter.Root>
+  );
+}
+
+export function MeterLabel({ className, ...props }: React.ComponentProps<typeof BaseMeter.Label>) {
+  return (
+    <BaseMeter.Label
+      className={cn('text-xs font-medium uppercase tracking-wide text-muted-foreground', className)}
+      {...props}
+    />
+  );
+}
+
+export function MeterValue({ className, ...props }: React.ComponentProps<typeof BaseMeter.Value>) {
+  return <BaseMeter.Value className={cn('text-xs tabular-nums text-muted-foreground', className)} {...props} />;
+}
+````
+
+## Navigation Menu (`navigation-menu`)
+
+Navigation Menu built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add navigation-menu`
+- npm dependencies: `@base-ui/react`
+- Registry dependencies: `utils`, `motion`
+
+### `src/ui/navigation-menu.tsx`
+
+````tsx
+'use client';
+
+import { NavigationMenu as BaseNavigationMenu } from '@base-ui/react/navigation-menu';
+import type * as React from 'react';
+
+import { useMotionPopupRender } from '@/lib/motion';
+import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
+
+export function NavigationMenu({
+  className,
+  children,
+  radius,
+  ...props
+}: React.ComponentProps<typeof BaseNavigationMenu.Root> & ContainerRadiusProps) {
+  const renderPopup = useMotionPopupRender({ scale: 0.98, offset: 6 });
+
+  return (
+    <BaseNavigationMenu.Root className={cn('relative', className)} {...props}>
+      {children}
+      <BaseNavigationMenu.Portal>
+        <BaseNavigationMenu.Positioner className="z-50" sideOffset={8}>
+          <BaseNavigationMenu.Popup
+            className={cn(
+              'border border-border bg-popover text-popover-foreground shadow-[6px_6px_0_0_var(--color-foreground)] outline-none',
+              // Base UI measures each panel and publishes the target box as CSS
+              // variables (`auto` while a single panel is open, pixel values while
+              // switching). Transitioning them is what makes the popup morph
+              // between items of different sizes instead of snapping. Motion owns
+              // opacity and transform for the enter/exit, so the two never contend
+              // for the same properties.
+              'h-[var(--popup-height)] w-[var(--popup-width)] overflow-hidden',
+              'transition-[width,height] duration-200 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none',
+              '[transform-origin:var(--transform-origin)]',
+              containerRadiusVariants({ radius })
+            )}
+            render={renderPopup}
+          >
+            <BaseNavigationMenu.Viewport />
+          </BaseNavigationMenu.Popup>
+        </BaseNavigationMenu.Positioner>
+      </BaseNavigationMenu.Portal>
+    </BaseNavigationMenu.Root>
+  );
+}
+
+export function NavigationMenuList({ className, ...props }: React.ComponentProps<typeof BaseNavigationMenu.List>) {
+  return <BaseNavigationMenu.List className={cn('flex items-center gap-1', className)} {...props} />;
+}
+
+export const NavigationMenuItem = BaseNavigationMenu.Item;
+
+export function NavigationMenuTrigger({
+  className,
+  ...props
+}: React.ComponentProps<typeof BaseNavigationMenu.Trigger>) {
+  return (
+    <BaseNavigationMenu.Trigger
+      className={cn(
+        'px-3 py-2 text-sm font-medium uppercase tracking-wide outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring',
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
+export function NavigationMenuContent({
+  className,
+  ...props
+}: React.ComponentProps<typeof BaseNavigationMenu.Content>) {
+  return (
+    <BaseNavigationMenu.Content
+      className={cn(
+        'w-max',
+        // Panels cross-fade in the direction the user moved along the menu bar.
+        'transition-[opacity,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)]',
+        'data-[starting-style]:opacity-0 data-[ending-style]:opacity-0',
+        'data-[activation-direction=left]:data-[starting-style]:-translate-x-1/4',
+        'data-[activation-direction=right]:data-[starting-style]:translate-x-1/4',
+        'data-[activation-direction=left]:data-[ending-style]:translate-x-1/4',
+        'data-[activation-direction=right]:data-[ending-style]:-translate-x-1/4',
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
+export function NavigationMenuLink({ className, ...props }: React.ComponentProps<typeof BaseNavigationMenu.Link>) {
+  return (
+    <BaseNavigationMenu.Link
+      className={cn('block px-3 py-2 text-sm outline-none hover:bg-muted focus-visible:bg-muted', className)}
+      {...props}
+    />
+  );
+}
+````
+
+## Number Field (`number-field`)
+
+Number Field built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add number-field`
+- npm dependencies: `@base-ui/react`
+- Registry dependencies: `utils`
+
+### `src/ui/number-field.tsx`
+
+````tsx
+'use client';
+
+import { NumberField as BaseNumberField } from '@base-ui/react/number-field';
+import type * as React from 'react';
+
+import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
+
+export function NumberField({
+  className,
+  radius,
+  ...props
+}: React.ComponentProps<typeof BaseNumberField.Root> & RadiusProps) {
+  return (
+    <BaseNumberField.Root className={cn('inline-flex flex-col gap-1', className)} {...props}>
+      <BaseNumberField.Group
+        className={cn(
+          'flex h-10 items-stretch overflow-hidden border border-input bg-background',
+          radiusVariants({ radius })
+        )}
+      >
+        <BaseNumberField.Decrement className="flex w-9 items-center justify-center border-r border-border text-lg outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset">
+          −
+        </BaseNumberField.Decrement>
+        <BaseNumberField.Input className="w-16 bg-transparent px-2 text-center text-sm tabular-nums outline-none" />
+        <BaseNumberField.Increment className="flex w-9 items-center justify-center border-l border-border text-lg outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset">
+          +
+        </BaseNumberField.Increment>
+      </BaseNumberField.Group>
+    </BaseNumberField.Root>
+  );
+}
+````
+
+## OTP Field (`otp-field`)
+
+OTP Field built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add otp-field`
+- npm dependencies: `@base-ui/react`
+- Registry dependencies: `utils`
+
+### `src/ui/otp-field.tsx`
+
+````tsx
+'use client';
+
+import { OTPField as BaseOTPField } from '@base-ui/react/otp-field';
+import type * as React from 'react';
+
+import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
+
+export interface OtpFieldProps extends Omit<React.ComponentProps<typeof BaseOTPField.Root>, 'length'>, RadiusProps {
+  length?: number;
+}
+
+export function OtpField({ className, length = 6, radius, ...props }: OtpFieldProps) {
+  return (
+    <BaseOTPField.Root length={length} className={cn('flex gap-2', className)} {...props}>
+      {Array.from({ length }).map((_, i) => (
+        <BaseOTPField.Input
+          // biome-ignore lint/suspicious/noArrayIndexKey: fixed-length OTP cells
+          key={i}
+          className={cn(
+            'size-11 border border-input bg-background text-center text-lg tabular-nums outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring',
+            radiusVariants({ radius })
+          )}
+        />
+      ))}
+    </BaseOTPField.Root>
+  );
+}
+````
+
+## Popover (`popover`)
+
+Popover built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add popover`
+- npm dependencies: `@base-ui/react`
+- Registry dependencies: `utils`, `motion`
+
+### `src/ui/popover.tsx`
+
+````tsx
+'use client';
+
+import { Popover as BasePopover } from '@base-ui/react/popover';
+import type * as React from 'react';
+
+import { useMotionPopupRender } from '@/lib/motion';
+import { type ContainerRadiusProps, cn, containerRadiusVariants, type ShadowProps, shadowVariants } from '@/lib/utils';
+
+export const Popover = BasePopover.Root;
+export const PopoverTrigger = BasePopover.Trigger;
+export const PopoverClose = BasePopover.Close;
+
+export function PopoverContent({
+  className,
+  children,
+  sideOffset = 8,
+  radius,
+  shadow,
+  ...props
+}: React.ComponentProps<typeof BasePopover.Popup> & { sideOffset?: number } & ContainerRadiusProps & ShadowProps) {
+  const renderPopup = useMotionPopupRender();
+
+  return (
+    <BasePopover.Portal>
+      <BasePopover.Positioner sideOffset={sideOffset} className="z-50">
+        <BasePopover.Popup
+          className={cn(
+            'w-72 border border-border bg-popover p-3 text-popover-foreground outline-none',
+            shadowVariants({ shadow }),
+            // Grow out of the anchor rather than the popup's own centre.
+            '[transform-origin:var(--transform-origin)]',
+            containerRadiusVariants({ radius }),
+            className
+          )}
+          render={renderPopup}
+          {...props}
+        >
+          <BasePopover.Arrow
+            className={cn(
+              'size-2.5 rotate-45 border border-border bg-popover',
+              'data-[side=top]:bottom-[-5px] data-[side=bottom]:top-[-5px]',
+              'data-[side=left]:right-[-5px] data-[side=right]:left-[-5px]'
+            )}
+          />
+          {children}
+        </BasePopover.Popup>
+      </BasePopover.Positioner>
+    </BasePopover.Portal>
+  );
+}
+
+export function PopoverTitle({ className, ...props }: React.ComponentProps<typeof BasePopover.Title>) {
+  return <BasePopover.Title className={cn('text-sm font-bold uppercase tracking-wide', className)} {...props} />;
+}
+
+export function PopoverDescription({ className, ...props }: React.ComponentProps<typeof BasePopover.Description>) {
+  return <BasePopover.Description className={cn('text-sm text-muted-foreground', className)} {...props} />;
+}
+````
+
+## Preview Card (`preview-card`)
+
+Preview Card built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add preview-card`
+- npm dependencies: `@base-ui/react`
+- Registry dependencies: `utils`, `motion`
+
+### `src/ui/preview-card.tsx`
+
+````tsx
+'use client';
+
+import { PreviewCard as BasePreviewCard } from '@base-ui/react/preview-card';
+import type * as React from 'react';
+
+import { useMotionPopupRender } from '@/lib/motion';
+import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
+
+export const PreviewCard = BasePreviewCard.Root;
+export const PreviewCardTrigger = BasePreviewCard.Trigger;
+
+export function PreviewCardContent({
+  className,
+  children,
+  sideOffset = 8,
+  radius,
+  ...props
+}: React.ComponentProps<typeof BasePreviewCard.Popup> & { sideOffset?: number } & ContainerRadiusProps) {
+  // Hover-triggered, so it travels a little further than a click-opened popover.
+  const renderPopup = useMotionPopupRender({ offset: 6 });
+
+  return (
+    <BasePreviewCard.Portal>
+      <BasePreviewCard.Positioner sideOffset={sideOffset} className="z-50">
+        <BasePreviewCard.Popup
+          className={cn(
+            'w-72 border border-border bg-popover p-4 text-popover-foreground shadow-[6px_6px_0_0_var(--color-foreground)] outline-none',
+            '[transform-origin:var(--transform-origin)]',
+            containerRadiusVariants({ radius }),
+            className
+          )}
+          render={renderPopup}
+          {...props}
+        >
+          {children}
+        </BasePreviewCard.Popup>
+      </BasePreviewCard.Positioner>
+    </BasePreviewCard.Portal>
+  );
+}
+````
+
+## Progress (`progress`)
+
+Progress built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add progress`
+- npm dependencies: `@base-ui/react`
+- Registry dependencies: `utils`
+
+### `src/ui/progress.tsx`
+
+````tsx
+'use client';
+
+import { Progress as BaseProgress } from '@base-ui/react/progress';
+import type * as React from 'react';
+
+import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
+
+export function Progress({
+  className,
+  children,
+  radius,
+  ...props
+}: React.ComponentProps<typeof BaseProgress.Root> & RadiusProps) {
+  return (
+    <BaseProgress.Root className={cn('flex w-full flex-col gap-1', className)} {...props}>
+      <BaseProgress.Track
+        className={cn('h-2 w-full overflow-hidden border border-border bg-background', radiusVariants({ radius }))}
+      >
+        {/*
+          Width stays in CSS: Base UI writes the filled width as an inline style
+          from the current value, and a transition on that property is what makes
+          value changes glide instead of jumping. Motion would need to own the
+          width to animate it, and it has no access to the value.
+        */}
+        <BaseProgress.Indicator
+          className={cn(
+            'h-full bg-primary',
+            'transition-[width] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]',
+            'data-[indeterminate]:w-1/3 data-[indeterminate]:animate-[progress-indeterminate_1.2s_ease-in-out_infinite]'
+          )}
+        />
+      </BaseProgress.Track>
+      {children}
+    </BaseProgress.Root>
+  );
+}
+
+export function ProgressLabel({ className, ...props }: React.ComponentProps<typeof BaseProgress.Label>) {
+  return (
+    <BaseProgress.Label
+      className={cn('text-xs font-medium uppercase tracking-wide text-muted-foreground', className)}
+      {...props}
+    />
+  );
+}
+
+export function ProgressValue({ className, ...props }: React.ComponentProps<typeof BaseProgress.Value>) {
+  return <BaseProgress.Value className={cn('text-xs tabular-nums text-muted-foreground', className)} {...props} />;
+}
+````
+
+## Radio Group (`radio-group`)
+
+Radio Group built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add radio-group`
+- npm dependencies: `@base-ui/react`, `motion`
+- Registry dependencies: `utils`, `motion`
+
+### `src/ui/radio-group.tsx`
+
+````tsx
+'use client';
+
+import { Radio as BaseRadio } from '@base-ui/react/radio';
+import { RadioGroup as BaseRadioGroup } from '@base-ui/react/radio-group';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { type HTMLMotionProps, motion } from 'motion/react';
+import type * as React from 'react';
+
+import { useControlTransition } from '@/lib/motion';
+import { cn } from '@/lib/utils';
+
+const radioGroupVariants = cva('flex gap-2', {
+  variants: {
+    orientation: {
+      vertical: 'flex-col',
+      horizontal: 'flex-row'
+    }
+  },
+  defaultVariants: {
+    orientation: 'vertical'
+  }
+});
+
+export interface RadioGroupProps
+  extends React.ComponentProps<typeof BaseRadioGroup>,
+    VariantProps<typeof radioGroupVariants> {}
+
+export function RadioGroup({ className, orientation, ...props }: RadioGroupProps) {
+  return <BaseRadioGroup className={cn(radioGroupVariants({ orientation }), className)} {...props} />;
+}
+
+export function RadioGroupItem({ className, ...props }: React.ComponentProps<typeof BaseRadio.Root>) {
+  const transition = useControlTransition();
+
+  return (
+    <BaseRadio.Root
+      className={cn(
+        'flex size-5 shrink-0 items-center justify-center rounded-full border border-input bg-background outline-none transition-colors',
+        'focus-visible:ring-2 focus-visible:ring-ring',
+        'data-[checked]:border-primary',
+        'disabled:cursor-not-allowed disabled:opacity-40',
+        className
+      )}
+      {...props}
+    >
+      {/* `keepMounted` so the dot can scale away as well as in — see checkbox.tsx. */}
+      <BaseRadio.Indicator
+        keepMounted
+        className="size-2.5 rounded-full bg-primary"
+        render={(indicatorProps, state) => (
+          <motion.span
+            {...(indicatorProps as HTMLMotionProps<'span'>)}
+            initial={false}
+            animate={{ opacity: state.checked ? 1 : 0, scale: state.checked ? 1 : 0 }}
+            transition={transition}
+          />
+        )}
+      />
+    </BaseRadio.Root>
+  );
+}
+
+export { radioGroupVariants };
+````
+
+## Scroll Area (`scroll-area`)
+
+Scroll Area built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add scroll-area`
+- npm dependencies: `@base-ui/react`
+- Registry dependencies: `utils`
+
+### `src/ui/scroll-area.tsx`
+
+````tsx
+'use client';
+
+import { ScrollArea as BaseScrollArea } from '@base-ui/react/scroll-area';
+import type * as React from 'react';
+
+import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
+
+export function ScrollArea({
+  className,
+  children,
+  radius,
+  ...props
+}: React.ComponentProps<typeof BaseScrollArea.Root> & ContainerRadiusProps) {
+  return (
+    <BaseScrollArea.Root
+      className={cn('relative overflow-hidden', containerRadiusVariants({ radius }), className)}
+      {...props}
+    >
+      <BaseScrollArea.Viewport className="size-full overscroll-contain outline-none">
+        {children}
+      </BaseScrollArea.Viewport>
+      {/*
+        Scrollbars rest invisible and fade in while the pointer is over the area
+        or the user is scrolling. Base UI reports both as data attributes, so this
+        is a CSS transition rather than Motion — there's no mount/unmount to
+        coordinate, and it keeps the scroll path free of React work.
+      */}
+      <BaseScrollArea.Scrollbar
+        orientation="vertical"
+        className={cn(
+          'flex w-2 touch-none select-none border-l border-border p-0.5',
+          'opacity-0 transition-opacity duration-200 ease-out',
+          'data-[hovering]:opacity-100 data-[scrolling]:opacity-100'
+        )}
+      >
+        <BaseScrollArea.Thumb className="w-full bg-muted-foreground/60" />
+      </BaseScrollArea.Scrollbar>
+      <BaseScrollArea.Scrollbar
+        orientation="horizontal"
+        className={cn(
+          'flex h-2 touch-none select-none border-t border-border p-0.5',
+          'opacity-0 transition-opacity duration-200 ease-out',
+          'data-[hovering]:opacity-100 data-[scrolling]:opacity-100'
+        )}
+      >
+        <BaseScrollArea.Thumb className="h-full bg-muted-foreground/60" />
+      </BaseScrollArea.Scrollbar>
+      <BaseScrollArea.Corner />
+    </BaseScrollArea.Root>
+  );
+}
+````
+
+## Select (`select`)
+
+Select built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add select`
+- npm dependencies: `@base-ui/react`
+- Registry dependencies: `utils`, `motion`
+
+### `src/ui/select.tsx`
+
+````tsx
+'use client';
+
+import { Select as BaseSelect } from '@base-ui/react/select';
+import type * as React from 'react';
+
+import { useMotionPopupRender } from '@/lib/motion';
+import {
+  type ContainerRadiusProps,
+  cn,
+  containerRadiusVariants,
+  contentRadiusStyle,
+  NESTED_RADIUS,
+  type RadiusProps,
+  radiusVariants
+} from '@/lib/utils';
+
+export const Select = BaseSelect.Root;
+export const SelectValue = BaseSelect.Value;
+
+export function SelectTrigger({
+  className,
+  children,
+  radius,
+  ...props
+}: React.ComponentProps<typeof BaseSelect.Trigger> & RadiusProps) {
+  return (
+    <BaseSelect.Trigger
+      className={cn(
+        'flex h-10 w-full items-center justify-between gap-2 border border-input bg-background px-3 py-2 text-sm text-foreground outline-none',
+        'focus-visible:ring-2 focus-visible:ring-ring',
+        'disabled:cursor-not-allowed disabled:opacity-40',
+        radiusVariants({ radius }),
+        className
+      )}
+      {...props}
+    >
+      {children}
+      <BaseSelect.Icon className="text-muted-foreground">▾</BaseSelect.Icon>
+    </BaseSelect.Trigger>
+  );
+}
+
+export function SelectContent({
+  className,
+  children,
+  radius,
+  style,
+  ...props
+}: React.ComponentProps<typeof BaseSelect.Popup> & ContainerRadiusProps) {
+  // Unlike other popups, Select stays mounted after the first interaction. The
+  // same open-state-driven animation covers both cases — the first open plays
+  // `initial`, later ones animate between the two variants.
+  const renderPopup = useMotionPopupRender();
+
+  return (
+    <BaseSelect.Portal>
+      <BaseSelect.Positioner sideOffset={4} className="z-50">
+        <BaseSelect.Popup
+          // Publishes `--content-radius` so items can stay concentric with the popup.
+          style={{ ...contentRadiusStyle(radius), ...style }}
+          className={cn(
+            'min-w-[var(--anchor-width)] border border-border bg-popover p-1 text-popover-foreground shadow-[6px_6px_0_0_var(--color-foreground)] outline-none',
+            '[transform-origin:var(--transform-origin)]',
+            containerRadiusVariants({ radius }),
+            className
+          )}
+          render={renderPopup}
+          {...props}
+        >
+          {children}
+        </BaseSelect.Popup>
+      </BaseSelect.Positioner>
+    </BaseSelect.Portal>
+  );
+}
+
+export function SelectItem({ className, children, ...props }: React.ComponentProps<typeof BaseSelect.Item>) {
+  return (
+    <BaseSelect.Item
+      className={cn(
+        'flex cursor-pointer items-center justify-between gap-2 px-3 py-1.5 text-sm outline-none select-none',
+        NESTED_RADIUS,
+        'data-[highlighted]:bg-foreground data-[highlighted]:text-background',
+        className
+      )}
+      {...props}
+    >
+      <BaseSelect.ItemText>{children}</BaseSelect.ItemText>
+      <BaseSelect.ItemIndicator>✓</BaseSelect.ItemIndicator>
+    </BaseSelect.Item>
+  );
+}
+````
+
+## Separator (`separator`)
+
+Separator built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add separator`
+- npm dependencies: `@base-ui/react`
+- Registry dependencies: `utils`
+
+### `src/ui/separator.tsx`
+
+````tsx
+'use client';
+
+import { Separator as BaseSeparator } from '@base-ui/react/separator';
+import type * as React from 'react';
+
+import { cn } from '@/lib/utils';
+
+export type SeparatorProps = React.ComponentProps<typeof BaseSeparator>;
+
+export function Separator({ className, ...props }: SeparatorProps) {
+  return (
+    <BaseSeparator
+      className={cn(
+        'shrink-0 bg-border data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-px',
+        className
+      )}
+      {...props}
+    />
+  );
+}
+````
+
+## Slider (`slider`)
+
+Slider built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add slider`
+- npm dependencies: `@base-ui/react`, `motion`
+- Registry dependencies: `utils`, `motion`
+
+### `src/ui/slider.tsx`
+
+````tsx
+'use client';
+
+import { Slider as BaseSlider } from '@base-ui/react/slider';
+import { type HTMLMotionProps, motion } from 'motion/react';
+import type * as React from 'react';
+
+import { useControlTransition } from '@/lib/motion';
+import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
+
+export function Slider({ className, radius, ...props }: React.ComponentProps<typeof BaseSlider.Root> & RadiusProps) {
+  const transition = useControlTransition();
+
+  return (
+    <BaseSlider.Root className={cn('relative w-full', className)} {...props}>
+      <BaseSlider.Control className="flex w-full items-center py-3">
+        <BaseSlider.Track className={cn('h-1.5 w-full bg-border', radiusVariants({ radius }))}>
+          <BaseSlider.Indicator className={cn('bg-primary', radiusVariants({ radius }))} />
+          <BaseSlider.Thumb
+            className={cn(
+              'size-4 border border-primary bg-background outline-none focus-visible:ring-2 focus-visible:ring-ring',
+              radiusVariants({ radius })
+            )}
+            render={(thumbProps, state) => (
+              <motion.div
+                {...(thumbProps as HTMLMotionProps<'div'>)}
+                // Grows under the finger while dragging. Base UI owns the thumb's
+                // position, so only scale is animated here — no transform clash.
+                initial={false}
+                animate={{ scale: state.dragging ? 1.25 : 1 }}
+                transition={transition}
+              />
+            )}
+          />
+        </BaseSlider.Track>
+      </BaseSlider.Control>
+    </BaseSlider.Root>
+  );
+}
+
+export function SliderValue({ className, ...props }: React.ComponentProps<typeof BaseSlider.Value>) {
+  return <BaseSlider.Value className={cn('text-xs tabular-nums text-muted-foreground', className)} {...props} />;
+}
+````
+
+## Switch (`switch`)
+
+Switch built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add switch`
+- npm dependencies: `@base-ui/react`, `motion`
+- Registry dependencies: `utils`, `motion`
+
+### `src/ui/switch.tsx`
+
+````tsx
+'use client';
+
+import { Switch as BaseSwitch } from '@base-ui/react/switch';
+import { type HTMLMotionProps, motion } from 'motion/react';
+import type * as React from 'react';
+
+import { useControlTransition } from '@/lib/motion';
+import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
+
+/** Thumb travel, in px, matching `h-6 w-11` track and `size-4` thumb. */
+const THUMB_OFF = 4;
+const THUMB_ON = 24;
+
+export type SwitchProps = React.ComponentProps<typeof BaseSwitch.Root> & RadiusProps;
+
+export function Switch({ className, radius, ...props }: SwitchProps) {
+  const transition = useControlTransition();
+
+  return (
+    <BaseSwitch.Root
+      className={cn(
+        'relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center border border-input bg-background transition-colors outline-none',
+        'focus-visible:ring-2 focus-visible:ring-ring',
+        'data-[checked]:border-primary data-[checked]:bg-primary',
+        'disabled:cursor-not-allowed disabled:opacity-40',
+        radiusVariants({ radius }),
+        className
+      )}
+      {...props}
+    >
+      <BaseSwitch.Thumb
+        className={cn(
+          'block size-4 bg-foreground transition-colors data-[checked]:bg-primary-foreground',
+          radiusVariants({ radius })
+        )}
+        render={(thumbProps, state) => (
+          <motion.span
+            {...(thumbProps as HTMLMotionProps<'span'>)}
+            // `initial={false}` so a switch that starts checked renders in place
+            // instead of sliding across on first paint.
+            initial={false}
+            animate={{ x: state.checked ? THUMB_ON : THUMB_OFF }}
+            transition={transition}
+          />
+        )}
+      />
+    </BaseSwitch.Root>
+  );
+}
+````
+
+## Tabs (`tabs`)
+
+Tabs built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add tabs`
+- npm dependencies: `@base-ui/react`, `motion`
+- Registry dependencies: `utils`, `motion`
+
+### `src/ui/tabs.tsx`
+
+````tsx
+'use client';
+
+import { Tabs as BaseTabs } from '@base-ui/react/tabs';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { type HTMLMotionProps, motion } from 'motion/react';
+import type * as React from 'react';
+
+import { transitions, useControlTransition } from '@/lib/motion';
+import { cn } from '@/lib/utils';
+
+export const Tabs = BaseTabs.Root;
+
+const tabsListVariants = cva('relative inline-flex items-center', {
+  variants: {
+    variant: {
+      /** Bordered bar with a rule underneath the active tab. */
+      default: 'gap-0 border border-border',
+      /** Segmented control: a filled block slides between tabs. */
+      muted: 'gap-1 bg-muted p-1',
+      /** No chrome at all — just the tabs and the rule. */
+      ghost: 'gap-1'
+    }
+  },
+  defaultVariants: {
+    variant: 'default'
+  }
+});
+
+/**
+ * The indicator is the same element in every variant, restyled — which is what
+ * lets it animate between tabs. The `muted` variant grows it to a full-height
+ * block behind the active tab instead of a rule beneath it.
+ */
+const tabsIndicatorVariants = cva('absolute left-0 z-0', {
+  variants: {
+    variant: {
+      default: 'bottom-0 h-0.5 bg-foreground',
+      muted: 'inset-y-1 border border-border bg-background',
+      ghost: 'bottom-0 h-0.5 bg-foreground'
+    }
+  },
+  defaultVariants: {
+    variant: 'default'
+  }
+});
+
+export type TabsVariant = NonNullable<VariantProps<typeof tabsListVariants>['variant']>;
+
+export function TabsList({
+  className,
+  variant,
+  children,
+  ...props
+}: React.ComponentProps<typeof BaseTabs.List> & VariantProps<typeof tabsListVariants>) {
+  return (
+    <BaseTabs.List className={cn(tabsListVariants({ variant }), className)} {...props}>
+      {children}
+      <TabsIndicator variant={variant} />
+    </BaseTabs.List>
+  );
+}
+
+export function TabsIndicator({
+  className,
+  variant,
+  ...props
+}: React.ComponentProps<typeof BaseTabs.Indicator> & VariantProps<typeof tabsIndicatorVariants>) {
+  return (
+    <BaseTabs.Indicator
+      data-slot="tabs-indicator"
+      className={cn(
+        // Stays CSS rather than Motion: Base UI publishes the active tab's box as
+        // CSS variables, and Motion can't re-run an animation when the value
+        // behind a `var()` changes — the target string never changes. A CSS
+        // transition re-reads the variable on every update, so it tracks properly.
+        'w-[var(--active-tab-width)] translate-x-[var(--active-tab-left)]',
+        'transition-[translate,width] duration-200 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none',
+        tabsIndicatorVariants({ variant }),
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
+export function TabsTab({ className, ...props }: React.ComponentProps<typeof BaseTabs.Tab>) {
+  return (
+    <BaseTabs.Tab
+      className={cn(
+        'relative z-10 cursor-pointer px-4 py-2 text-sm font-medium uppercase tracking-wide text-muted-foreground transition-colors outline-none',
+        'hover:text-foreground',
+        'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset',
+        'data-[active]:text-foreground',
+        'data-[disabled]:pointer-events-none data-[disabled]:opacity-40',
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
+export function TabsPanel({ className, ...props }: React.ComponentProps<typeof BaseTabs.Panel>) {
+  const transition = useControlTransition(transitions.enter);
+
+  return (
+    <BaseTabs.Panel
+      className={cn('mt-4 outline-none focus-visible:ring-2 focus-visible:ring-ring', className)}
+      render={(panelProps, state) => (
+        <motion.div
+          {...(panelProps as HTMLMotionProps<'div'>)}
+          // Panels are unmounted while inactive (Base UI's default), so the
+          // incoming one mounts fresh and needs a real `initial` to fade from.
+          // `initial={false}` would land it at full opacity with nothing to play.
+          // The panel reports `hidden` rather than an open flag.
+          initial={{ opacity: 0, y: -4 }}
+          animate={{ opacity: state.hidden ? 0 : 1, y: state.hidden ? -4 : 0 }}
+          transition={transition}
+        />
+      )}
+      {...props}
+    />
+  );
+}
+
+export { tabsIndicatorVariants, tabsListVariants };
+````
+
+## Toast (`toast`)
+
+Toast built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add toast`
+- npm dependencies: `@base-ui/react`
+- Registry dependencies: `utils`
+
+### `src/ui/toast.tsx`
+
+````tsx
+'use client';
+
+import { Toast as BaseToast } from '@base-ui/react/toast';
+import { cva, type VariantProps } from 'class-variance-authority';
+
+import { type ContainerRadiusProps, cn, containerRadiusVariants, type ShadowProps, shadowVariants } from '@/lib/utils';
+
+export const ToastProvider = BaseToast.Provider;
+export const useToast = BaseToast.useToastManager;
+
+const viewportVariants = cva('fixed z-50 flex outline-none', {
+  variants: {
+    position: {
+      // Bottom stacks grow upward, so the newest toast stays nearest the edge.
+      'bottom-right': 'bottom-4 right-4 flex-col-reverse gap-2',
+      'bottom-left': 'bottom-4 left-4 flex-col-reverse gap-2',
+      'bottom-center': 'bottom-4 left-1/2 -translate-x-1/2 flex-col-reverse gap-2 items-center',
+      'top-right': 'top-4 right-4 flex-col gap-2',
+      'top-left': 'top-4 left-4 flex-col gap-2',
+      'top-center': 'top-4 left-1/2 -translate-x-1/2 flex-col gap-2 items-center'
+    }
+  },
+  defaultVariants: {
+    position: 'bottom-right'
+  }
+});
+
+export type ToastPosition = NonNullable<VariantProps<typeof viewportVariants>['position']>;
+
+/**
+ * Which way a toast travels as it arrives and leaves — outward, toward whichever
+ * edge it's anchored to.
+ */
+const enterFrom: Record<ToastPosition, string> = {
+  'bottom-right': 'data-[starting-style]:[translate:100%_0] data-[ending-style]:[translate:100%_0]',
+  'bottom-left': 'data-[starting-style]:[translate:-100%_0] data-[ending-style]:[translate:-100%_0]',
+  'bottom-center': 'data-[starting-style]:[translate:0_100%] data-[ending-style]:[translate:0_100%]',
+  'top-right': 'data-[starting-style]:[translate:100%_0] data-[ending-style]:[translate:100%_0]',
+  'top-left': 'data-[starting-style]:[translate:-100%_0] data-[ending-style]:[translate:-100%_0]',
+  'top-center': 'data-[starting-style]:[translate:0_-100%] data-[ending-style]:[translate:0_-100%]'
+};
+
+interface ToastListProps extends ContainerRadiusProps, ShadowProps {
+  position: ToastPosition;
+}
+
+function ToastList({ radius, shadow, position }: ToastListProps) {
+  const { toasts } = BaseToast.useToastManager();
+
+  return toasts.map((toast) => (
+    <BaseToast.Root
+      key={toast.id}
+      toast={toast}
+      className={cn(
+        'relative w-80 border border-border bg-background p-4 text-foreground',
+        shadowVariants({ shadow }),
+        // Toast motion is CSS rather than Motion, and deliberately so: during a
+        // swipe Base UI drives this element by writing `transform` directly, so a
+        // `motion.div` — which owns `transform` — would stop the toast following
+        // the finger. See lib/motion.tsx for where Motion is used.
+        //
+        // Enter and exit are ours, via `translate`, which Tailwind compiles to a
+        // property separate from the `transform` Base UI writes. Don't add
+        // `--toast-swipe-movement-*` here: Base UI already applies that movement,
+        // and reapplying it would move the toast twice as far as the finger.
+        'transition-[translate,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none',
+        'data-[starting-style]:opacity-0 data-[ending-style]:opacity-0',
+        enterFrom[position],
+        // While a finger is down the toast must track it exactly, with no easing.
+        'data-[swiping]:transition-none',
+        containerRadiusVariants({ radius })
+      )}
+    >
+      <BaseToast.Title className="pr-6 text-sm font-bold uppercase tracking-wide" />
+      <BaseToast.Description className="mt-1 text-sm text-muted-foreground" />
+      <BaseToast.Close
+        className="absolute right-2 top-2 inline-flex size-6 cursor-pointer items-center justify-center text-xs leading-none text-muted-foreground transition-colors outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+        aria-label="Close"
+      >
+        ✕
+      </BaseToast.Close>
+    </BaseToast.Root>
+  ));
+}
+
+export interface ToasterProps extends ContainerRadiusProps, ShadowProps {
+  /**
+   * Screen corner the stack is anchored to. Also sets the direction toasts travel
+   * as they arrive and leave.
+   * @default 'bottom-right'
+   */
+  position?: ToastPosition;
+}
+
+export function Toaster({ radius, shadow = 'md', position = 'bottom-right' }: ToasterProps) {
+  return (
+    <BaseToast.Portal>
+      <BaseToast.Viewport className={viewportVariants({ position })}>
+        <ToastList radius={radius} shadow={shadow} position={position} />
+      </BaseToast.Viewport>
+    </BaseToast.Portal>
+  );
+}
+
+export { viewportVariants as toastViewportVariants };
+````
+
+## Toggle Group (`toggle-group`)
+
+Toggle Group built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add toggle-group`
+- npm dependencies: `@base-ui/react`
+- Registry dependencies: `utils`
+
+### `src/ui/toggle-group.tsx`
+
+````tsx
+'use client';
+
+import { ToggleGroup as BaseToggleGroup } from '@base-ui/react/toggle-group';
+import type * as React from 'react';
+
+import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
+
+export function ToggleGroup({
+  className,
+  radius,
+  ...props
+}: React.ComponentProps<typeof BaseToggleGroup> & ContainerRadiusProps) {
+  return (
+    <BaseToggleGroup
+      className={cn(
+        'inline-flex items-center gap-0 overflow-hidden border border-border [&>*]:border-0 [&>*+*]:border-l',
+        containerRadiusVariants({ radius }),
+        className
+      )}
+      {...props}
+    />
+  );
+}
+````
+
+## Toggle (`toggle`)
+
+Toggle built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add toggle`
+- npm dependencies: `@base-ui/react`, `motion`
+- Registry dependencies: `utils`, `motion`
+
+### `src/ui/toggle.tsx`
+
+````tsx
+'use client';
+
+import { Toggle as BaseToggle } from '@base-ui/react/toggle';
+import { type HTMLMotionProps, motion } from 'motion/react';
+import type * as React from 'react';
+
+import { useTapMotion } from '@/lib/motion';
+import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
+
+export function Toggle({ className, radius, ...props }: React.ComponentProps<typeof BaseToggle> & RadiusProps) {
+  const tap = useTapMotion();
+
+  return (
+    <BaseToggle
+      render={(toggleProps) => <motion.button {...(toggleProps as HTMLMotionProps<'button'>)} {...tap} />}
+      className={cn(
+        'inline-flex h-10 items-center justify-center gap-2 border border-border bg-background px-3 text-sm font-medium uppercase tracking-wide text-foreground outline-none transition-colors',
+        'hover:bg-muted',
+        'focus-visible:ring-2 focus-visible:ring-ring',
+        'data-[pressed]:bg-foreground data-[pressed]:text-background',
+        'disabled:pointer-events-none disabled:opacity-40',
+        radiusVariants({ radius }),
+        className
+      )}
+      {...props}
+    />
+  );
+}
+````
+
+## Toolbar (`toolbar`)
+
+Toolbar built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add toolbar`
+- npm dependencies: `@base-ui/react`
+- Registry dependencies: `utils`
+
+### `src/ui/toolbar.tsx`
+
+````tsx
+'use client';
+
+import { Toolbar as BaseToolbar } from '@base-ui/react/toolbar';
+import type * as React from 'react';
+
+import { type ContainerRadiusProps, cn, containerRadiusVariants, type RadiusProps, radiusVariants } from '@/lib/utils';
+
+export function Toolbar({
+  className,
+  radius,
+  ...props
+}: React.ComponentProps<typeof BaseToolbar.Root> & ContainerRadiusProps) {
+  return (
+    <BaseToolbar.Root
+      className={cn(
+        'flex items-center gap-1 border border-border bg-background p-1',
+        containerRadiusVariants({ radius }),
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
+export const ToolbarGroup = BaseToolbar.Group;
+
+export function ToolbarButton({
+  className,
+  radius,
+  ...props
+}: React.ComponentProps<typeof BaseToolbar.Button> & RadiusProps) {
+  return (
+    <BaseToolbar.Button
+      className={cn(
+        'inline-flex h-8 items-center justify-center gap-2 border border-transparent px-2 text-sm font-medium uppercase tracking-wide outline-none transition-colors',
+        'hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring data-[pressed]:bg-foreground data-[pressed]:text-background',
+        'disabled:pointer-events-none disabled:opacity-40',
+        radiusVariants({ radius }),
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
+export function ToolbarLink({ className, ...props }: React.ComponentProps<typeof BaseToolbar.Link>) {
+  return (
+    <BaseToolbar.Link
+      className={cn('px-2 text-sm underline-offset-4 outline-none hover:underline focus-visible:underline', className)}
+      {...props}
+    />
+  );
+}
+
+export function ToolbarSeparator({ className, ...props }: React.ComponentProps<typeof BaseToolbar.Separator>) {
+  return <BaseToolbar.Separator className={cn('mx-1 h-6 w-px bg-border', className)} {...props} />;
+}
+````
+
+## Tooltip (`tooltip`)
+
+Tooltip built on Base UI.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add tooltip`
+- npm dependencies: `@base-ui/react`
+- Registry dependencies: `utils`, `motion`
+
+### `src/ui/tooltip.tsx`
+
+````tsx
+'use client';
+
+import { Tooltip as BaseTooltip } from '@base-ui/react/tooltip';
+import type * as React from 'react';
+
+import { transitions, useMotionPopupRender } from '@/lib/motion';
+import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
+
+/**
+ * Base UI waits 600ms before showing a tooltip. That's long enough that a hover
+ * feels like nothing happened, so both the provider and the root default to
+ * something snappier here. Pass `delay`/`closeDelay` to override.
+ *
+ * `closeDelay` is deliberately non-zero: it lets the pointer cross the gap between
+ * trigger and popup without the tooltip flickering out.
+ */
+const OPEN_DELAY = 200;
+const CLOSE_DELAY = 100;
+
+export function TooltipProvider({
+  delay = OPEN_DELAY,
+  closeDelay = CLOSE_DELAY,
+  ...props
+}: BaseTooltip.Provider.Props) {
+  return <BaseTooltip.Provider delay={delay} closeDelay={closeDelay} {...props} />;
+}
+
+export const Tooltip = BaseTooltip.Root;
+
+/**
+ * Carries the same delay default as {@link TooltipProvider}, so a tooltip used
+ * without a provider is just as responsive. A provider, when present, still wins
+ * for grouping behaviour.
+ */
+export function TooltipTrigger({ delay = OPEN_DELAY, ...props }: BaseTooltip.Trigger.Props) {
+  return <BaseTooltip.Trigger delay={delay} {...props} />;
+}
+
+export function TooltipContent({
+  className,
+  sideOffset = 8,
+  children,
+  radius,
+  ...props
+}: React.ComponentProps<typeof BaseTooltip.Popup> & { sideOffset?: number } & ContainerRadiusProps) {
+  // Tooltips are the lightest surface in the library: barely any scale, and a
+  // faster curve than the rest, since they follow the pointer around.
+  const renderPopup = useMotionPopupRender({
+    scale: 0.94,
+    offset: 3,
+    transition: { duration: transitions.fade.duration, ease: 'easeOut' }
+  });
+
+  return (
+    <BaseTooltip.Portal>
+      <BaseTooltip.Positioner sideOffset={sideOffset} className="z-50">
+        <BaseTooltip.Popup
+          className={cn(
+            'border border-border bg-foreground px-2 py-1 text-xs font-medium uppercase tracking-wide text-background',
+            '[transform-origin:var(--transform-origin)]',
+            containerRadiusVariants({ radius }),
+            className
+          )}
+          render={renderPopup}
+          {...props}
+        >
+          {children}
+        </BaseTooltip.Popup>
+      </BaseTooltip.Positioner>
+    </BaseTooltip.Portal>
+  );
+}
+````
+

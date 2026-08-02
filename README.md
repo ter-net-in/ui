@@ -4,6 +4,7 @@ Source-owned React components built with [Base UI](https://base-ui.com), Tailwin
 
 - Documentation and registry: [ui.ter.net.in](https://ui.ter.net.in)
 - Storybook: [storybook.ui.ter.net.in](https://storybook.ui.ter.net.in)
+- LLM registry: [ui.ter.net.in/llms.txt](https://ui.ter.net.in/llms.txt)
 - CLI: [`@ternetin/ui`](https://www.npmjs.com/package/@ternetin/ui)
 
 ## Quick start

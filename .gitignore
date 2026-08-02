@@ -1,7 +1,10 @@
 node_modules
 dist
+deploy
 .env
 .env.local
 .next
+out
 storybook-static
+*.tsbuildinfo
 .DS_Store

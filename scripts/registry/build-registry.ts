@@ -52,7 +52,7 @@ async function main() {
     );
 
     const output = {
-      $schema: 'https://internet-ui.dev/schema/registry-item.json',
+      $schema: 'https://ui.ter.net.in/schema/registry-item.json',
       name: item.name,
       type: item.type,
       title: item.title,

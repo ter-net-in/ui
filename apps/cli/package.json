@@ -2,6 +2,15 @@
   "name": "@ternetin/ui",
   "version": "0.1.0",
   "description": "Add internet-ui components to your project. Base UI + Tailwind, shadcn-style.",
+  "homepage": "https://ui.ter.net.in",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ternetin/internet-ui.git",
+    "directory": "apps/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/ternetin/internet-ui/issues"
+  },
   "type": "module",
   "bin": {
     "internet-ui": "dist/index.js"
@@ -23,6 +32,9 @@
     "components"
   ],
   "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
   "publishConfig": {
     "access": "public"
   },

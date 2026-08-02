@@ -1,92 +1,134 @@
 # internet-ui
 
-A personal component library built on [Base UI](https://base-ui.com) (`@base-ui/react`) + Tailwind CSS v4, distributed the shadcn way: components are **copied into your project** via a CLI, not imported as a runtime dependency. You own the code.
+Source-owned React components built with [Base UI](https://base-ui.com), Tailwind CSS v4, and Motion. Components are copied into your project through a CLI instead of installed as a runtime component package, so the resulting code stays local and editable.
 
-Aesthetic: Swiss / International-Typographic with a brutalist lean — stark mono palette, Helvetica Neue, one electric-blue accent (`#0047ff`), sharp corners.
+- Documentation and registry: [ui.ter.net.in](https://ui.ter.net.in)
+- Storybook: [storybook.ter.net.in](https://storybook.ter.net.in)
+- CLI: [`@ternetin/ui`](https://www.npmjs.com/package/@ternetin/ui)
 
-## Monorepo layout
+## Quick start
 
-```
-packages/ui       component SOURCE — the library itself, never published to npm
-  src/theme/      design tokens (globals.css)
-  src/lib/        cn util, motion helpers
-  src/ui/         the components + their stories
-  registry.json   catalog
-apps/docs         Next.js — docs, live previews, and the registry HOST
-  public/r/       built, hostable registry JSON (bun run build:registry)
-apps/cli          the `internet-ui` CLI (init + add) — published to npm as `@ternetin/ui`
-scripts/registry  build-registry.ts — reads packages/ui, writes apps/docs/public/r
-```
-
-`packages/ui` is the source of record and is deliberately *not* a runtime dependency of
-anything: the docs app reaches it through tsconfig path aliases, and consumers get copies
-of the files via the CLI.
-
-## Develop
+Run the initializer from the root of a React project:
 
 ```bash
-bun install
-bun run build:registry   # emit apps/docs/public/r/*.json from packages/ui
-bun run dev              # docs site + registry at http://localhost:3000
-bun run build:cli        # build the CLI to apps/cli/dist
-bun run typecheck
-bun run lint
+npx @ternetin/ui init
+npx @ternetin/ui add button input dialog
 ```
 
-## Add a new component
+`init` creates `internet-ui.json`, installs the theme and shared utilities, and asks where component files should be written. `add` resolves transitive registry dependencies, rewrites import aliases for your project, installs npm dependencies with the detected package manager, and writes the selected source files.
 
-1. Author `packages/ui/src/ui/<name>.tsx` (import `@base-ui/react/<x>` + `cn` from `@/lib/utils`; cross-component imports use `@/ui/<x>`).
-2. Add an entry to `packages/ui/registry.json` (`dependencies`, `registryDependencies: ["utils"]`, the file).
-3. `bun run build:registry` and commit the emitted `public/r/<name>.json`.
-
-## Consuming the library (in another project)
-
-```bash
-npx @ternetin/ui init                 # writes internet-ui.json, installs tokens + cn
-npx @ternetin/ui add button input     # copies components, rewrites import aliases, installs deps
-```
-
-`internet-ui.json` records the registry URL, the consumer's path aliases, and the target dirs. `add` fetches `{registry}/r/<name>.json`, resolves `registryDependencies` recursively, rewrites the authoring aliases (`@/lib/utils`, `@/ui/*`) to the consumer's aliases, installs npm `dependencies` with the detected package manager, and writes the files.
-
-Point the CLI at a local registry during development:
+Use a registry override when testing locally or hosting a fork:
 
 ```bash
 npx @ternetin/ui add button --registry http://localhost:3000
 ```
 
-### House style: default variants
+## Project defaults
 
-Components are sharp-cornered with a hard offset shadow by default. Rather than passing
-`radius`/`shadow` at every call site, set them once in `internet-ui.json`:
+Set shared radius and shadow defaults once in `internet-ui.json`:
 
-```jsonc
+```json
 {
   "defaults": {
-    "radius": "md",   // none | sm | md | lg | full — buttons, inputs, toggles
-    "shadow": "sm"    // none | sm | md | lg | xl   — dialogs, popovers, toasts
+    "radius": "md",
+    "containerRadius": "md",
+    "shadow": "sm"
   }
 }
 ```
 
-`init` prompts for these; both keys are optional and fall back to `none` / `md`. The CLI
-substitutes them into `lib/ui-defaults.ts` when it writes that file, and every component
-reads them through the shared cva `defaultVariants` in `lib/utils.ts` — so all 34 components
-with a `radius` prop and all 5 with a `shadow` prop follow along. Invalid values fail the
-install with a message rather than emitting a file that won't compile.
+Supported radius values are `none`, `sm`, `md`, `lg`, and `full`. `containerRadius` excludes `full`. Supported shadow values are `none`, `sm`, `md`, `lg`, and `xl`.
 
-`containerRadius` (boxy surfaces — dialogs, menus, cards) is derived from `radius`, capped at
-`lg` because a 9999px radius turns a rectangle into a lozenge. Set it explicitly to decouple
-the two.
-
-Since the values are baked in at write time, editing `internet-ui.json` later needs one
-command to re-apply — it rewrites only that file:
+Defaults are written into `lib/ui-defaults.ts`, making them ordinary source code with no runtime configuration dependency. Reapply changed config with:
 
 ```bash
-npx @ternetin/ui add ui-defaults -o
+npx @ternetin/ui add ui-defaults --overwrite
 ```
 
-Or just edit `lib/ui-defaults.ts` directly. It's your code.
+## Repository
 
-## Deploy
+```text
+packages/ui       component source, stories, theme, and registry catalog
+apps/docs         Next.js documentation site and static registry host
+apps/cli          @ternetin/ui CLI
+scripts/registry  registry JSON generator
+skills            instructions for coding agents
+```
 
-Deploy `apps/docs` (Next.js) anywhere static-friendly; `public/r/*.json` is served at `/r/<name>.json`. Set that origin as the CLI's default registry.
+`packages/ui` is the source of truth. It is private and never published. `bun run build:registry` turns its catalog and source files into static JSON under `apps/docs/public/r`.
+
+## Development
+
+Requires [Bun](https://bun.sh) 1.3.13 or newer.
+
+```bash
+bun install
+bun run build:registry
+bun run dev
+```
+
+Common checks:
+
+```bash
+bun run lint
+bun run typecheck
+bun run build
+bun run --filter '@internet-ui/docs' storybook
+```
+
+## Adding a component
+
+1. Add `packages/ui/src/ui/<name>.tsx` and its Storybook story.
+2. Add the component and its dependencies to `packages/ui/registry.json`.
+3. Run `bun run build:registry`.
+4. Run lint, type checks, the production build, and the Storybook build.
+5. Commit both source and generated `apps/docs/public/r/*.json` files.
+
+Authoring imports use `@/lib/*` and `@/ui/*`. The CLI rewrites those aliases for each consumer. Keep component dependencies explicit in the registry entry.
+
+## Agentic use
+
+Agent Skills-compatible clients can load [`skills/internet-ui/SKILL.md`](skills/internet-ui/SKILL.md). The skill tells coding agents how to inspect an existing install, choose components, run the CLI safely, and verify generated code without overwriting local edits.
+
+## Deployment
+
+`Dockerfile` shares one Bun build stage, then emits separate `docs` and `storybook` export targets. Compose copies their static files into host directories:
+
+```text
+deploy/ui         Next.js static export
+deploy/storybook  Storybook static export
+```
+
+Point main server Caddy at those directories for `ui.ter.net.in` and `storybook.ter.net.in`. No web server or port binding runs inside this project.
+
+Run locally:
+
+```bash
+docker compose build
+docker compose run --rm ui
+docker compose run --rm storybook
+```
+
+CI still builds and validates both static sites on every pull request. Pushes to `main` sync repository to `~/internet-ui` on VPS, build both targets, and export files to `~/internet-ui/deploy`.
+
+Configure GitHub environment `production` with:
+
+- Secrets: `VPS_HOST`, `VPS_USER`, `VPS_SSH_KEY`
+- Optional secret: `VPS_PORT` (defaults to `22`)
+
+VPS requires Docker with Compose plugin. `VPS_USER` must be able to write its home directory and run Docker.
+
+## CLI releases
+
+CLI releases are manual. Authenticate with npm, update `apps/cli/package.json`, then build and publish from repository root:
+
+```bash
+npm login
+bun run publish:cli
+```
+
+The command rebuilds the CLI before publishing `@ternetin/ui` publicly. npm rejects versions already published.
+
+## License
+
+MIT

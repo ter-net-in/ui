@@ -6,6 +6,7 @@
       "!**/node_modules",
       "!**/dist",
       "!**/.next",
+      "!**/out",
       "!**/storybook-static",
       "!apps/docs/public",
       "!**/*.min.js"

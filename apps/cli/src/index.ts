@@ -5,6 +5,8 @@ import { DEFAULT_REGISTRY, loadConfig } from './config.js';
 import { init } from './init.js';
 import { log } from './utils.js';
 
+declare const __CLI_VERSION__: string;
+
 const cli = cac('internet-ui');
 
 cli
@@ -68,6 +70,6 @@ cli.help((sections) => {
     body: ['  $ internet-ui init', `  $ internet-ui add button input   # from ${DEFAULT_REGISTRY}`].join('\n')
   });
 });
-cli.version('0.1.0');
+cli.version(__CLI_VERSION__);
 
 cli.parse();

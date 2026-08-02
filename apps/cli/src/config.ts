@@ -66,7 +66,7 @@ export function resolveDefaults(config: Config): Defaults {
   return { radius, containerRadius, shadow: d.shadow ?? DEFAULT_VARIANTS.shadow };
 }
 
-export const DEFAULT_REGISTRY = 'https://internet-ui.dev';
+export const DEFAULT_REGISTRY = 'https://ui.ter.net.in';
 
 export function configPath(cwd: string) {
   return path.join(cwd, CONFIG_FILE);

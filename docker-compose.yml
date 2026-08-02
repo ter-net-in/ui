@@ -1,0 +1,14 @@
+services:
+  ui:
+    build:
+      context: .
+      target: docs
+    volumes:
+      - ./deploy/ui:/output
+
+  storybook:
+    build:
+      context: .
+      target: storybook
+    volumes:
+      - ./deploy/storybook:/output

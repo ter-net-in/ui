@@ -1,7 +1,7 @@
 {
-  "$schema": "https://internet-ui.dev/schema/registry.json",
+  "$schema": "https://ui.ter.net.in/schema/registry.json",
   "name": "internet-ui",
-  "homepage": "https://internet-ui.dev",
+  "homepage": "https://ui.ter.net.in",
   "items": [
     {
       "name": "theme",

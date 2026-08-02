@@ -1,0 +1,17 @@
+.git
+.github
+.next
+**/.next
+node_modules
+**/node_modules
+dist
+**/dist
+deploy
+out
+**/out
+storybook-static
+**/storybook-static
+*.tsbuildinfo
+.env
+.env.*
+.DS_Store

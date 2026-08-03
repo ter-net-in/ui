@@ -9,6 +9,62 @@ interface ComponentItem {
 }
 
 const STORYBOOK_ORIGIN = 'https://storybook.ui.ter.net.in';
+const RADIUS_COMPONENTS = new Set([
+  'accordion',
+  'alert-dialog',
+  'autocomplete',
+  'avatar',
+  'button',
+  'card',
+  'checkbox',
+  'code',
+  'collapsible',
+  'combobox',
+  'context-menu',
+  'dialog',
+  'drawer',
+  'field',
+  'fieldset',
+  'input',
+  'menu',
+  'menubar',
+  'meter',
+  'navigation-menu',
+  'number-field',
+  'otp-field',
+  'popover',
+  'preview-card',
+  'progress',
+  'scroll-area',
+  'select',
+  'slider',
+  'switch',
+  'toast',
+  'toggle',
+  'toggle-group',
+  'toolbar',
+  'tooltip'
+]);
+const FULL_RADIUS_COMPONENTS = new Set([
+  'avatar',
+  'button',
+  'checkbox',
+  'field',
+  'input',
+  'meter',
+  'number-field',
+  'otp-field',
+  'progress',
+  'slider',
+  'switch',
+  'toggle'
+]);
+const SHADOW_COMPONENTS = new Set(['alert-dialog', 'autocomplete', 'dialog', 'popover', 'toast']);
+const RADIUS_OPTIONS = ['none', 'sm', 'md', 'lg', 'full'] as const;
+const SHADOW_OPTIONS = ['none', 'sm', 'md', 'lg', 'xl'] as const;
+
+type Radius = (typeof RADIUS_OPTIONS)[number];
+type Shadow = (typeof SHADOW_OPTIONS)[number];
 
 function storyId(title: string) {
   return `ui-${title.toLowerCase().replace(/[^a-z0-9]/g, '')}--playground`;
@@ -18,6 +74,8 @@ export function ComponentBrowser({ components }: { components: ComponentItem[] }
   const [query, setQuery] = useState('');
   const [selectedName, setSelectedName] = useState(components[0]?.name ?? '');
   const [copied, setCopied] = useState(false);
+  const [radius, setRadius] = useState<Radius>('none');
+  const [shadow, setShadow] = useState<Shadow>('md');
   const filtered = components.filter((component) =>
     `${component.title} ${component.name}`.toLowerCase().includes(query.toLowerCase())
   );
@@ -27,7 +85,14 @@ export function ComponentBrowser({ components }: { components: ComponentItem[] }
 
   const command = `npx @ternetin/ui add ${selected.name}`;
   const selectedStoryId = storyId(selected.title);
-  const storyUrl = `${STORYBOOK_ORIGIN}/iframe.html?id=${selectedStoryId}&viewMode=story`;
+  const storyArgs: string[] = [];
+  if (RADIUS_COMPONENTS.has(selected.name)) {
+    storyArgs.push(`radius:${radius === 'full' && !FULL_RADIUS_COMPONENTS.has(selected.name) ? 'lg' : radius}`);
+  }
+  if (SHADOW_COMPONENTS.has(selected.name)) storyArgs.push(`shadow:${shadow}`);
+  const storyUrl = `${STORYBOOK_ORIGIN}/iframe.html?id=${selectedStoryId}&viewMode=story${
+    storyArgs.length > 0 ? `&args=${encodeURIComponent(storyArgs.join(';'))}` : ''
+  }`;
 
   async function copyCommand() {
     await navigator.clipboard.writeText(command);
@@ -86,6 +151,67 @@ export function ComponentBrowser({ components }: { components: ComponentItem[] }
         </header>
 
         <section className="border-b border-border p-6 sm:p-10">
+          <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <h2 className="text-xs font-extrabold uppercase tracking-[0.14em] text-muted-foreground">
+                Global preview config
+              </h2>
+              <p className="mt-2 text-xs text-muted-foreground">
+                Persists while browsing. Full radius caps container surfaces at lg.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                setRadius('none');
+                setShadow('md');
+              }}
+              className="font-mono text-xs underline decoration-border underline-offset-4 hover:decoration-foreground"
+            >
+              Reset
+            </button>
+          </div>
+          <div className="grid gap-6 md:grid-cols-2">
+            <fieldset>
+              <legend className="mb-3 text-xs font-bold uppercase tracking-wider">Radius</legend>
+              <div className="grid grid-cols-5 border border-border">
+                {RADIUS_OPTIONS.map((option) => (
+                  <button
+                    type="button"
+                    key={option}
+                    aria-pressed={radius === option}
+                    onClick={() => setRadius(option)}
+                    className={`border-r border-border px-2 py-3 font-mono text-xs last:border-r-0 ${
+                      radius === option ? 'bg-foreground text-background' : 'hover:bg-muted'
+                    }`}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend className="mb-3 text-xs font-bold uppercase tracking-wider">Shadow</legend>
+              <div className="grid grid-cols-5 border border-border">
+                {SHADOW_OPTIONS.map((option) => (
+                  <button
+                    type="button"
+                    key={option}
+                    aria-pressed={shadow === option}
+                    onClick={() => setShadow(option)}
+                    className={`border-r border-border px-2 py-3 font-mono text-xs last:border-r-0 ${
+                      shadow === option ? 'bg-foreground text-background' : 'hover:bg-muted'
+                    }`}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+            </fieldset>
+          </div>
+        </section>
+
+        <section className="border-b border-border p-6 sm:p-10">
           <div className="mb-4 flex items-center justify-between gap-4">
             <h2 className="text-xs font-extrabold uppercase tracking-[0.14em] text-muted-foreground">Install</h2>
             <a
@@ -111,7 +237,7 @@ export function ComponentBrowser({ components }: { components: ComponentItem[] }
           <h2 className="mb-4 text-xs font-extrabold uppercase tracking-[0.14em] text-muted-foreground">Example</h2>
           <div className="overflow-hidden border border-border bg-background">
             <iframe
-              key={selected.name}
+              key={`${selected.name}-${radius}-${shadow}`}
               src={storyUrl}
               title={`${selected.title} example`}
               className="h-[32rem] w-full"

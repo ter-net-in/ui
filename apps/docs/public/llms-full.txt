@@ -2217,7 +2217,7 @@ Generic TanStack table with sorting, global filtering, pagination, page-size con
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add data-table`
-- npm dependencies: `@tanstack/react-table`
+- npm dependencies: `@tanstack/react-table@^8.21.3`
 - Registry dependencies: `utils`, `button`, `checkbox`, `input`, `select`
 
 ### `src/ui/data-table.tsx`

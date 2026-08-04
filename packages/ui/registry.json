@@ -257,7 +257,7 @@
       "type": "registry:ui",
       "title": "Data Table",
       "description": "Generic TanStack table with sorting, global filtering, pagination, page-size controls, and row selection.",
-      "dependencies": ["@tanstack/react-table"],
+      "dependencies": ["@tanstack/react-table@^8.21.3"],
       "registryDependencies": ["utils", "button", "checkbox", "input", "select"],
       "files": [
         {

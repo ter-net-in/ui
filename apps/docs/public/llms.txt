@@ -35,6 +35,7 @@ npx @ternetin/ui add button input dialog
 - [Combobox](https://ui.ter.net.in/r/combobox.json): Combobox built on Base UI.
 - [Context Menu](https://ui.ter.net.in/r/context-menu.json): Context Menu built on Base UI.
 - [Dialog](https://ui.ter.net.in/r/dialog.json): Dialog built on Base UI.
+- [Data Table](https://ui.ter.net.in/r/data-table.json): Generic TanStack table with sorting, global filtering, pagination, page-size controls, and row selection.
 - [Drawer](https://ui.ter.net.in/r/drawer.json): Drawer built on Base UI.
 - [Field](https://ui.ter.net.in/r/field.json): Field built on Base UI.
 - [Fieldset](https://ui.ter.net.in/r/fieldset.json): Fieldset built on Base UI.

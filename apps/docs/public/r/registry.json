@@ -111,6 +111,12 @@
       "description": "Dialog built on Base UI."
     },
     {
+      "name": "data-table",
+      "type": "registry:ui",
+      "title": "Data Table",
+      "description": "Generic TanStack table with sorting, global filtering, pagination, page-size controls, and row selection."
+    },
+    {
       "name": "drawer",
       "type": "registry:ui",
       "title": "Drawer",

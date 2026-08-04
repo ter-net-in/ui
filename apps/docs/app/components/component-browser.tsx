@@ -21,6 +21,7 @@ const RADIUS_COMPONENTS = new Set([
   'collapsible',
   'combobox',
   'context-menu',
+  'data-table',
   'dialog',
   'drawer',
   'field',

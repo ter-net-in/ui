@@ -15,7 +15,7 @@ export function cn(...inputs: ClassValue[]) {
  * NOTE: the theme zeroes --radius-sm/md/lg/xl, so Tailwind's rounded-sm/md/lg all
  * render flat. These literal radii let a component opt out of the sharp default.
  */
-export const radiusVariants = cva('', {
+export const radiusVariants = cva('ui-radius', {
   variants: {
     radius: {
       none: 'rounded-none',
@@ -38,7 +38,7 @@ export type Radius = NonNullable<RadiusProps['radius']>;
  * Excludes `full` — a 9999px radius turns a rectangle into a lozenge. Max is `lg`.
  * Use this for boxy surfaces; use radiusVariants for pill/circle-friendly controls.
  */
-export const containerRadiusVariants = cva('', {
+export const containerRadiusVariants = cva('ui-container-radius', {
   variants: {
     radius: {
       none: 'rounded-none',
@@ -61,7 +61,7 @@ export type ContainerRadius = NonNullable<ContainerRadiusProps['radius']>;
  * The house shadow is a hard offset block, not a blur — it reads as a second
  * printed layer rather than depth. Sizes are the offset in px.
  */
-export const shadowVariants = cva('', {
+export const shadowVariants = cva('ui-shadow', {
   variants: {
     shadow: {
       none: 'shadow-none',

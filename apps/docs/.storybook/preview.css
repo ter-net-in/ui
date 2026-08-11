@@ -10,3 +10,45 @@
 
 /* the components live outside this app, so name them for content detection */
 @source "../../../packages/ui/src";
+
+/* Docs preview globals override every configurable component, including portals. */
+:root[data-preview-radius="none"] :is(.ui-radius, .ui-container-radius) {
+  border-radius: 0;
+}
+
+:root[data-preview-radius="sm"] :is(.ui-radius, .ui-container-radius) {
+  border-radius: 0.25rem;
+}
+
+:root[data-preview-radius="md"] :is(.ui-radius, .ui-container-radius) {
+  border-radius: 0.5rem;
+}
+
+:root[data-preview-radius="lg"] :is(.ui-radius, .ui-container-radius),
+:root[data-preview-radius="full"] .ui-container-radius {
+  border-radius: 1rem;
+}
+
+:root[data-preview-radius="full"] .ui-radius {
+  border-radius: 9999px;
+}
+
+:root[data-preview-shadow="none"] .ui-shadow {
+  box-shadow: none;
+}
+
+:root[data-preview-shadow="sm"] .ui-shadow {
+  box-shadow: 4px 4px 0 0 var(--color-foreground);
+}
+
+:root[data-preview-shadow="md"] .ui-shadow {
+  box-shadow: 6px 6px 0 0 var(--color-foreground);
+}
+
+:root[data-preview-shadow="lg"] .ui-shadow {
+  box-shadow: 8px 8px 0 0 var(--color-foreground);
+}
+
+:root[data-preview-shadow="xl"] .ui-shadow {
+  box-shadow: 12px 12px 0 0 var(--color-foreground);
+}

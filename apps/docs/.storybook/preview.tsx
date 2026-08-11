@@ -1,5 +1,6 @@
 import type { Preview } from '@storybook/react';
 import type * as React from 'react';
+import { useEffect } from 'react';
 
 import './preview.css';
 
@@ -16,11 +17,25 @@ const preview: Preview = {
         ],
         dynamicTitle: true
       }
+    },
+    radius: {
+      description: 'Global component radius',
+      defaultValue: 'none'
+    },
+    shadow: {
+      description: 'Global component shadow',
+      defaultValue: 'md'
     }
   },
   decorators: [
     (Story, context) => {
       const dark = context.globals.theme === 'dark';
+
+      useEffect(() => {
+        document.documentElement.dataset.previewRadius = context.globals.radius;
+        document.documentElement.dataset.previewShadow = context.globals.shadow;
+      }, [context.globals.radius, context.globals.shadow]);
+
       return (
         <div
           className={dark ? 'dark' : ''}

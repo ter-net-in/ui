@@ -9,58 +9,6 @@ interface ComponentItem {
 }
 
 const STORYBOOK_ORIGIN = 'https://storybook.ui.ter.net.in';
-const RADIUS_COMPONENTS = new Set([
-  'accordion',
-  'alert-dialog',
-  'autocomplete',
-  'avatar',
-  'button',
-  'card',
-  'checkbox',
-  'code',
-  'collapsible',
-  'combobox',
-  'context-menu',
-  'data-table',
-  'dialog',
-  'drawer',
-  'field',
-  'fieldset',
-  'input',
-  'menu',
-  'menubar',
-  'meter',
-  'navigation-menu',
-  'number-field',
-  'otp-field',
-  'popover',
-  'preview-card',
-  'progress',
-  'scroll-area',
-  'select',
-  'slider',
-  'switch',
-  'toast',
-  'toggle',
-  'toggle-group',
-  'toolbar',
-  'tooltip'
-]);
-const FULL_RADIUS_COMPONENTS = new Set([
-  'avatar',
-  'button',
-  'checkbox',
-  'field',
-  'input',
-  'meter',
-  'number-field',
-  'otp-field',
-  'progress',
-  'slider',
-  'switch',
-  'toggle'
-]);
-const SHADOW_COMPONENTS = new Set(['alert-dialog', 'autocomplete', 'dialog', 'popover', 'toast']);
 const RADIUS_OPTIONS = ['none', 'sm', 'md', 'lg', 'full'] as const;
 const SHADOW_OPTIONS = ['none', 'sm', 'md', 'lg', 'xl'] as const;
 
@@ -86,14 +34,8 @@ export function ComponentBrowser({ components }: { components: ComponentItem[] }
 
   const command = `npx @ternetin/ui add ${selected.name}`;
   const selectedStoryId = storyId(selected.title);
-  const storyArgs: string[] = [];
-  if (RADIUS_COMPONENTS.has(selected.name)) {
-    storyArgs.push(`radius:${radius === 'full' && !FULL_RADIUS_COMPONENTS.has(selected.name) ? 'lg' : radius}`);
-  }
-  if (SHADOW_COMPONENTS.has(selected.name)) storyArgs.push(`shadow:${shadow}`);
-  const storyUrl = `${STORYBOOK_ORIGIN}/iframe.html?id=${selectedStoryId}&viewMode=story${
-    storyArgs.length > 0 ? `&args=${encodeURIComponent(storyArgs.join(';'))}` : ''
-  }`;
+  const storyGlobals = `radius:${radius};shadow:${shadow}`;
+  const storyUrl = `${STORYBOOK_ORIGIN}/iframe.html?id=${selectedStoryId}&viewMode=story&globals=${encodeURIComponent(storyGlobals)}`;
 
   async function copyCommand() {
     await navigator.clipboard.writeText(command);

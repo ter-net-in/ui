@@ -4290,6 +4290,22 @@ export function AsciiSvg({
   const hostRef = React.useRef<HTMLDivElement>(null);
   const [art, setArt] = React.useState('');
 
+  // Reserve the box before first paint with a same-size blank grid, so the ASCII
+  // filling in on the first (async) sample doesn't resize the layout and jump.
+  const useIsoLayout = typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect;
+  useIsoLayout(() => {
+    if (art) return;
+    const svg = hostRef.current?.querySelector(select) as SVGSVGElement | null;
+    if (!svg) return;
+    const rect = svg.getBoundingClientRect();
+    const w = rect.width || svg.viewBox?.baseVal?.width || 100;
+    const h = rect.height || svg.viewBox?.baseVal?.height || 100;
+    const rows = Math.max(1, Math.round(cols * (h / w) * 0.5));
+    setArt(Array.from({ length: rows }, () => ' '.repeat(cols)).join('\n'));
+    // Placeholder only — run once on mount.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   React.useEffect(() => {
     const host = hostRef.current;
     if (!host || typeof window === 'undefined') return;

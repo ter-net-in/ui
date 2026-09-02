@@ -62,3 +62,4 @@ npx @ternetin/ui add button input dialog
 - [Toggle](https://ui.ter.net.in/r/toggle.json): Toggle built on Base UI.
 - [Toolbar](https://ui.ter.net.in/r/toolbar.json): Toolbar built on Base UI.
 - [Tooltip](https://ui.ter.net.in/r/tooltip.json): Tooltip built on Base UI.
+- [ASCII SVG](https://ui.ter.net.in/r/ascii-svg.json): Globs an SVG from its children and renders it as live, animatable ASCII art by rasterizing to a canvas and mapping brightness onto a character ramp.

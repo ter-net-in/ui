@@ -629,6 +629,20 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "ascii-svg",
+      "type": "registry:ui",
+      "title": "ASCII SVG",
+      "description": "Globs an SVG from its children and renders it as live, animatable ASCII art by rasterizing to a canvas and mapping brightness onto a character ramp.",
+      "dependencies": [],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/ui/ascii-svg.tsx",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }

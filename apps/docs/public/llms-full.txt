@@ -4242,7 +4242,7 @@ import { cn } from '@/lib/utils';
 /** Brightness ramps, dark → light. */
 export const ASCII_RAMPS = {
   standard: ' .:-=+*#%@',
-  dense: " .'`^\",:;Il!i~+_-?][}{1)(|/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$",
+  dense: ' .\'`^",:;Il!i~+_-?][}{1)(|/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$',
   minimal: ' .oO@',
   blocks: ' ░▒▓█',
   binary: '01',
@@ -4306,6 +4306,7 @@ export function AsciiSvg({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: children re-runs sampling when the SVG source changes.
   React.useEffect(() => {
     const host = hostRef.current;
     if (!host || typeof window === 'undefined') return;

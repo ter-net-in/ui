@@ -27,7 +27,7 @@ export function AlertDialogContent({
       <BaseAlertDialog.Popup
         className={cn(
           'fixed left-1/2 top-1/2 z-50 grid w-full max-w-md -translate-x-1/2 -translate-y-1/2 gap-4',
-          'border border-border bg-background p-6 outline-none',
+          'border border-border bg-background p-5 outline-none',
           shadowVariants({ shadow }),
           containerRadiusVariants({ radius }),
           className
@@ -42,14 +42,21 @@ export function AlertDialogContent({
 }
 
 export function AlertDialogTitle({ className, ...props }: React.ComponentProps<typeof BaseAlertDialog.Title>) {
-  return <BaseAlertDialog.Title className={cn('text-lg font-bold uppercase tracking-tight', className)} {...props} />;
+  return (
+    <BaseAlertDialog.Title
+      className={cn('text-lg font-semibold leading-none tracking-[-0.02em]', className)}
+      {...props}
+    />
+  );
 }
 
 export function AlertDialogDescription({
   className,
   ...props
 }: React.ComponentProps<typeof BaseAlertDialog.Description>) {
-  return <BaseAlertDialog.Description className={cn('text-sm text-muted-foreground', className)} {...props} />;
+  return (
+    <BaseAlertDialog.Description className={cn('text-sm leading-6 text-muted-foreground', className)} {...props} />
+  );
 }
 
 export function AlertDialogFooter({ className, ...props }: React.ComponentProps<'div'>) {

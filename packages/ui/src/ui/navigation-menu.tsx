@@ -21,7 +21,7 @@ export function NavigationMenu({
         <BaseNavigationMenu.Positioner className="z-50" sideOffset={8}>
           <BaseNavigationMenu.Popup
             className={cn(
-              'border border-border bg-popover text-popover-foreground shadow-[6px_6px_0_0_var(--color-foreground)] outline-none',
+              'border border-border bg-popover text-popover-foreground shadow-[0_10px_30px_var(--shadow-color)] outline-none',
               // Base UI measures each panel and publishes the target box as CSS
               // variables (`auto` while a single panel is open, pixel values while
               // switching). Transitioning them is what makes the popup morph
@@ -56,7 +56,7 @@ export function NavigationMenuTrigger({
   return (
     <BaseNavigationMenu.Trigger
       className={cn(
-        'px-3 py-2 text-sm font-medium uppercase tracking-wide outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring',
+        'px-3 py-2 text-sm font-medium tracking-[-0.01em] outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring',
         className
       )}
       {...props}
@@ -89,7 +89,10 @@ export function NavigationMenuContent({
 export function NavigationMenuLink({ className, ...props }: React.ComponentProps<typeof BaseNavigationMenu.Link>) {
   return (
     <BaseNavigationMenu.Link
-      className={cn('block px-3 py-2 text-sm outline-none hover:bg-muted focus-visible:bg-muted', className)}
+      className={cn(
+        'block px-3 py-2 text-sm leading-5 outline-none hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent focus-visible:text-accent-foreground',
+        className
+      )}
       {...props}
     />
   );

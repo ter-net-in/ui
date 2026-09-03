@@ -103,7 +103,7 @@ export function DataTable<TData>({
           aria-label={searchPlaceholder}
           className="max-w-sm"
         />
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <div className="flex items-center gap-2 text-sm leading-5 text-muted-foreground">
           <span>Rows per page</span>
           <Select
             value={String(table.getState().pagination.pageSize)}
@@ -124,12 +124,15 @@ export function DataTable<TData>({
       </div>
 
       <div className={cn('overflow-x-auto border border-border bg-background', containerRadiusVariants({ radius }))}>
-        <table className="w-full border-collapse text-sm">
-          <thead className="bg-muted text-left">
+        <table className="w-full border-collapse text-sm leading-5">
+          <thead className="bg-secondary text-left">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id} className="border-b border-border">
                 {headerGroup.headers.map((header) => (
-                  <th key={header.id} className="h-11 whitespace-nowrap px-3 font-bold uppercase tracking-wide">
+                  <th
+                    key={header.id}
+                    className="h-11 whitespace-nowrap px-3 text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground"
+                  >
                     {header.isPlaceholder ? null : header.column.getCanSort() ? (
                       <button
                         type="button"
@@ -159,7 +162,7 @@ export function DataTable<TData>({
                 <tr
                   key={row.id}
                   data-state={row.getIsSelected() ? 'selected' : undefined}
-                  className="border-b border-border transition-colors last:border-b-0 hover:bg-muted/50 data-[state=selected]:bg-muted"
+                  className="border-b border-border transition-colors last:border-b-0 hover:bg-accent/70 data-[state=selected]:bg-accent"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <td key={cell.id} className="h-12 whitespace-nowrap px-3">
@@ -179,7 +182,7 @@ export function DataTable<TData>({
         </table>
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
+      <div className="flex flex-wrap items-center justify-between gap-3 text-sm leading-5">
         <span className="text-muted-foreground">
           {enableRowSelection
             ? `${table.getFilteredSelectedRowModel().rows.length} of ${table.getFilteredRowModel().rows.length} row(s) selected`

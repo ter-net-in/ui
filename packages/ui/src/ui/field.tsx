@@ -12,7 +12,7 @@ export function Field({ className, ...props }: React.ComponentProps<typeof BaseF
 export function FieldLabel({ className, ...props }: React.ComponentProps<typeof BaseField.Label>) {
   return (
     <BaseField.Label
-      className={cn('text-xs font-semibold uppercase tracking-[0.1em] text-foreground', className)}
+      className={cn('cursor-pointer text-xs font-medium uppercase tracking-[0.08em] text-foreground', className)}
       {...props}
     />
   );
@@ -26,7 +26,7 @@ export function FieldControl({
   return (
     <BaseField.Control
       className={cn(
-        'flex h-10 w-full border border-input bg-background px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        'flex h-10 w-full border border-input bg-background px-3 py-2 text-sm leading-5 outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring data-[invalid]:border-destructive data-[invalid]:bg-destructive/5',
         radiusVariants({ radius }),
         className
       )}
@@ -40,5 +40,5 @@ export function FieldDescription({ className, ...props }: React.ComponentProps<t
 }
 
 export function FieldError({ className, ...props }: React.ComponentProps<typeof BaseField.Error>) {
-  return <BaseField.Error className={cn('text-xs text-destructive', className)} {...props} />;
+  return <BaseField.Error className={cn('text-xs font-medium text-destructive', className)} {...props} />;
 }

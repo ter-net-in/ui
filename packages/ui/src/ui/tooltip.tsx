@@ -56,7 +56,7 @@ export function TooltipContent({
       <BaseTooltip.Positioner sideOffset={sideOffset} className="z-50">
         <BaseTooltip.Popup
           className={cn(
-            'border border-border bg-foreground px-2 py-1 text-xs font-medium uppercase tracking-wide text-background',
+            'border border-border bg-foreground px-2 py-1 text-xs font-medium leading-none tracking-[-0.01em] text-background',
             '[transform-origin:var(--transform-origin)]',
             containerRadiusVariants({ radius }),
             className

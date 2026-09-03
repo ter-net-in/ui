@@ -34,9 +34,9 @@ const tabsListVariants = cva('relative inline-flex items-center', {
 const tabsIndicatorVariants = cva('absolute left-0 z-0', {
   variants: {
     variant: {
-      default: 'bottom-0 h-0.5 bg-foreground',
-      muted: 'inset-y-1 border border-border bg-background',
-      ghost: 'bottom-0 h-0.5 bg-foreground'
+      default: 'bottom-0 h-0.5 bg-primary',
+      muted: 'inset-y-1 border border-primary/20 bg-background',
+      ghost: 'bottom-0 h-0.5 bg-primary'
     }
   },
   defaultVariants: {
@@ -87,10 +87,10 @@ export function TabsTab({ className, ...props }: React.ComponentProps<typeof Bas
   return (
     <BaseTabs.Tab
       className={cn(
-        'relative z-10 cursor-pointer px-4 py-2 text-sm font-medium uppercase tracking-wide text-muted-foreground transition-colors outline-none',
-        'hover:text-foreground',
+        'relative z-10 cursor-pointer px-4 py-2 text-sm font-medium tracking-[-0.01em] text-muted-foreground transition-colors outline-none',
+        'hover:text-accent-foreground',
         'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset',
-        'data-[active]:text-foreground',
+        'data-[active]:text-primary',
         'data-[disabled]:pointer-events-none data-[disabled]:opacity-40',
         className
       )}

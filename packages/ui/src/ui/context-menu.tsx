@@ -26,7 +26,7 @@ export function ContextMenuContent({
         <BaseContextMenu.Popup
           style={{ ...contentRadiusStyle(radius), ...style }}
           className={cn(
-            'min-w-40 border border-border bg-popover p-1 text-popover-foreground shadow-[6px_6px_0_0_var(--color-foreground)] outline-none',
+            'min-w-40 border border-border bg-popover p-1 text-popover-foreground shadow-[0_10px_30px_var(--shadow-color)] outline-none',
             '[transform-origin:var(--transform-origin)]',
             containerRadiusVariants({ radius }),
             className
@@ -45,9 +45,9 @@ export function ContextMenuItem({ className, ...props }: React.ComponentProps<ty
   return (
     <BaseContextMenu.Item
       className={cn(
-        'flex cursor-pointer select-none items-center gap-2 px-3 py-1.5 text-sm outline-none',
+        'flex cursor-pointer select-none items-center gap-2 px-3 py-1.5 text-sm leading-5 outline-none',
         NESTED_RADIUS,
-        'data-[highlighted]:bg-foreground data-[highlighted]:text-background',
+        'data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground',
         'data-[disabled]:pointer-events-none data-[disabled]:opacity-40',
         className
       )}

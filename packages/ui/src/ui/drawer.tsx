@@ -47,7 +47,7 @@ export function DrawerContent({
       <BaseDrawer.Viewport className="fixed inset-y-0 right-0 z-50 flex">
         <BaseDrawer.Popup
           className={cn(
-            'flex w-80 max-w-[90vw] flex-col gap-4 border-l border-border bg-background p-6 outline-none',
+            'flex w-80 max-w-[90vw] flex-col gap-4 border-l border-border bg-background p-5 outline-none',
             // Drawer motion is CSS rather than Motion, and deliberately so: during a
             // swipe Base UI drives this element by writing `transform` directly, so
             // a `motion.div` — which owns `transform` — would stop the sheet
@@ -63,6 +63,7 @@ export function DrawerContent({
             // No easing while the finger is down — the sheet must track it 1:1.
             'data-[swiping]:transition-none',
             containerRadiusVariants({ radius }),
+            'ui-drawer-content rounded-r-none [border-bottom-right-radius:0] [border-top-right-radius:0]',
             className
           )}
           {...props}
@@ -75,9 +76,11 @@ export function DrawerContent({
 }
 
 export function DrawerTitle({ className, ...props }: React.ComponentProps<typeof BaseDrawer.Title>) {
-  return <BaseDrawer.Title className={cn('text-lg font-bold uppercase tracking-tight', className)} {...props} />;
+  return (
+    <BaseDrawer.Title className={cn('text-lg font-semibold leading-none tracking-[-0.02em]', className)} {...props} />
+  );
 }
 
 export function DrawerDescription({ className, ...props }: React.ComponentProps<typeof BaseDrawer.Description>) {
-  return <BaseDrawer.Description className={cn('text-sm text-muted-foreground', className)} {...props} />;
+  return <BaseDrawer.Description className={cn('text-sm leading-6 text-muted-foreground', className)} {...props} />;
 }

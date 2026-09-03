@@ -14,7 +14,7 @@ export function Progress({
   return (
     <BaseProgress.Root className={cn('flex w-full flex-col gap-1', className)} {...props}>
       <BaseProgress.Track
-        className={cn('h-2 w-full overflow-hidden border border-border bg-background', radiusVariants({ radius }))}
+        className={cn('h-2 w-full overflow-hidden border border-border bg-secondary', radiusVariants({ radius }))}
       >
         {/*
           Width stays in CSS: Base UI writes the filled width as an inline style
@@ -38,7 +38,7 @@ export function Progress({
 export function ProgressLabel({ className, ...props }: React.ComponentProps<typeof BaseProgress.Label>) {
   return (
     <BaseProgress.Label
-      className={cn('text-xs font-medium uppercase tracking-wide text-muted-foreground', className)}
+      className={cn('text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground', className)}
       {...props}
     />
   );

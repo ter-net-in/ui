@@ -10,14 +10,14 @@ const cardVariants = cva('flex flex-col gap-4 text-card-foreground', {
     variant: {
       default: 'border border-border bg-card',
       outline: 'border border-border bg-transparent',
-      muted: 'border border-transparent bg-muted',
+      muted: 'border border-transparent bg-secondary',
       ghost: 'border border-transparent bg-transparent'
     },
     padding: {
       none: 'p-0',
       sm: 'p-3',
       md: 'p-5',
-      lg: 'p-8'
+      lg: 'p-6'
     },
     corners: {
       none: '',
@@ -125,7 +125,7 @@ export function CardHeader({ className, ...props }: React.ComponentProps<'div'>)
 }
 
 export function CardTitle({ className, ...props }: React.ComponentProps<'div'>) {
-  return <div className={cn('text-lg font-bold uppercase tracking-tight', className)} {...props} />;
+  return <div className={cn('text-lg font-semibold leading-none tracking-[-0.02em]', className)} {...props} />;
 }
 
 export function CardDescription({ className, ...props }: React.ComponentProps<'div'>) {

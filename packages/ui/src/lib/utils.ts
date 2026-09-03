@@ -58,17 +58,17 @@ export type ContainerRadius = NonNullable<ContainerRadiusProps['radius']>;
 /**
  * Shared shadow scale for raised surfaces (dialogs, popovers, toasts).
  *
- * The house shadow is a hard offset block, not a blur — it reads as a second
- * printed layer rather than depth. Sizes are the offset in px.
+ * The house shadow is now quiet and ambient. The system keeps crisp borders for
+ * structure, then uses soft elevation only when a surface genuinely floats.
  */
 export const shadowVariants = cva('ui-shadow', {
   variants: {
     shadow: {
       none: 'shadow-none',
-      sm: 'shadow-[4px_4px_0_0_var(--color-foreground)]',
-      md: 'shadow-[6px_6px_0_0_var(--color-foreground)]',
-      lg: 'shadow-[8px_8px_0_0_var(--color-foreground)]',
-      xl: 'shadow-[12px_12px_0_0_var(--color-foreground)]'
+      sm: 'shadow-[0_4px_12px_var(--shadow-color)]',
+      md: 'shadow-[0_10px_30px_var(--shadow-color)]',
+      lg: 'shadow-[0_18px_44px_var(--shadow-color)]',
+      xl: 'shadow-[0_28px_64px_var(--shadow-color)]'
     }
   },
   defaultVariants: {
@@ -87,7 +87,8 @@ export type Shadow = NonNullable<ShadowProps['shadow']>;
  * its own inset, clamped at 0 so a square container can't produce a negative
  * radius. Menus, selects and comboboxes all pad their popup by `0.25rem`.
  */
-export const NESTED_RADIUS = 'rounded-[max(0px,calc(var(--content-radius,0px)-0.25rem))]';
+export const NESTED_RADIUS =
+  'ui-nested-radius rounded-[max(0px,calc(var(--preview-content-radius,var(--content-radius,0px))-0.25rem))]';
 
 /** Inline style that publishes a container's radius for {@link NESTED_RADIUS}. */
 export function contentRadiusStyle(radius: ContainerRadius | null | undefined): React.CSSProperties {

@@ -27,7 +27,7 @@ export function MenuContent({
         <BaseMenu.Popup
           style={{ ...contentRadiusStyle(radius), ...style }}
           className={cn(
-            'min-w-40 border border-border bg-popover p-1 text-popover-foreground shadow-[6px_6px_0_0_var(--color-foreground)] outline-none',
+            'min-w-40 border border-border bg-popover p-1 text-popover-foreground shadow-[0_10px_30px_var(--shadow-color)] outline-none',
             // Unfold from the trigger's edge instead of the popup's centre.
             '[transform-origin:var(--transform-origin)]',
             containerRadiusVariants({ radius }),
@@ -44,9 +44,9 @@ export function MenuContent({
 }
 
 const itemClasses = cn(
-  'flex cursor-pointer select-none items-center gap-2 px-3 py-1.5 text-sm outline-none',
+  'flex cursor-pointer select-none items-center gap-2 px-3 py-1.5 text-sm leading-5 outline-none',
   NESTED_RADIUS,
-  'data-[highlighted]:bg-foreground data-[highlighted]:text-background',
+  'data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground',
   'data-[disabled]:pointer-events-none data-[disabled]:opacity-40'
 );
 
@@ -57,7 +57,7 @@ export function MenuItem({ className, ...props }: React.ComponentProps<typeof Ba
 export function MenuGroupLabel({ className, ...props }: React.ComponentProps<typeof BaseMenu.GroupLabel>) {
   return (
     <BaseMenu.GroupLabel
-      className={cn('px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.1em] text-muted-foreground', className)}
+      className={cn('px-3 py-1.5 text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground', className)}
       {...props}
     />
   );

@@ -47,7 +47,7 @@ export function FieldsetLegend({ className, ...props }: React.ComponentProps<typ
     <BaseFieldset.Legend
       className={cn(
         'absolute -top-[0.6875rem] left-3 bg-background px-1.5',
-        'text-sm font-bold uppercase tracking-wide text-foreground',
+        'text-sm font-semibold uppercase tracking-[0.04em] text-foreground',
         className
       )}
       {...props}

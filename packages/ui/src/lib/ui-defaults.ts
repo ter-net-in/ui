@@ -17,5 +17,5 @@ export const UI_DEFAULTS = {
   /** default for boxy surfaces (dialogs, menus, cards): none | sm | md | lg */
   containerRadius: 'none',
   /** default for raised surfaces (dialogs, popovers, toasts): none | sm | md | lg | xl */
-  shadow: 'md'
+  shadow: 'sm'
 } as const;

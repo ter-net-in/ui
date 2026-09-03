@@ -21,7 +21,7 @@ export default meta;
 
 export const Playground: StoryObj<{ radius: 'none' | 'sm' | 'md' | 'lg'; shadow: 'none' | 'sm' | 'md' | 'lg' | 'xl' }> =
   {
-    args: { radius: 'md', shadow: 'lg' },
+    args: { radius: 'md', shadow: 'sm' },
     argTypes: {
       radius: { control: 'inline-radio', options: ['none', 'sm', 'md', 'lg'] },
       shadow: { control: 'inline-radio', options: ['none', 'sm', 'md', 'lg', 'xl'] }

@@ -34,7 +34,7 @@ export function CollapsibleTrigger({
   return (
     <BaseCollapsible.Trigger
       className={cn(
-        'flex items-center justify-between gap-2 text-sm font-medium uppercase tracking-wide outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        'flex items-center justify-between gap-2 text-sm font-medium tracking-[-0.01em] outline-none focus-visible:ring-2 focus-visible:ring-ring',
         '[&>svg]:transition-transform [&[data-panel-open]>svg]:rotate-180',
         className
       )}
@@ -66,7 +66,7 @@ export function CollapsiblePanel({
         // CSS rather than Motion, for the reason spelled out in accordion.tsx:
         // Base UI unmounts this panel when its CSS transition ends, and Motion's
         // animations start too late to be seen by that check.
-        'h-[var(--collapsible-panel-height)] overflow-hidden text-sm text-muted-foreground',
+        'h-[var(--collapsible-panel-height)] overflow-hidden bg-secondary text-sm text-muted-foreground',
         'transition-[height,opacity] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none',
         'data-[starting-style]:h-0 data-[starting-style]:opacity-0',
         'data-[ending-style]:h-0 data-[ending-style]:opacity-0',

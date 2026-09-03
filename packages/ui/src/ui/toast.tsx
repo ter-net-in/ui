@@ -71,8 +71,8 @@ function ToastList({ radius, shadow, position }: ToastListProps) {
         containerRadiusVariants({ radius })
       )}
     >
-      <BaseToast.Title className="pr-6 text-sm font-bold uppercase tracking-wide" />
-      <BaseToast.Description className="mt-1 text-sm text-muted-foreground" />
+      <BaseToast.Title className="pr-6 text-sm font-semibold leading-none tracking-[-0.01em]" />
+      <BaseToast.Description className="mt-1 text-sm leading-5 text-muted-foreground" />
       <BaseToast.Close
         className="absolute right-2 top-2 inline-flex size-6 cursor-pointer items-center justify-center text-xs leading-none text-muted-foreground transition-colors outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
         aria-label="Close"

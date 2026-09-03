@@ -1,7 +1,21 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { type ComponentProps, useId } from 'react';
 
 import { Checkbox } from '@/ui/checkbox';
 import { CheckboxGroup } from '@/ui/checkbox-group';
+
+function CheckboxOption({ label, ...props }: ComponentProps<typeof Checkbox> & { label: string }) {
+  const id = useId();
+
+  return (
+    <span className="flex items-center gap-2 text-sm">
+      <Checkbox id={id} {...props} />
+      <label htmlFor={id} className="cursor-pointer">
+        {label}
+      </label>
+    </span>
+  );
+}
 
 const meta = {
   title: 'UI/CheckboxGroup',
@@ -17,15 +31,9 @@ export const Playground: StoryObj<{ orientation: 'vertical' | 'horizontal' }> = 
   argTypes: { orientation: { control: 'inline-radio', options: ['vertical', 'horizontal'] } },
   render: ({ orientation }) => (
     <CheckboxGroup orientation={orientation} defaultValue={['ws']}>
-      <span className="flex items-center gap-2 text-sm">
-        <Checkbox name="http" /> HTTP
-      </span>
-      <span className="flex items-center gap-2 text-sm">
-        <Checkbox name="ws" /> WebSocket
-      </span>
-      <span className="flex items-center gap-2 text-sm">
-        <Checkbox name="ftp" /> FTP
-      </span>
+      <CheckboxOption name="http" label="HTTP" />
+      <CheckboxOption name="ws" label="WebSocket" />
+      <CheckboxOption name="ftp" label="FTP" />
     </CheckboxGroup>
   )
 };
@@ -33,15 +41,9 @@ export const Playground: StoryObj<{ orientation: 'vertical' | 'horizontal' }> = 
 export const Horizontal: Story = {
   render: () => (
     <CheckboxGroup orientation="horizontal" defaultValue={['ws']}>
-      <span className="flex items-center gap-2 text-sm">
-        <Checkbox name="http" /> HTTP
-      </span>
-      <span className="flex items-center gap-2 text-sm">
-        <Checkbox name="ws" /> WebSocket
-      </span>
-      <span className="flex items-center gap-2 text-sm">
-        <Checkbox name="ftp" /> FTP
-      </span>
+      <CheckboxOption name="http" label="HTTP" />
+      <CheckboxOption name="ws" label="WebSocket" />
+      <CheckboxOption name="ftp" label="FTP" />
     </CheckboxGroup>
   )
 };

@@ -30,7 +30,7 @@ export function DialogContent({
           // Tailwind centres with the standalone `translate` property, which
           // composes with the `transform` Motion writes — they don't collide.
           'fixed left-1/2 top-1/2 z-50 grid w-full max-w-md -translate-x-1/2 -translate-y-1/2 gap-4',
-          'border border-border bg-background p-6 outline-none',
+          'border border-border bg-background p-5 outline-none',
           shadowVariants({ shadow }),
           containerRadiusVariants({ radius }),
           className
@@ -53,9 +53,11 @@ export function DialogFooter({ className, ...props }: React.ComponentProps<'div'
 }
 
 export function DialogTitle({ className, ...props }: React.ComponentProps<typeof BaseDialog.Title>) {
-  return <BaseDialog.Title className={cn('text-lg font-bold uppercase tracking-tight', className)} {...props} />;
+  return (
+    <BaseDialog.Title className={cn('text-lg font-semibold leading-none tracking-[-0.02em]', className)} {...props} />
+  );
 }
 
 export function DialogDescription({ className, ...props }: React.ComponentProps<typeof BaseDialog.Description>) {
-  return <BaseDialog.Description className={cn('text-sm text-muted-foreground', className)} {...props} />;
+  return <BaseDialog.Description className={cn('text-sm leading-6 text-muted-foreground', className)} {...props} />;
 }

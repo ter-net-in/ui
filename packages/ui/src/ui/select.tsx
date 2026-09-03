@@ -26,8 +26,8 @@ export function SelectTrigger({
   return (
     <BaseSelect.Trigger
       className={cn(
-        'flex h-10 w-full items-center justify-between gap-2 border border-input bg-background px-3 py-2 text-sm text-foreground outline-none',
-        'focus-visible:ring-2 focus-visible:ring-ring',
+        'flex h-10 w-full items-center justify-between gap-2 border border-input bg-background px-3 py-2 text-sm leading-5 text-foreground outline-none',
+        'focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring',
         'disabled:cursor-not-allowed disabled:opacity-40',
         radiusVariants({ radius }),
         className
@@ -35,7 +35,18 @@ export function SelectTrigger({
       {...props}
     >
       {children}
-      <BaseSelect.Icon className="text-muted-foreground">▾</BaseSelect.Icon>
+      <BaseSelect.Icon className="flex size-4 shrink-0 items-center justify-center text-muted-foreground">
+        <svg
+          viewBox="0 0 16 16"
+          className="size-4"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          aria-hidden="true"
+        >
+          <path d="M4 6l4 4 4-4" />
+        </svg>
+      </BaseSelect.Icon>
     </BaseSelect.Trigger>
   );
 }
@@ -59,7 +70,7 @@ export function SelectContent({
           // Publishes `--content-radius` so items can stay concentric with the popup.
           style={{ ...contentRadiusStyle(radius), ...style }}
           className={cn(
-            'min-w-[var(--anchor-width)] border border-border bg-popover p-1 text-popover-foreground shadow-[6px_6px_0_0_var(--color-foreground)] outline-none',
+            'min-w-[var(--anchor-width)] border border-border bg-popover p-1 text-popover-foreground shadow-[0_10px_30px_var(--shadow-color)] outline-none',
             '[transform-origin:var(--transform-origin)]',
             containerRadiusVariants({ radius }),
             className
@@ -78,15 +89,26 @@ export function SelectItem({ className, children, ...props }: React.ComponentPro
   return (
     <BaseSelect.Item
       className={cn(
-        'flex cursor-pointer items-center justify-between gap-2 px-3 py-1.5 text-sm outline-none select-none',
+        'flex cursor-pointer items-center justify-between gap-2 px-3 py-1.5 text-sm leading-5 outline-none select-none',
         NESTED_RADIUS,
-        'data-[highlighted]:bg-foreground data-[highlighted]:text-background',
+        'data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground',
         className
       )}
       {...props}
     >
       <BaseSelect.ItemText>{children}</BaseSelect.ItemText>
-      <BaseSelect.ItemIndicator>✓</BaseSelect.ItemIndicator>
+      <BaseSelect.ItemIndicator className="text-primary">
+        <svg
+          viewBox="0 0 16 16"
+          className="size-3.5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2.25}
+          aria-hidden="true"
+        >
+          <path d="M3 8l3 3 7-7" />
+        </svg>
+      </BaseSelect.ItemIndicator>
     </BaseSelect.Item>
   );
 }

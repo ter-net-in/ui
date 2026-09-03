@@ -26,7 +26,7 @@ export function AutocompleteInput({
   return (
     <BaseAutocomplete.Input
       className={cn(
-        'flex h-10 w-full border border-input bg-background px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        'flex h-10 w-full border border-input bg-background px-3 py-2 text-sm leading-5 outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring',
         radiusVariants({ radius }),
         className
       )}
@@ -62,7 +62,7 @@ export function AutocompleteContent({
           render={renderPopup}
           {...props}
         >
-          <BaseAutocomplete.Empty className="px-3 py-2 text-sm text-muted-foreground empty:p-0">
+          <BaseAutocomplete.Empty className="px-3 py-2 text-sm leading-5 text-muted-foreground empty:p-0">
             No results.
           </BaseAutocomplete.Empty>
           <BaseAutocomplete.List>{children}</BaseAutocomplete.List>
@@ -76,7 +76,7 @@ export function AutocompleteItem({ className, ...props }: React.ComponentProps<t
   return (
     <BaseAutocomplete.Item
       className={cn(
-        'flex cursor-pointer select-none items-center gap-2 px-3 py-1.5 text-sm outline-none data-[highlighted]:bg-foreground data-[highlighted]:text-background',
+        'flex cursor-pointer select-none items-center gap-2 px-3 py-1.5 text-sm leading-5 outline-none data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground',
         NESTED_RADIUS,
         className
       )}

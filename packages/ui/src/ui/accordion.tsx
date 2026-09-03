@@ -32,6 +32,7 @@ export function Accordion({ className, variant, radius, ...props }: AccordionPro
         // are clipped to it — rounding an item on its own does nothing, because
         // the root's square corners still draw over it.
         'overflow-hidden',
+        variant !== 'ghost' && '[&>[data-slot=accordion-item]]:!rounded-none',
         containerRadiusVariants({ radius }),
         className
       )}
@@ -52,6 +53,7 @@ export function AccordionItem({
 }: React.ComponentProps<typeof BaseAccordion.Item> & ContainerRadiusProps) {
   return (
     <BaseAccordion.Item
+      data-slot="accordion-item"
       className={cn('border-b border-border last:border-b-0', containerRadiusVariants({ radius }), className)}
       {...props}
     />
@@ -67,8 +69,8 @@ export function AccordionTrigger({
     <BaseAccordion.Header>
       <BaseAccordion.Trigger
         className={cn(
-          'flex w-full items-center justify-between gap-2 px-4 py-3 text-left text-sm font-medium uppercase tracking-wide outline-none transition-colors',
-          'hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset',
+          'flex w-full items-center justify-between gap-2 px-4 py-3 text-left text-sm font-medium tracking-[-0.01em] outline-none transition-colors',
+          'hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset',
           '[&>svg]:transition-transform [&[data-panel-open]>svg]:rotate-180',
           className
         )}
@@ -104,7 +106,7 @@ export function AccordionPanel({ className, ...props }: React.ComponentProps<typ
         //
         // `overflow-hidden` makes the height change read as a reveal instead of a
         // squash: the content keeps its natural size and is clipped as it grows.
-        'h-[var(--accordion-panel-height)] overflow-hidden bg-muted/50 text-sm text-muted-foreground',
+        'h-[var(--accordion-panel-height)] overflow-hidden bg-secondary text-sm text-muted-foreground',
         'transition-[height,opacity] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none',
         'data-[starting-style]:h-0 data-[starting-style]:opacity-0',
         'data-[ending-style]:h-0 data-[ending-style]:opacity-0',

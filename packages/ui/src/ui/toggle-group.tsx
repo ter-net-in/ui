@@ -13,7 +13,7 @@ export function ToggleGroup({
   return (
     <BaseToggleGroup
       className={cn(
-        'inline-flex items-center gap-0 overflow-hidden border border-border [&>*]:border-0 [&>*+*]:border-l',
+        'inline-flex items-center gap-0 overflow-hidden border border-border [&>.ui-radius]:!rounded-none [&>*]:border-0 [&>*+*]:border-l',
         containerRadiusVariants({ radius }),
         className
       )}

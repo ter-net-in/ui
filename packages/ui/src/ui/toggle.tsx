@@ -14,10 +14,10 @@ export function Toggle({ className, radius, ...props }: React.ComponentProps<typ
     <BaseToggle
       render={(toggleProps) => <motion.button {...(toggleProps as HTMLMotionProps<'button'>)} {...tap} />}
       className={cn(
-        'inline-flex h-10 items-center justify-center gap-2 border border-border bg-background px-3 text-sm font-medium uppercase tracking-wide text-foreground outline-none transition-colors',
-        'hover:bg-muted',
+        'inline-flex h-10 items-center justify-center gap-2 border border-border bg-background px-3 text-sm font-medium tracking-[-0.01em] text-foreground outline-none transition-colors',
+        'hover:bg-accent hover:text-accent-foreground',
         'focus-visible:ring-2 focus-visible:ring-ring',
-        'data-[pressed]:bg-foreground data-[pressed]:text-background',
+        'data-[pressed]:border-primary data-[pressed]:bg-primary data-[pressed]:text-primary-foreground',
         'disabled:pointer-events-none disabled:opacity-40',
         radiusVariants({ radius }),
         className

@@ -31,41 +31,54 @@ internet-ui design tokens (Tailwind v4). Import once from your global stylesheet
 /*
  * internet-ui — design tokens
  * Swiss / International-Typographic with a brutalist lean:
- * stark mono palette, oversized bold Helvetica, one loud accent, sharp corners,
- * hairline borders.
+ * cool source-paper neutrals, one loud command accent, sharp corners,
+ * hairline borders, and explicit semantic status colors.
  */
 :root {
-  --background: #ffffff;
-  --foreground: #000000;
+  --background: #fcfcfd;
+  --foreground: #0b1020;
 
   --card: #ffffff;
-  --card-foreground: #000000;
+  --card-foreground: #0b1020;
   --popover: #ffffff;
-  --popover-foreground: #000000;
+  --popover-foreground: #0b1020;
 
   --primary: #0047ff;
   --primary-foreground: #ffffff;
 
-  --secondary: #f4f4f4;
-  --secondary-foreground: #000000;
+  --secondary: #f6f8fb;
+  --secondary-foreground: #111827;
 
-  --muted: #f4f4f4;
-  --muted-foreground: #888888;
+  --muted: #f3f6fb;
+  --muted-foreground: #5f6b7a;
 
-  --accent: #0047ff;
-  --accent-foreground: #ffffff;
+  --accent: #eef4ff;
+  --accent-foreground: #0038cc;
 
-  --destructive: #e00000;
+  --destructive: #b91c1c;
   --destructive-foreground: #ffffff;
+
+  --success: #0f7b4f;
+  --success-foreground: #ffffff;
+  --success-muted: #e8f7ef;
+
+  --warning: #b45309;
+  --warning-foreground: #ffffff;
+  --warning-muted: #fff4dc;
+
+  --info: #0f5bd8;
+  --info-foreground: #ffffff;
+  --info-muted: #eaf2ff;
 
   /*
    * Hairline borders, not black rules. Translucent so a border tints toward
    * whatever surface it sits on (card, muted, an image) instead of stamping a
    * fixed grey over it. Text and accents carry the contrast; edges only imply it.
    */
-  --border: rgba(0, 0, 0, 0.16);
-  --input: rgba(0, 0, 0, 0.16);
+  --border: rgba(15, 23, 42, 0.14);
+  --input: rgba(15, 23, 42, 0.18);
   --ring: #0047ff;
+  --shadow-color: rgba(15, 23, 42, 0.16);
 
   /*
    * Syntax colours, used only inside a highlighted Code block. Three inks and no
@@ -75,48 +88,61 @@ internet-ui design tokens (Tailwind v4). Import once from your global stylesheet
    * rather than as a rainbow.
    */
   --syntax-keyword: #0047ff;
-  --syntax-name: #6c2bd9;
-  --syntax-literal: #0b6e4f;
+  --syntax-name: #6d28d9;
+  --syntax-literal: #047857;
 
   /* sharp corners by default */
   --radius: 0px;
 
-  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "SFMono-Regular", "Cascadia Code", "Liberation Mono", Menlo, Consolas, monospace;
 }
 
 .dark {
-  --background: #000000;
-  --foreground: #ffffff;
+  --background: #060812;
+  --foreground: #f8fafc;
 
-  --card: #000000;
-  --card-foreground: #ffffff;
-  --popover: #000000;
-  --popover-foreground: #ffffff;
+  --card: #0a0d18;
+  --card-foreground: #f8fafc;
+  --popover: #0b0f1c;
+  --popover-foreground: #f8fafc;
 
-  --primary: #0047ff;
+  --primary: #4d7cff;
   --primary-foreground: #ffffff;
 
-  --secondary: #141414;
-  --secondary-foreground: #ffffff;
+  --secondary: #111827;
+  --secondary-foreground: #f8fafc;
 
-  --muted: #141414;
-  --muted-foreground: #888888;
+  --muted: #101624;
+  --muted-foreground: #9aa4b2;
 
-  --accent: #0047ff;
-  --accent-foreground: #ffffff;
+  --accent: #12244a;
+  --accent-foreground: #dbe6ff;
 
-  --destructive: #ff4d4d;
-  --destructive-foreground: #000000;
+  --destructive: #ff5f57;
+  --destructive-foreground: #140403;
 
-  --border: rgba(255, 255, 255, 0.18);
-  --input: rgba(255, 255, 255, 0.18);
-  --ring: #0047ff;
+  --success: #35d08b;
+  --success-foreground: #03140c;
+  --success-muted: #0d2b1d;
+
+  --warning: #fbbf24;
+  --warning-foreground: #1c1202;
+  --warning-muted: #33250c;
+
+  --info: #7aa2ff;
+  --info-foreground: #06112e;
+  --info-muted: #102246;
+
+  --border: rgba(226, 232, 240, 0.14);
+  --input: rgba(226, 232, 240, 0.18);
+  --ring: #7aa2ff;
+  --shadow-color: rgba(0, 0, 0, 0.42);
 
   /* Lifted off the accent: #0047ff as *text* on black is barely legible. */
-  --syntax-keyword: #7aa2ff;
+  --syntax-keyword: #9ab8ff;
   --syntax-name: #c4a8ff;
-  --syntax-literal: #3ddc97;
+  --syntax-literal: #5ee0a0;
 }
 
 @theme inline {
@@ -136,6 +162,15 @@ internet-ui design tokens (Tailwind v4). Import once from your global stylesheet
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-success-muted: var(--success-muted);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-warning-muted: var(--warning-muted);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-info-muted: var(--info-muted);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
@@ -156,11 +191,19 @@ internet-ui design tokens (Tailwind v4). Import once from your global stylesheet
   * {
     border-color: var(--color-border);
   }
+  ::selection {
+    background-color: var(--color-primary);
+    color: var(--color-primary-foreground);
+  }
   body {
+    accent-color: var(--color-primary);
     background-color: var(--color-background);
     color: var(--color-foreground);
+    caret-color: var(--color-primary);
     font-family: var(--font-sans);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
   h1,
   h2,
@@ -212,7 +255,7 @@ export const UI_DEFAULTS = {
   /** default for boxy surfaces (dialogs, menus, cards): none | sm | md | lg */
   containerRadius: 'none',
   /** default for raised surfaces (dialogs, popovers, toasts): none | sm | md | lg | xl */
-  shadow: 'md'
+  shadow: 'sm'
 } as const;
 ````
 
@@ -288,17 +331,17 @@ export type ContainerRadius = NonNullable<ContainerRadiusProps['radius']>;
 /**
  * Shared shadow scale for raised surfaces (dialogs, popovers, toasts).
  *
- * The house shadow is a hard offset block, not a blur — it reads as a second
- * printed layer rather than depth. Sizes are the offset in px.
+ * The house shadow is now quiet and ambient. The system keeps crisp borders for
+ * structure, then uses soft elevation only when a surface genuinely floats.
  */
 export const shadowVariants = cva('ui-shadow', {
   variants: {
     shadow: {
       none: 'shadow-none',
-      sm: 'shadow-[4px_4px_0_0_var(--color-foreground)]',
-      md: 'shadow-[6px_6px_0_0_var(--color-foreground)]',
-      lg: 'shadow-[8px_8px_0_0_var(--color-foreground)]',
-      xl: 'shadow-[12px_12px_0_0_var(--color-foreground)]'
+      sm: 'shadow-[0_4px_12px_var(--shadow-color)]',
+      md: 'shadow-[0_10px_30px_var(--shadow-color)]',
+      lg: 'shadow-[0_18px_44px_var(--shadow-color)]',
+      xl: 'shadow-[0_28px_64px_var(--shadow-color)]'
     }
   },
   defaultVariants: {
@@ -317,7 +360,8 @@ export type Shadow = NonNullable<ShadowProps['shadow']>;
  * its own inset, clamped at 0 so a square container can't produce a negative
  * radius. Menus, selects and comboboxes all pad their popup by `0.25rem`.
  */
-export const NESTED_RADIUS = 'rounded-[max(0px,calc(var(--content-radius,0px)-0.25rem))]';
+export const NESTED_RADIUS =
+  'ui-nested-radius rounded-[max(0px,calc(var(--preview-content-radius,var(--content-radius,0px))-0.25rem))]';
 
 /** Inline style that publishes a container's radius for {@link NESTED_RADIUS}. */
 export function contentRadiusStyle(radius: ContainerRadius | null | undefined): React.CSSProperties {
@@ -862,6 +906,7 @@ export function Accordion({ className, variant, radius, ...props }: AccordionPro
         // are clipped to it — rounding an item on its own does nothing, because
         // the root's square corners still draw over it.
         'overflow-hidden',
+        variant !== 'ghost' && '[&>[data-slot=accordion-item]]:!rounded-none',
         containerRadiusVariants({ radius }),
         className
       )}
@@ -882,6 +927,7 @@ export function AccordionItem({
 }: React.ComponentProps<typeof BaseAccordion.Item> & ContainerRadiusProps) {
   return (
     <BaseAccordion.Item
+      data-slot="accordion-item"
       className={cn('border-b border-border last:border-b-0', containerRadiusVariants({ radius }), className)}
       {...props}
     />
@@ -897,8 +943,8 @@ export function AccordionTrigger({
     <BaseAccordion.Header>
       <BaseAccordion.Trigger
         className={cn(
-          'flex w-full items-center justify-between gap-2 px-4 py-3 text-left text-sm font-medium uppercase tracking-wide outline-none transition-colors',
-          'hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset',
+          'flex w-full items-center justify-between gap-2 px-4 py-3 text-left text-sm font-medium tracking-[-0.01em] outline-none transition-colors',
+          'hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset',
           '[&>svg]:transition-transform [&[data-panel-open]>svg]:rotate-180',
           className
         )}
@@ -934,7 +980,7 @@ export function AccordionPanel({ className, ...props }: React.ComponentProps<typ
         //
         // `overflow-hidden` makes the height change read as a reveal instead of a
         // squash: the content keeps its natural size and is clipped as it grows.
-        'h-[var(--accordion-panel-height)] overflow-hidden bg-muted/50 text-sm text-muted-foreground',
+        'h-[var(--accordion-panel-height)] overflow-hidden bg-secondary text-sm text-muted-foreground',
         'transition-[height,opacity] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none',
         'data-[starting-style]:h-0 data-[starting-style]:opacity-0',
         'data-[ending-style]:h-0 data-[ending-style]:opacity-0',
@@ -990,7 +1036,7 @@ export function AlertDialogContent({
       <BaseAlertDialog.Popup
         className={cn(
           'fixed left-1/2 top-1/2 z-50 grid w-full max-w-md -translate-x-1/2 -translate-y-1/2 gap-4',
-          'border border-border bg-background p-6 outline-none',
+          'border border-border bg-background p-5 outline-none',
           shadowVariants({ shadow }),
           containerRadiusVariants({ radius }),
           className
@@ -1005,14 +1051,21 @@ export function AlertDialogContent({
 }
 
 export function AlertDialogTitle({ className, ...props }: React.ComponentProps<typeof BaseAlertDialog.Title>) {
-  return <BaseAlertDialog.Title className={cn('text-lg font-bold uppercase tracking-tight', className)} {...props} />;
+  return (
+    <BaseAlertDialog.Title
+      className={cn('text-lg font-semibold leading-none tracking-[-0.02em]', className)}
+      {...props}
+    />
+  );
 }
 
 export function AlertDialogDescription({
   className,
   ...props
 }: React.ComponentProps<typeof BaseAlertDialog.Description>) {
-  return <BaseAlertDialog.Description className={cn('text-sm text-muted-foreground', className)} {...props} />;
+  return (
+    <BaseAlertDialog.Description className={cn('text-sm leading-6 text-muted-foreground', className)} {...props} />
+  );
 }
 
 export function AlertDialogFooter({ className, ...props }: React.ComponentProps<'div'>) {
@@ -1060,7 +1113,7 @@ export function AutocompleteInput({
   return (
     <BaseAutocomplete.Input
       className={cn(
-        'flex h-10 w-full border border-input bg-background px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        'flex h-10 w-full border border-input bg-background px-3 py-2 text-sm leading-5 outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring',
         radiusVariants({ radius }),
         className
       )}
@@ -1096,7 +1149,7 @@ export function AutocompleteContent({
           render={renderPopup}
           {...props}
         >
-          <BaseAutocomplete.Empty className="px-3 py-2 text-sm text-muted-foreground empty:p-0">
+          <BaseAutocomplete.Empty className="px-3 py-2 text-sm leading-5 text-muted-foreground empty:p-0">
             No results.
           </BaseAutocomplete.Empty>
           <BaseAutocomplete.List>{children}</BaseAutocomplete.List>
@@ -1110,7 +1163,7 @@ export function AutocompleteItem({ className, ...props }: React.ComponentProps<t
   return (
     <BaseAutocomplete.Item
       className={cn(
-        'flex cursor-pointer select-none items-center gap-2 px-3 py-1.5 text-sm outline-none data-[highlighted]:bg-foreground data-[highlighted]:text-background',
+        'flex cursor-pointer select-none items-center gap-2 px-3 py-1.5 text-sm leading-5 outline-none data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground',
         NESTED_RADIUS,
         className
       )}
@@ -1189,15 +1242,16 @@ import { useTapMotion } from '@/lib/motion';
 import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap border font-medium uppercase tracking-wide transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:pointer-events-none disabled:opacity-40 [&_svg]:size-4 [&_svg]:shrink-0',
+  'inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap border font-medium tracking-[-0.01em] transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:pointer-events-none disabled:opacity-40 [&_svg]:size-4 [&_svg]:shrink-0',
   {
     variants: {
       variant: {
         default: 'border-primary bg-primary text-primary-foreground hover:bg-background hover:text-primary',
-        outline: 'border-border bg-background text-foreground hover:bg-foreground hover:text-background',
-        ghost: 'border-transparent bg-transparent text-foreground hover:bg-muted',
+        outline:
+          'border-border bg-background text-foreground hover:border-primary hover:bg-accent hover:text-accent-foreground',
+        ghost: 'border-transparent bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground',
         destructive:
-          'border-destructive bg-destructive text-destructive-foreground hover:bg-background hover:text-destructive'
+          'border-destructive bg-destructive text-destructive-foreground hover:bg-destructive/10 hover:text-destructive'
       },
       size: {
         default: 'h-10 px-4 text-sm',
@@ -1257,14 +1311,14 @@ const cardVariants = cva('flex flex-col gap-4 text-card-foreground', {
     variant: {
       default: 'border border-border bg-card',
       outline: 'border border-border bg-transparent',
-      muted: 'border border-transparent bg-muted',
+      muted: 'border border-transparent bg-secondary',
       ghost: 'border border-transparent bg-transparent'
     },
     padding: {
       none: 'p-0',
       sm: 'p-3',
       md: 'p-5',
-      lg: 'p-8'
+      lg: 'p-6'
     },
     corners: {
       none: '',
@@ -1372,7 +1426,7 @@ export function CardHeader({ className, ...props }: React.ComponentProps<'div'>)
 }
 
 export function CardTitle({ className, ...props }: React.ComponentProps<'div'>) {
-  return <div className={cn('text-lg font-bold uppercase tracking-tight', className)} {...props} />;
+  return <div className={cn('text-lg font-semibold leading-none tracking-[-0.02em]', className)} {...props} />;
 }
 
 export function CardDescription({ className, ...props }: React.ComponentProps<'div'>) {
@@ -1536,7 +1590,7 @@ import { type Language, type TokenKind, tokenize } from '@/lib/highlight';
 import { useTapMotion } from '@/lib/motion';
 import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
 
-const codeVariants = cva('flex w-full min-w-0 flex-col overflow-hidden font-mono font-bold', {
+const codeVariants = cva('flex w-full min-w-0 flex-col overflow-hidden font-mono font-medium', {
   variants: {
     variant: {
       default: 'border-l-[3px] border-l-primary bg-primary/[0.06] text-foreground',
@@ -1575,7 +1629,7 @@ const SIZES = {
     row: 'gap-1.5 px-2.5 py-1.5',
     inset: 'pr-1',
     button: '-my-1 size-6 [&_svg]:size-3.5',
-    label: 'text-[0.6875rem]'
+    label: 'text-xs'
   },
   default: {
     header: 'px-3 py-1.5',
@@ -1600,7 +1654,7 @@ const SIZES = {
  */
 const CONTENT = 'min-w-0 flex-1 overflow-x-auto whitespace-pre';
 
-const HEADER = 'flex items-center justify-between gap-2 border-b border-border';
+const HEADER = 'flex items-center justify-between gap-2 border-b border-border font-semibold tracking-[-0.01em]';
 
 /**
  * Token colours. Three inks and no more, defined in the theme: the house blue for
@@ -1913,7 +1967,7 @@ export function CollapsibleTrigger({
   return (
     <BaseCollapsible.Trigger
       className={cn(
-        'flex items-center justify-between gap-2 text-sm font-medium uppercase tracking-wide outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        'flex items-center justify-between gap-2 text-sm font-medium tracking-[-0.01em] outline-none focus-visible:ring-2 focus-visible:ring-ring',
         '[&>svg]:transition-transform [&[data-panel-open]>svg]:rotate-180',
         className
       )}
@@ -1945,7 +1999,7 @@ export function CollapsiblePanel({
         // CSS rather than Motion, for the reason spelled out in accordion.tsx:
         // Base UI unmounts this panel when its CSS transition ends, and Motion's
         // animations start too late to be seen by that check.
-        'h-[var(--collapsible-panel-height)] overflow-hidden text-sm text-muted-foreground',
+        'h-[var(--collapsible-panel-height)] overflow-hidden bg-secondary text-sm text-muted-foreground',
         'transition-[height,opacity] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none',
         'data-[starting-style]:h-0 data-[starting-style]:opacity-0',
         'data-[ending-style]:h-0 data-[ending-style]:opacity-0',
@@ -1999,7 +2053,7 @@ export function ComboboxInput({
   return (
     <BaseCombobox.Input
       className={cn(
-        'flex h-10 w-full border border-input bg-background px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        'flex h-10 w-full border border-input bg-background px-3 py-2 text-sm leading-5 outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring',
         radiusVariants({ radius }),
         className
       )}
@@ -2027,14 +2081,14 @@ export function ComboboxContent({
           // Publishes `--content-radius` so items can stay concentric with the popup.
           style={{ ...contentRadiusStyle(radius), ...style }}
           className={cn(
-            'max-h-64 min-w-[var(--anchor-width)] overflow-y-auto border border-border bg-popover p-1 text-popover-foreground shadow-[6px_6px_0_0_var(--color-foreground)] outline-none',
+            'max-h-64 min-w-[var(--anchor-width)] overflow-y-auto border border-border bg-popover p-1 text-popover-foreground shadow-[0_10px_30px_var(--shadow-color)] outline-none',
             containerRadiusVariants({ radius }),
             className
           )}
           render={renderPopup}
           {...props}
         >
-          <BaseCombobox.Empty className="px-3 py-2 text-sm text-muted-foreground empty:p-0">
+          <BaseCombobox.Empty className="px-3 py-2 text-sm leading-5 text-muted-foreground empty:p-0">
             No results.
           </BaseCombobox.Empty>
           <BaseCombobox.List>{children}</BaseCombobox.List>
@@ -2048,7 +2102,7 @@ export function ComboboxItem({ className, children, ...props }: React.ComponentP
   return (
     <BaseCombobox.Item
       className={cn(
-        'flex cursor-pointer select-none items-center justify-between gap-2 px-3 py-1.5 text-sm outline-none data-[highlighted]:bg-foreground data-[highlighted]:text-background',
+        'flex cursor-pointer select-none items-center justify-between gap-2 px-3 py-1.5 text-sm leading-5 outline-none data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground',
         NESTED_RADIUS,
         className
       )}
@@ -2101,7 +2155,7 @@ export function ContextMenuContent({
         <BaseContextMenu.Popup
           style={{ ...contentRadiusStyle(radius), ...style }}
           className={cn(
-            'min-w-40 border border-border bg-popover p-1 text-popover-foreground shadow-[6px_6px_0_0_var(--color-foreground)] outline-none',
+            'min-w-40 border border-border bg-popover p-1 text-popover-foreground shadow-[0_10px_30px_var(--shadow-color)] outline-none',
             '[transform-origin:var(--transform-origin)]',
             containerRadiusVariants({ radius }),
             className
@@ -2120,9 +2174,9 @@ export function ContextMenuItem({ className, ...props }: React.ComponentProps<ty
   return (
     <BaseContextMenu.Item
       className={cn(
-        'flex cursor-pointer select-none items-center gap-2 px-3 py-1.5 text-sm outline-none',
+        'flex cursor-pointer select-none items-center gap-2 px-3 py-1.5 text-sm leading-5 outline-none',
         NESTED_RADIUS,
-        'data-[highlighted]:bg-foreground data-[highlighted]:text-background',
+        'data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground',
         'data-[disabled]:pointer-events-none data-[disabled]:opacity-40',
         className
       )}
@@ -2180,7 +2234,7 @@ export function DialogContent({
           // Tailwind centres with the standalone `translate` property, which
           // composes with the `transform` Motion writes — they don't collide.
           'fixed left-1/2 top-1/2 z-50 grid w-full max-w-md -translate-x-1/2 -translate-y-1/2 gap-4',
-          'border border-border bg-background p-6 outline-none',
+          'border border-border bg-background p-5 outline-none',
           shadowVariants({ shadow }),
           containerRadiusVariants({ radius }),
           className
@@ -2203,11 +2257,13 @@ export function DialogFooter({ className, ...props }: React.ComponentProps<'div'
 }
 
 export function DialogTitle({ className, ...props }: React.ComponentProps<typeof BaseDialog.Title>) {
-  return <BaseDialog.Title className={cn('text-lg font-bold uppercase tracking-tight', className)} {...props} />;
+  return (
+    <BaseDialog.Title className={cn('text-lg font-semibold leading-none tracking-[-0.02em]', className)} {...props} />
+  );
 }
 
 export function DialogDescription({ className, ...props }: React.ComponentProps<typeof BaseDialog.Description>) {
-  return <BaseDialog.Description className={cn('text-sm text-muted-foreground', className)} {...props} />;
+  return <BaseDialog.Description className={cn('text-sm leading-6 text-muted-foreground', className)} {...props} />;
 }
 ````
 
@@ -2328,7 +2384,7 @@ export function DataTable<TData>({
           aria-label={searchPlaceholder}
           className="max-w-sm"
         />
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+        <div className="flex items-center gap-2 text-sm leading-5 text-muted-foreground">
           <span>Rows per page</span>
           <Select
             value={String(table.getState().pagination.pageSize)}
@@ -2349,12 +2405,15 @@ export function DataTable<TData>({
       </div>
 
       <div className={cn('overflow-x-auto border border-border bg-background', containerRadiusVariants({ radius }))}>
-        <table className="w-full border-collapse text-sm">
-          <thead className="bg-muted text-left">
+        <table className="w-full border-collapse text-sm leading-5">
+          <thead className="bg-secondary text-left">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id} className="border-b border-border">
                 {headerGroup.headers.map((header) => (
-                  <th key={header.id} className="h-11 whitespace-nowrap px-3 font-bold uppercase tracking-wide">
+                  <th
+                    key={header.id}
+                    className="h-11 whitespace-nowrap px-3 text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground"
+                  >
                     {header.isPlaceholder ? null : header.column.getCanSort() ? (
                       <button
                         type="button"
@@ -2384,7 +2443,7 @@ export function DataTable<TData>({
                 <tr
                   key={row.id}
                   data-state={row.getIsSelected() ? 'selected' : undefined}
-                  className="border-b border-border transition-colors last:border-b-0 hover:bg-muted/50 data-[state=selected]:bg-muted"
+                  className="border-b border-border transition-colors last:border-b-0 hover:bg-accent/70 data-[state=selected]:bg-accent"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <td key={cell.id} className="h-12 whitespace-nowrap px-3">
@@ -2404,7 +2463,7 @@ export function DataTable<TData>({
         </table>
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
+      <div className="flex flex-wrap items-center justify-between gap-3 text-sm leading-5">
         <span className="text-muted-foreground">
           {enableRowSelection
             ? `${table.getFilteredSelectedRowModel().rows.length} of ${table.getFilteredRowModel().rows.length} row(s) selected`
@@ -2518,7 +2577,7 @@ export function DrawerContent({
       <BaseDrawer.Viewport className="fixed inset-y-0 right-0 z-50 flex">
         <BaseDrawer.Popup
           className={cn(
-            'flex w-80 max-w-[90vw] flex-col gap-4 border-l border-border bg-background p-6 outline-none',
+            'flex w-80 max-w-[90vw] flex-col gap-4 border-l border-border bg-background p-5 outline-none',
             // Drawer motion is CSS rather than Motion, and deliberately so: during a
             // swipe Base UI drives this element by writing `transform` directly, so
             // a `motion.div` — which owns `transform` — would stop the sheet
@@ -2534,6 +2593,7 @@ export function DrawerContent({
             // No easing while the finger is down — the sheet must track it 1:1.
             'data-[swiping]:transition-none',
             containerRadiusVariants({ radius }),
+            'ui-drawer-content rounded-r-none [border-bottom-right-radius:0] [border-top-right-radius:0]',
             className
           )}
           {...props}
@@ -2546,11 +2606,13 @@ export function DrawerContent({
 }
 
 export function DrawerTitle({ className, ...props }: React.ComponentProps<typeof BaseDrawer.Title>) {
-  return <BaseDrawer.Title className={cn('text-lg font-bold uppercase tracking-tight', className)} {...props} />;
+  return (
+    <BaseDrawer.Title className={cn('text-lg font-semibold leading-none tracking-[-0.02em]', className)} {...props} />
+  );
 }
 
 export function DrawerDescription({ className, ...props }: React.ComponentProps<typeof BaseDrawer.Description>) {
-  return <BaseDrawer.Description className={cn('text-sm text-muted-foreground', className)} {...props} />;
+  return <BaseDrawer.Description className={cn('text-sm leading-6 text-muted-foreground', className)} {...props} />;
 }
 ````
 
@@ -2580,7 +2642,7 @@ export function Field({ className, ...props }: React.ComponentProps<typeof BaseF
 export function FieldLabel({ className, ...props }: React.ComponentProps<typeof BaseField.Label>) {
   return (
     <BaseField.Label
-      className={cn('text-xs font-semibold uppercase tracking-[0.1em] text-foreground', className)}
+      className={cn('cursor-pointer text-xs font-medium uppercase tracking-[0.08em] text-foreground', className)}
       {...props}
     />
   );
@@ -2594,7 +2656,7 @@ export function FieldControl({
   return (
     <BaseField.Control
       className={cn(
-        'flex h-10 w-full border border-input bg-background px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        'flex h-10 w-full border border-input bg-background px-3 py-2 text-sm leading-5 outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring data-[invalid]:border-destructive data-[invalid]:bg-destructive/5',
         radiusVariants({ radius }),
         className
       )}
@@ -2608,7 +2670,7 @@ export function FieldDescription({ className, ...props }: React.ComponentProps<t
 }
 
 export function FieldError({ className, ...props }: React.ComponentProps<typeof BaseField.Error>) {
-  return <BaseField.Error className={cn('text-xs text-destructive', className)} {...props} />;
+  return <BaseField.Error className={cn('text-xs font-medium text-destructive', className)} {...props} />;
 }
 ````
 
@@ -2673,7 +2735,7 @@ export function FieldsetLegend({ className, ...props }: React.ComponentProps<typ
     <BaseFieldset.Legend
       className={cn(
         'absolute -top-[0.6875rem] left-3 bg-background px-1.5',
-        'text-sm font-bold uppercase tracking-wide text-foreground',
+        'text-sm font-semibold uppercase tracking-[0.04em] text-foreground',
         className
       )}
       {...props}
@@ -2733,11 +2795,11 @@ export function Input({ className, radius, ...props }: InputProps) {
   return (
     <BaseInput
       className={cn(
-        'flex h-10 w-full border border-input bg-background px-3 py-2 text-sm text-foreground outline-none transition-colors',
+        'flex h-10 w-full border border-input bg-background px-3 py-2 text-sm leading-5 text-foreground outline-none transition-colors',
         'placeholder:text-muted-foreground',
-        'focus-visible:ring-2 focus-visible:ring-ring',
+        'focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring',
         'disabled:cursor-not-allowed disabled:opacity-40',
-        'data-[invalid]:border-destructive',
+        'data-[invalid]:border-destructive data-[invalid]:bg-destructive/5',
         radiusVariants({ radius }),
         className
       )}
@@ -2788,7 +2850,7 @@ export function MenuContent({
         <BaseMenu.Popup
           style={{ ...contentRadiusStyle(radius), ...style }}
           className={cn(
-            'min-w-40 border border-border bg-popover p-1 text-popover-foreground shadow-[6px_6px_0_0_var(--color-foreground)] outline-none',
+            'min-w-40 border border-border bg-popover p-1 text-popover-foreground shadow-[0_10px_30px_var(--shadow-color)] outline-none',
             // Unfold from the trigger's edge instead of the popup's centre.
             '[transform-origin:var(--transform-origin)]',
             containerRadiusVariants({ radius }),
@@ -2805,9 +2867,9 @@ export function MenuContent({
 }
 
 const itemClasses = cn(
-  'flex cursor-pointer select-none items-center gap-2 px-3 py-1.5 text-sm outline-none',
+  'flex cursor-pointer select-none items-center gap-2 px-3 py-1.5 text-sm leading-5 outline-none',
   NESTED_RADIUS,
-  'data-[highlighted]:bg-foreground data-[highlighted]:text-background',
+  'data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground',
   'data-[disabled]:pointer-events-none data-[disabled]:opacity-40'
 );
 
@@ -2818,7 +2880,7 @@ export function MenuItem({ className, ...props }: React.ComponentProps<typeof Ba
 export function MenuGroupLabel({ className, ...props }: React.ComponentProps<typeof BaseMenu.GroupLabel>) {
   return (
     <BaseMenu.GroupLabel
-      className={cn('px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.1em] text-muted-foreground', className)}
+      className={cn('px-3 py-1.5 text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground', className)}
       {...props}
     />
   );
@@ -2917,7 +2979,7 @@ export function Meter({
   return (
     <BaseMeter.Root className={cn('flex w-full flex-col gap-1', className)} {...props}>
       <BaseMeter.Track
-        className={cn('h-2 w-full overflow-hidden border border-border bg-background', radiusVariants({ radius }))}
+        className={cn('h-2 w-full overflow-hidden border border-border bg-secondary', radiusVariants({ radius }))}
       >
         {/* Width is CSS-driven for the same reason as Progress — see progress.tsx. */}
         <BaseMeter.Indicator className="h-full bg-primary transition-[width] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]" />
@@ -2930,7 +2992,7 @@ export function Meter({
 export function MeterLabel({ className, ...props }: React.ComponentProps<typeof BaseMeter.Label>) {
   return (
     <BaseMeter.Label
-      className={cn('text-xs font-medium uppercase tracking-wide text-muted-foreground', className)}
+      className={cn('text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground', className)}
       {...props}
     />
   );
@@ -2976,7 +3038,7 @@ export function NavigationMenu({
         <BaseNavigationMenu.Positioner className="z-50" sideOffset={8}>
           <BaseNavigationMenu.Popup
             className={cn(
-              'border border-border bg-popover text-popover-foreground shadow-[6px_6px_0_0_var(--color-foreground)] outline-none',
+              'border border-border bg-popover text-popover-foreground shadow-[0_10px_30px_var(--shadow-color)] outline-none',
               // Base UI measures each panel and publishes the target box as CSS
               // variables (`auto` while a single panel is open, pixel values while
               // switching). Transitioning them is what makes the popup morph
@@ -3011,7 +3073,7 @@ export function NavigationMenuTrigger({
   return (
     <BaseNavigationMenu.Trigger
       className={cn(
-        'px-3 py-2 text-sm font-medium uppercase tracking-wide outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring',
+        'px-3 py-2 text-sm font-medium tracking-[-0.01em] outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring',
         className
       )}
       {...props}
@@ -3044,7 +3106,10 @@ export function NavigationMenuContent({
 export function NavigationMenuLink({ className, ...props }: React.ComponentProps<typeof BaseNavigationMenu.Link>) {
   return (
     <BaseNavigationMenu.Link
-      className={cn('block px-3 py-2 text-sm outline-none hover:bg-muted focus-visible:bg-muted', className)}
+      className={cn(
+        'block px-3 py-2 text-sm leading-5 outline-none hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent focus-visible:text-accent-foreground',
+        className
+      )}
       {...props}
     />
   );
@@ -3086,7 +3151,7 @@ export function NumberField({
         <BaseNumberField.Decrement className="flex w-9 items-center justify-center border-r border-border text-lg outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset">
           −
         </BaseNumberField.Decrement>
-        <BaseNumberField.Input className="w-16 bg-transparent px-2 text-center text-sm tabular-nums outline-none" />
+        <BaseNumberField.Input className="w-16 bg-transparent px-2 text-center text-sm leading-5 tabular-nums outline-none" />
         <BaseNumberField.Increment className="flex w-9 items-center justify-center border-l border-border text-lg outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset">
           +
         </BaseNumberField.Increment>
@@ -3201,11 +3266,13 @@ export function PopoverContent({
 }
 
 export function PopoverTitle({ className, ...props }: React.ComponentProps<typeof BasePopover.Title>) {
-  return <BasePopover.Title className={cn('text-sm font-bold uppercase tracking-wide', className)} {...props} />;
+  return (
+    <BasePopover.Title className={cn('text-sm font-semibold leading-none tracking-[-0.01em]', className)} {...props} />
+  );
 }
 
 export function PopoverDescription({ className, ...props }: React.ComponentProps<typeof BasePopover.Description>) {
-  return <BasePopover.Description className={cn('text-sm text-muted-foreground', className)} {...props} />;
+  return <BasePopover.Description className={cn('text-sm leading-6 text-muted-foreground', className)} {...props} />;
 }
 ````
 
@@ -3247,7 +3314,7 @@ export function PreviewCardContent({
       <BasePreviewCard.Positioner sideOffset={sideOffset} className="z-50">
         <BasePreviewCard.Popup
           className={cn(
-            'w-72 border border-border bg-popover p-4 text-popover-foreground shadow-[6px_6px_0_0_var(--color-foreground)] outline-none',
+            'w-72 border border-border bg-popover p-4 text-popover-foreground shadow-[0_10px_30px_var(--shadow-color)] outline-none',
             '[transform-origin:var(--transform-origin)]',
             containerRadiusVariants({ radius }),
             className
@@ -3291,7 +3358,7 @@ export function Progress({
   return (
     <BaseProgress.Root className={cn('flex w-full flex-col gap-1', className)} {...props}>
       <BaseProgress.Track
-        className={cn('h-2 w-full overflow-hidden border border-border bg-background', radiusVariants({ radius }))}
+        className={cn('h-2 w-full overflow-hidden border border-border bg-secondary', radiusVariants({ radius }))}
       >
         {/*
           Width stays in CSS: Base UI writes the filled width as an inline style
@@ -3315,7 +3382,7 @@ export function Progress({
 export function ProgressLabel({ className, ...props }: React.ComponentProps<typeof BaseProgress.Label>) {
   return (
     <BaseProgress.Label
-      className={cn('text-xs font-medium uppercase tracking-wide text-muted-foreground', className)}
+      className={cn('text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground', className)}
       {...props}
     />
   );
@@ -3508,8 +3575,8 @@ export function SelectTrigger({
   return (
     <BaseSelect.Trigger
       className={cn(
-        'flex h-10 w-full items-center justify-between gap-2 border border-input bg-background px-3 py-2 text-sm text-foreground outline-none',
-        'focus-visible:ring-2 focus-visible:ring-ring',
+        'flex h-10 w-full items-center justify-between gap-2 border border-input bg-background px-3 py-2 text-sm leading-5 text-foreground outline-none',
+        'focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring',
         'disabled:cursor-not-allowed disabled:opacity-40',
         radiusVariants({ radius }),
         className
@@ -3517,7 +3584,18 @@ export function SelectTrigger({
       {...props}
     >
       {children}
-      <BaseSelect.Icon className="text-muted-foreground">▾</BaseSelect.Icon>
+      <BaseSelect.Icon className="flex size-4 shrink-0 items-center justify-center text-muted-foreground">
+        <svg
+          viewBox="0 0 16 16"
+          className="size-4"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          aria-hidden="true"
+        >
+          <path d="M4 6l4 4 4-4" />
+        </svg>
+      </BaseSelect.Icon>
     </BaseSelect.Trigger>
   );
 }
@@ -3541,7 +3619,7 @@ export function SelectContent({
           // Publishes `--content-radius` so items can stay concentric with the popup.
           style={{ ...contentRadiusStyle(radius), ...style }}
           className={cn(
-            'min-w-[var(--anchor-width)] border border-border bg-popover p-1 text-popover-foreground shadow-[6px_6px_0_0_var(--color-foreground)] outline-none',
+            'min-w-[var(--anchor-width)] border border-border bg-popover p-1 text-popover-foreground shadow-[0_10px_30px_var(--shadow-color)] outline-none',
             '[transform-origin:var(--transform-origin)]',
             containerRadiusVariants({ radius }),
             className
@@ -3560,15 +3638,26 @@ export function SelectItem({ className, children, ...props }: React.ComponentPro
   return (
     <BaseSelect.Item
       className={cn(
-        'flex cursor-pointer items-center justify-between gap-2 px-3 py-1.5 text-sm outline-none select-none',
+        'flex cursor-pointer items-center justify-between gap-2 px-3 py-1.5 text-sm leading-5 outline-none select-none',
         NESTED_RADIUS,
-        'data-[highlighted]:bg-foreground data-[highlighted]:text-background',
+        'data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground',
         className
       )}
       {...props}
     >
       <BaseSelect.ItemText>{children}</BaseSelect.ItemText>
-      <BaseSelect.ItemIndicator>✓</BaseSelect.ItemIndicator>
+      <BaseSelect.ItemIndicator className="text-primary">
+        <svg
+          viewBox="0 0 16 16"
+          className="size-3.5"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2.25}
+          aria-hidden="true"
+        >
+          <path d="M3 8l3 3 7-7" />
+        </svg>
+      </BaseSelect.ItemIndicator>
     </BaseSelect.Item>
   );
 }
@@ -3775,9 +3864,9 @@ const tabsListVariants = cva('relative inline-flex items-center', {
 const tabsIndicatorVariants = cva('absolute left-0 z-0', {
   variants: {
     variant: {
-      default: 'bottom-0 h-0.5 bg-foreground',
-      muted: 'inset-y-1 border border-border bg-background',
-      ghost: 'bottom-0 h-0.5 bg-foreground'
+      default: 'bottom-0 h-0.5 bg-primary',
+      muted: 'inset-y-1 border border-primary/20 bg-background',
+      ghost: 'bottom-0 h-0.5 bg-primary'
     }
   },
   defaultVariants: {
@@ -3828,10 +3917,10 @@ export function TabsTab({ className, ...props }: React.ComponentProps<typeof Bas
   return (
     <BaseTabs.Tab
       className={cn(
-        'relative z-10 cursor-pointer px-4 py-2 text-sm font-medium uppercase tracking-wide text-muted-foreground transition-colors outline-none',
-        'hover:text-foreground',
+        'relative z-10 cursor-pointer px-4 py-2 text-sm font-medium tracking-[-0.01em] text-muted-foreground transition-colors outline-none',
+        'hover:text-accent-foreground',
         'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset',
-        'data-[active]:text-foreground',
+        'data-[active]:text-primary',
         'data-[disabled]:pointer-events-none data-[disabled]:opacity-40',
         className
       )}
@@ -3951,8 +4040,8 @@ function ToastList({ radius, shadow, position }: ToastListProps) {
         containerRadiusVariants({ radius })
       )}
     >
-      <BaseToast.Title className="pr-6 text-sm font-bold uppercase tracking-wide" />
-      <BaseToast.Description className="mt-1 text-sm text-muted-foreground" />
+      <BaseToast.Title className="pr-6 text-sm font-semibold leading-none tracking-[-0.01em]" />
+      <BaseToast.Description className="mt-1 text-sm leading-5 text-muted-foreground" />
       <BaseToast.Close
         className="absolute right-2 top-2 inline-flex size-6 cursor-pointer items-center justify-center text-xs leading-none text-muted-foreground transition-colors outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
         aria-label="Close"
@@ -4012,7 +4101,7 @@ export function ToggleGroup({
   return (
     <BaseToggleGroup
       className={cn(
-        'inline-flex items-center gap-0 overflow-hidden border border-border [&>*]:border-0 [&>*+*]:border-l',
+        'inline-flex items-center gap-0 overflow-hidden border border-border [&>.ui-radius]:!rounded-none [&>*]:border-0 [&>*+*]:border-l',
         containerRadiusVariants({ radius }),
         className
       )}
@@ -4050,10 +4139,10 @@ export function Toggle({ className, radius, ...props }: React.ComponentProps<typ
     <BaseToggle
       render={(toggleProps) => <motion.button {...(toggleProps as HTMLMotionProps<'button'>)} {...tap} />}
       className={cn(
-        'inline-flex h-10 items-center justify-center gap-2 border border-border bg-background px-3 text-sm font-medium uppercase tracking-wide text-foreground outline-none transition-colors',
-        'hover:bg-muted',
+        'inline-flex h-10 items-center justify-center gap-2 border border-border bg-background px-3 text-sm font-medium tracking-[-0.01em] text-foreground outline-none transition-colors',
+        'hover:bg-accent hover:text-accent-foreground',
         'focus-visible:ring-2 focus-visible:ring-ring',
-        'data-[pressed]:bg-foreground data-[pressed]:text-background',
+        'data-[pressed]:border-primary data-[pressed]:bg-primary data-[pressed]:text-primary-foreground',
         'disabled:pointer-events-none disabled:opacity-40',
         radiusVariants({ radius }),
         className
@@ -4110,8 +4199,8 @@ export function ToolbarButton({
   return (
     <BaseToolbar.Button
       className={cn(
-        'inline-flex h-8 items-center justify-center gap-2 border border-transparent px-2 text-sm font-medium uppercase tracking-wide outline-none transition-colors',
-        'hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring data-[pressed]:bg-foreground data-[pressed]:text-background',
+        'inline-flex h-8 items-center justify-center gap-2 border border-transparent px-2 text-sm font-medium tracking-[-0.01em] outline-none transition-colors',
+        'hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring data-[pressed]:bg-primary data-[pressed]:text-primary-foreground',
         'disabled:pointer-events-none disabled:opacity-40',
         radiusVariants({ radius }),
         className
@@ -4205,7 +4294,7 @@ export function TooltipContent({
       <BaseTooltip.Positioner sideOffset={sideOffset} className="z-50">
         <BaseTooltip.Popup
           className={cn(
-            'border border-border bg-foreground px-2 py-1 text-xs font-medium uppercase tracking-wide text-background',
+            'border border-border bg-foreground px-2 py-1 text-xs font-medium leading-none tracking-[-0.01em] text-background',
             '[transform-origin:var(--transform-origin)]',
             containerRadiusVariants({ radius }),
             className

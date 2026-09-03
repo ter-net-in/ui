@@ -24,7 +24,7 @@ export function PreviewCardContent({
       <BasePreviewCard.Positioner sideOffset={sideOffset} className="z-50">
         <BasePreviewCard.Popup
           className={cn(
-            'w-72 border border-border bg-popover p-4 text-popover-foreground shadow-[6px_6px_0_0_var(--color-foreground)] outline-none',
+            'w-72 border border-border bg-popover p-4 text-popover-foreground shadow-[0_10px_30px_var(--shadow-color)] outline-none',
             '[transform-origin:var(--transform-origin)]',
             containerRadiusVariants({ radius }),
             className

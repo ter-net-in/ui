@@ -1,6 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { type ComponentProps, useId } from 'react';
 
 import { RadioGroup, RadioGroupItem } from '@/ui/radio-group';
+
+function RadioOption({ label, ...props }: ComponentProps<typeof RadioGroupItem> & { label: string }) {
+  const id = useId();
+
+  return (
+    <span className="flex items-center gap-2 text-sm">
+      <RadioGroupItem id={id} {...props} />
+      <label htmlFor={id} className="cursor-pointer">
+        {label}
+      </label>
+    </span>
+  );
+}
 
 const meta = {
   title: 'UI/RadioGroup',
@@ -16,15 +30,9 @@ export const Playground: StoryObj<{ orientation: 'vertical' | 'horizontal' }> = 
   argTypes: { orientation: { control: 'inline-radio', options: ['vertical', 'horizontal'] } },
   render: ({ orientation }) => (
     <RadioGroup defaultValue="http" orientation={orientation}>
-      <span className="flex items-center gap-2 text-sm">
-        <RadioGroupItem value="http" /> HTTP
-      </span>
-      <span className="flex items-center gap-2 text-sm">
-        <RadioGroupItem value="ws" /> WebSocket
-      </span>
-      <span className="flex items-center gap-2 text-sm">
-        <RadioGroupItem value="ftp" /> FTP
-      </span>
+      <RadioOption value="http" label="HTTP" />
+      <RadioOption value="ws" label="WebSocket" />
+      <RadioOption value="ftp" label="FTP" />
     </RadioGroup>
   )
 };
@@ -32,12 +40,8 @@ export const Playground: StoryObj<{ orientation: 'vertical' | 'horizontal' }> = 
 export const Horizontal: Story = {
   render: () => (
     <RadioGroup defaultValue="a" orientation="horizontal">
-      <span className="flex items-center gap-2 text-sm">
-        <RadioGroupItem value="a" /> A
-      </span>
-      <span className="flex items-center gap-2 text-sm">
-        <RadioGroupItem value="b" /> B
-      </span>
+      <RadioOption value="a" label="A" />
+      <RadioOption value="b" label="B" />
     </RadioGroup>
   )
 };

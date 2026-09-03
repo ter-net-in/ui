@@ -24,7 +24,7 @@ const preview: Preview = {
     },
     shadow: {
       description: 'Global component shadow',
-      defaultValue: 'md'
+      defaultValue: 'sm'
     }
   },
   decorators: [

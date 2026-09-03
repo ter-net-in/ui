@@ -50,9 +50,11 @@ export function PopoverContent({
 }
 
 export function PopoverTitle({ className, ...props }: React.ComponentProps<typeof BasePopover.Title>) {
-  return <BasePopover.Title className={cn('text-sm font-bold uppercase tracking-wide', className)} {...props} />;
+  return (
+    <BasePopover.Title className={cn('text-sm font-semibold leading-none tracking-[-0.01em]', className)} {...props} />
+  );
 }
 
 export function PopoverDescription({ className, ...props }: React.ComponentProps<typeof BasePopover.Description>) {
-  return <BasePopover.Description className={cn('text-sm text-muted-foreground', className)} {...props} />;
+  return <BasePopover.Description className={cn('text-sm leading-6 text-muted-foreground', className)} {...props} />;
 }

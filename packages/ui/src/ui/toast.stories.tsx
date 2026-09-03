@@ -46,7 +46,7 @@ export const Playground: StoryObj<{
   shadow: 'none' | 'sm' | 'md' | 'lg' | 'xl';
   position: 'bottom-right' | 'bottom-left' | 'bottom-center' | 'top-right' | 'top-left' | 'top-center';
 }> = {
-  args: { radius: 'md', shadow: 'md', position: 'bottom-right' },
+  args: { radius: 'md', shadow: 'sm', position: 'bottom-right' },
   argTypes: {
     radius: { control: 'inline-radio', options: ['none', 'sm', 'md', 'lg'] },
     shadow: { control: 'inline-radio', options: ['none', 'sm', 'md', 'lg', 'xl'] },

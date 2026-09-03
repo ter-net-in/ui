@@ -1,6 +1,24 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { type ComponentProps, useId } from 'react';
 
 import { Switch } from '@/ui/switch';
+
+function SwitchOption({
+  label,
+  labelClassName,
+  ...props
+}: ComponentProps<typeof Switch> & { label: string; labelClassName?: string }) {
+  const id = useId();
+
+  return (
+    <span className={`flex items-center gap-2 ${labelClassName ?? ''}`}>
+      <Switch id={id} {...props} />
+      <label htmlFor={id} className={props.disabled ? 'cursor-not-allowed' : 'cursor-pointer'}>
+        {label}
+      </label>
+    </span>
+  );
+}
 
 const meta = {
   title: 'UI/Switch',
@@ -17,7 +35,15 @@ export const Playground: StoryObj<{ radius: 'none' | 'sm' | 'md' | 'lg' | 'full'
     radius: { control: 'inline-radio', options: ['none', 'sm', 'md', 'lg', 'full'] },
     disabled: { control: 'boolean' }
   },
-  render: ({ radius, disabled }) => <Switch radius={radius} disabled={disabled} defaultChecked />
+  render: ({ radius, disabled }) => (
+    <SwitchOption
+      radius={radius}
+      disabled={disabled}
+      defaultChecked
+      label="Notifications"
+      labelClassName={`text-sm ${disabled ? 'opacity-60' : ''}`}
+    />
+  )
 };
 
 export const States: Story = {
@@ -35,9 +61,7 @@ export const Radius: Story = {
   render: () => (
     <div className="flex flex-wrap items-center gap-4">
       {(['none', 'sm', 'md', 'lg', 'full'] as const).map((r) => (
-        <span key={r} className="flex items-center gap-2 text-sm">
-          <Switch radius={r} defaultChecked /> {r}
-        </span>
+        <SwitchOption key={r} radius={r} defaultChecked label={r} labelClassName="text-sm" />
       ))}
     </div>
   )

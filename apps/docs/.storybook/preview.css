@@ -12,16 +12,33 @@
 @source "../../../packages/ui/src";
 
 /* Docs preview globals override every configurable component, including portals. */
+:root[data-preview-radius="none"] {
+  --preview-content-radius: 0px;
+}
+
 :root[data-preview-radius="none"] :is(.ui-radius, .ui-container-radius) {
   border-radius: 0;
+}
+
+:root[data-preview-radius="sm"] {
+  --preview-content-radius: 0.25rem;
 }
 
 :root[data-preview-radius="sm"] :is(.ui-radius, .ui-container-radius) {
   border-radius: 0.25rem;
 }
 
+:root[data-preview-radius="md"] {
+  --preview-content-radius: 0.5rem;
+}
+
 :root[data-preview-radius="md"] :is(.ui-radius, .ui-container-radius) {
   border-radius: 0.5rem;
+}
+
+:root[data-preview-radius="lg"],
+:root[data-preview-radius="full"] {
+  --preview-content-radius: 1rem;
 }
 
 :root[data-preview-radius="lg"] :is(.ui-radius, .ui-container-radius),
@@ -33,22 +50,27 @@
   border-radius: 9999px;
 }
 
+:root[data-preview-radius] .ui-drawer-content.ui-container-radius {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
 :root[data-preview-shadow="none"] .ui-shadow {
   box-shadow: none;
 }
 
 :root[data-preview-shadow="sm"] .ui-shadow {
-  box-shadow: 4px 4px 0 0 var(--color-foreground);
+  box-shadow: 0 4px 12px var(--shadow-color);
 }
 
 :root[data-preview-shadow="md"] .ui-shadow {
-  box-shadow: 6px 6px 0 0 var(--color-foreground);
+  box-shadow: 0 10px 30px var(--shadow-color);
 }
 
 :root[data-preview-shadow="lg"] .ui-shadow {
-  box-shadow: 8px 8px 0 0 var(--color-foreground);
+  box-shadow: 0 18px 44px var(--shadow-color);
 }
 
 :root[data-preview-shadow="xl"] .ui-shadow {
-  box-shadow: 12px 12px 0 0 var(--color-foreground);
+  box-shadow: 0 28px 64px var(--shadow-color);
 }

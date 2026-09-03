@@ -1,8 +1,8 @@
 export default function Page() {
   return (
-    <main className="relative z-10 flex min-h-screen items-center px-6 py-12">
+    <main className="relative z-10 flex min-h-screen items-center px-4 py-8 sm:px-6 sm:py-10">
       <div className="mx-auto w-full max-w-6xl border border-border bg-background">
-        <header className="border-b border-border p-6 sm:p-10">
+        <header className="border-b border-border p-5 sm:p-8">
           <p className="mb-6 text-xs font-extrabold uppercase tracking-[0.14em] text-muted-foreground">
             Base UI + Tailwind CSS
           </p>
@@ -14,7 +14,7 @@ export default function Page() {
         <div className="grid md:grid-cols-2">
           <a
             href="/components"
-            className="group grid gap-8 border-b border-border p-6 transition-colors hover:bg-foreground hover:text-background focus-visible:bg-foreground focus-visible:text-background focus-visible:outline-none md:border-r md:border-b-0 sm:grid-cols-[1fr_auto] sm:items-end sm:p-10"
+            className="group grid gap-5 border-b border-border p-5 transition-colors hover:bg-primary hover:text-primary-foreground focus-visible:bg-primary focus-visible:text-primary-foreground focus-visible:outline-none md:border-r md:border-b-0 sm:grid-cols-[1fr_auto] sm:items-end sm:p-8"
           >
             <div>
               <p className="mb-3 text-xs font-extrabold uppercase tracking-[0.14em] text-muted-foreground group-hover:text-background/60 group-focus-visible:text-background/60">
@@ -26,7 +26,7 @@ export default function Page() {
           </a>
           <a
             href="https://storybook.ui.ter.net.in"
-            className="group grid gap-8 p-6 transition-colors hover:bg-foreground hover:text-background focus-visible:bg-foreground focus-visible:text-background focus-visible:outline-none sm:grid-cols-[1fr_auto] sm:items-end sm:p-10"
+            className="group grid gap-5 p-5 transition-colors hover:bg-primary hover:text-primary-foreground focus-visible:bg-primary focus-visible:text-primary-foreground focus-visible:outline-none sm:grid-cols-[1fr_auto] sm:items-end sm:p-8"
           >
             <div>
               <p className="mb-3 text-xs font-extrabold uppercase tracking-[0.14em] text-muted-foreground group-hover:text-background/60 group-focus-visible:text-background/60">
@@ -39,29 +39,29 @@ export default function Page() {
         </div>
 
         <section className="grid border-t border-border lg:grid-cols-2">
-          <div className="border-b border-border p-6 lg:border-r lg:border-b-0 lg:p-10">
-            <p className="mb-8 text-xs font-extrabold uppercase tracking-[0.14em] text-muted-foreground">CLI</p>
+          <div className="border-b border-border p-5 lg:border-r lg:border-b-0 lg:p-8">
+            <p className="mb-5 text-xs font-semibold uppercase tracking-[0.1em] text-muted-foreground">CLI</p>
             <h2 className="mb-4 text-3xl font-bold tracking-tight">Copy source, not dependency.</h2>
-            <p className="mb-8 max-w-xl text-sm leading-relaxed text-muted-foreground">
+            <p className="mb-5 max-w-xl text-sm leading-relaxed text-muted-foreground">
               Initialize once, then add only components your project needs. CLI resolves shared registry files, rewrites
               aliases, installs package dependencies, and leaves editable source in your repository.
             </p>
-            <pre className="overflow-x-auto border border-border bg-muted p-4 font-mono text-sm leading-7">
+            <pre className="overflow-x-auto border border-border bg-muted px-4 py-3 font-mono text-sm leading-7">
               <code>{`npx @ternetin/ui init
 npx @ternetin/ui add button input dialog`}</code>
             </pre>
           </div>
 
-          <div className="p-6 lg:p-10">
-            <p className="mb-8 text-xs font-extrabold uppercase tracking-[0.14em] text-muted-foreground">
+          <div className="p-5 lg:p-8">
+            <p className="mb-5 text-xs font-semibold uppercase tracking-[0.1em] text-muted-foreground">
               internet-ui.json
             </p>
             <h2 className="mb-4 text-3xl font-bold tracking-tight">Your paths. Your defaults.</h2>
-            <p className="mb-8 max-w-xl text-sm leading-relaxed text-muted-foreground">
+            <p className="mb-5 max-w-xl text-sm leading-relaxed text-muted-foreground">
               Config records registry URL, TypeScript mode, import aliases, output paths, and project-wide visual
               defaults. Components compile these values into local source; no runtime config package remains.
             </p>
-            <pre className="overflow-x-auto border border-border bg-muted p-4 font-mono text-sm leading-6">
+            <pre className="overflow-x-auto border border-border bg-muted px-4 py-3 font-mono text-sm leading-6">
               <code>{`{
   "registry": "https://ui.ter.net.in",
   "tsx": true,
@@ -93,7 +93,7 @@ npx @ternetin/ui add button input dialog`}</code>
           ].map(([title, body]) => (
             <div
               key={title}
-              className="border-b border-border p-6 last:border-b-0 sm:border-r sm:border-b-0 sm:last:border-r-0"
+              className="border-b border-border p-5 last:border-b-0 sm:border-r sm:border-b-0 sm:last:border-r-0"
             >
               <h3 className="mb-3 font-bold">{title}</h3>
               <p className="text-sm leading-relaxed text-muted-foreground">{body}</p>
@@ -103,7 +103,7 @@ npx @ternetin/ui add button input dialog`}</code>
 
         <a
           href="/llms.txt"
-          className="group flex flex-col justify-between gap-6 border-t border-border p-6 transition-colors hover:bg-foreground hover:text-background focus-visible:bg-foreground focus-visible:text-background focus-visible:outline-none sm:flex-row sm:items-center lg:p-10"
+          className="group flex flex-col justify-between gap-5 border-t border-border p-5 transition-colors hover:bg-primary hover:text-primary-foreground focus-visible:bg-primary focus-visible:text-primary-foreground focus-visible:outline-none sm:flex-row sm:items-center lg:p-8"
         >
           <div>
             <p className="mb-2 text-xs font-extrabold uppercase tracking-[0.14em] text-muted-foreground group-hover:text-background/60 group-focus-visible:text-background/60">

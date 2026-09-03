@@ -19,6 +19,12 @@ const deployments: Deployment[] = Array.from({ length: 27 }, (_, index) => ({
   region: ['fra1', 'iad1', 'sfo1'][index % 3]
 }));
 
+const statusTone: Record<Deployment['status'], string> = {
+  Ready: 'bg-success-muted text-success',
+  Building: 'bg-warning-muted text-warning',
+  Failed: 'bg-destructive/10 text-destructive'
+};
+
 const columns: ColumnDef<Deployment>[] = [
   { accessorKey: 'id', header: 'ID' },
   { accessorKey: 'service', header: 'Service' },
@@ -26,7 +32,11 @@ const columns: ColumnDef<Deployment>[] = [
   {
     accessorKey: 'status',
     header: 'Status',
-    cell: ({ row }) => <span className="font-bold uppercase">{row.original.status}</span>
+    cell: ({ row }) => (
+      <span className={`inline-flex px-2 py-0.5 text-xs font-medium ${statusTone[row.original.status]}`}>
+        {row.original.status}
+      </span>
+    )
   },
   { accessorKey: 'region', header: 'Region' }
 ];

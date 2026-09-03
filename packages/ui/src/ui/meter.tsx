@@ -14,7 +14,7 @@ export function Meter({
   return (
     <BaseMeter.Root className={cn('flex w-full flex-col gap-1', className)} {...props}>
       <BaseMeter.Track
-        className={cn('h-2 w-full overflow-hidden border border-border bg-background', radiusVariants({ radius }))}
+        className={cn('h-2 w-full overflow-hidden border border-border bg-secondary', radiusVariants({ radius }))}
       >
         {/* Width is CSS-driven for the same reason as Progress — see progress.tsx. */}
         <BaseMeter.Indicator className="h-full bg-primary transition-[width] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]" />
@@ -27,7 +27,7 @@ export function Meter({
 export function MeterLabel({ className, ...props }: React.ComponentProps<typeof BaseMeter.Label>) {
   return (
     <BaseMeter.Label
-      className={cn('text-xs font-medium uppercase tracking-wide text-muted-foreground', className)}
+      className={cn('text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground', className)}
       {...props}
     />
   );

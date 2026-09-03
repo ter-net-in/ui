@@ -9,7 +9,7 @@ import { type Language, type TokenKind, tokenize } from '@/lib/highlight';
 import { useTapMotion } from '@/lib/motion';
 import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
 
-const codeVariants = cva('flex w-full min-w-0 flex-col overflow-hidden font-mono font-bold', {
+const codeVariants = cva('flex w-full min-w-0 flex-col overflow-hidden font-mono font-medium', {
   variants: {
     variant: {
       default: 'border-l-[3px] border-l-primary bg-primary/[0.06] text-foreground',
@@ -48,7 +48,7 @@ const SIZES = {
     row: 'gap-1.5 px-2.5 py-1.5',
     inset: 'pr-1',
     button: '-my-1 size-6 [&_svg]:size-3.5',
-    label: 'text-[0.6875rem]'
+    label: 'text-xs'
   },
   default: {
     header: 'px-3 py-1.5',
@@ -73,7 +73,7 @@ const SIZES = {
  */
 const CONTENT = 'min-w-0 flex-1 overflow-x-auto whitespace-pre';
 
-const HEADER = 'flex items-center justify-between gap-2 border-b border-border';
+const HEADER = 'flex items-center justify-between gap-2 border-b border-border font-semibold tracking-[-0.01em]';
 
 /**
  * Token colours. Three inks and no more, defined in the theme: the house blue for

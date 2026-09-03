@@ -32,8 +32,8 @@ export function ToolbarButton({
   return (
     <BaseToolbar.Button
       className={cn(
-        'inline-flex h-8 items-center justify-center gap-2 border border-transparent px-2 text-sm font-medium uppercase tracking-wide outline-none transition-colors',
-        'hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring data-[pressed]:bg-foreground data-[pressed]:text-background',
+        'inline-flex h-8 items-center justify-center gap-2 border border-transparent px-2 text-sm font-medium tracking-[-0.01em] outline-none transition-colors',
+        'hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring data-[pressed]:bg-primary data-[pressed]:text-primary-foreground',
         'disabled:pointer-events-none disabled:opacity-40',
         radiusVariants({ radius }),
         className

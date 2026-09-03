@@ -25,7 +25,7 @@ export function ComboboxInput({
   return (
     <BaseCombobox.Input
       className={cn(
-        'flex h-10 w-full border border-input bg-background px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        'flex h-10 w-full border border-input bg-background px-3 py-2 text-sm leading-5 outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring',
         radiusVariants({ radius }),
         className
       )}
@@ -53,14 +53,14 @@ export function ComboboxContent({
           // Publishes `--content-radius` so items can stay concentric with the popup.
           style={{ ...contentRadiusStyle(radius), ...style }}
           className={cn(
-            'max-h-64 min-w-[var(--anchor-width)] overflow-y-auto border border-border bg-popover p-1 text-popover-foreground shadow-[6px_6px_0_0_var(--color-foreground)] outline-none',
+            'max-h-64 min-w-[var(--anchor-width)] overflow-y-auto border border-border bg-popover p-1 text-popover-foreground shadow-[0_10px_30px_var(--shadow-color)] outline-none',
             containerRadiusVariants({ radius }),
             className
           )}
           render={renderPopup}
           {...props}
         >
-          <BaseCombobox.Empty className="px-3 py-2 text-sm text-muted-foreground empty:p-0">
+          <BaseCombobox.Empty className="px-3 py-2 text-sm leading-5 text-muted-foreground empty:p-0">
             No results.
           </BaseCombobox.Empty>
           <BaseCombobox.List>{children}</BaseCombobox.List>
@@ -74,7 +74,7 @@ export function ComboboxItem({ className, children, ...props }: React.ComponentP
   return (
     <BaseCombobox.Item
       className={cn(
-        'flex cursor-pointer select-none items-center justify-between gap-2 px-3 py-1.5 text-sm outline-none data-[highlighted]:bg-foreground data-[highlighted]:text-background',
+        'flex cursor-pointer select-none items-center justify-between gap-2 px-3 py-1.5 text-sm leading-5 outline-none data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground',
         NESTED_RADIUS,
         className
       )}

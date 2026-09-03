@@ -17,6 +17,10 @@ const Star = (
   </svg>
 );
 
+export const Playground: StoryObj<typeof meta> = {
+  args: { cols: 40, children: Star }
+};
+
 export const Static: StoryObj<typeof meta> = {
   args: { cols: 40, children: Star }
 };

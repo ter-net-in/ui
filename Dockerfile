@@ -1,4 +1,7 @@
-FROM oven/bun:1.3.13-alpine AS builder
+# Next.js runs on Node in CI and production; Bun retains its package/service roles.
+FROM oven/bun:1.3.13 AS bun
+FROM node:24-bookworm-slim AS builder
+COPY --from=bun /usr/local/bin/bun /usr/local/bin/bun
 
 WORKDIR /app
 
@@ -9,9 +12,10 @@ COPY packages/ui/package.json packages/ui/package.json
 RUN bun install --frozen-lockfile
 
 COPY . .
-RUN bun run build:registry \
-  && bun run --filter '@internet-ui/docs' build \
-  && bun run --filter '@internet-ui/docs' build-storybook
+RUN bun run build:registry
+WORKDIR /app/apps/docs
+RUN node node_modules/next/dist/bin/next build \
+  && node node_modules/storybook/bin/index.cjs build
 
 FROM alpine:3.22 AS docs
 

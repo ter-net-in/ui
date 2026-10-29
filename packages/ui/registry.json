@@ -8,55 +8,43 @@
       "type": "registry:style",
       "title": "Theme",
       "description": "internet-ui design tokens (Tailwind v4). Import once from your global stylesheet.",
-      "dependencies": ["tailwindcss", "tw-animate-css"],
+      "dependencies": ["tailwindcss@^4.3.3", "tw-animate-css@^1.4.0"],
       "files": [
         {
           "path": "src/theme/globals.css",
           "type": "registry:style",
           "target": "app/globals.css"
         }
-      ]
-    },
-    {
-      "name": "ui-defaults",
-      "type": "registry:lib",
-      "title": "Variant defaults",
-      "description": "Project-wide default radius and shadow. Values are substituted from the `defaults` block of internet-ui.json at install time.",
-      "dependencies": [],
-      "registryDependencies": [],
-      "files": [
-        {
-          "path": "src/lib/ui-defaults.ts",
-          "type": "registry:lib"
-        }
-      ]
+      ],
+      "registryDependencies": []
     },
     {
       "name": "utils",
       "type": "registry:lib",
       "title": "cn utility",
-      "description": "clsx + tailwind-merge class combiner and shared radius variants used by every component.",
-      "dependencies": ["clsx", "tailwind-merge", "class-variance-authority"],
+      "description": "Shared clsx/tailwind-merge utility and fixed nested-popup geometry.",
+      "dependencies": ["clsx@^2.1.1", "tailwind-merge@^3.7.0"],
       "files": [
         {
           "path": "src/lib/utils.ts",
           "type": "registry:lib"
         }
       ],
-      "registryDependencies": ["ui-defaults"]
+      "registryDependencies": []
     },
     {
       "name": "motion",
       "type": "registry:lib",
       "title": "Motion presets",
       "description": "Shared animation language: easing curves, duration and spring tokens, and the render-prop helpers that animate Base UI popups with Motion.",
-      "dependencies": ["motion"],
+      "dependencies": ["motion@^12.43.0"],
       "files": [
         {
           "path": "src/lib/motion.tsx",
           "type": "registry:lib"
         }
-      ]
+      ],
+      "registryDependencies": []
     },
     {
       "name": "highlight",
@@ -68,14 +56,16 @@
           "path": "src/lib/highlight.ts",
           "type": "registry:lib"
         }
-      ]
+      ],
+      "dependencies": [],
+      "registryDependencies": []
     },
     {
       "name": "accordion",
       "type": "registry:ui",
       "title": "Accordion",
       "description": "Accordion built on Base UI.",
-      "dependencies": ["@base-ui/react"],
+      "dependencies": ["@base-ui/react@^1.9.0"],
       "registryDependencies": ["utils"],
       "files": [
         {
@@ -89,7 +79,7 @@
       "type": "registry:ui",
       "title": "Alert Dialog",
       "description": "Alert Dialog built on Base UI.",
-      "dependencies": ["@base-ui/react"],
+      "dependencies": ["@base-ui/react@^1.9.0"],
       "registryDependencies": ["utils", "motion"],
       "files": [
         {
@@ -103,7 +93,7 @@
       "type": "registry:ui",
       "title": "Autocomplete",
       "description": "Autocomplete built on Base UI.",
-      "dependencies": ["@base-ui/react"],
+      "dependencies": ["@base-ui/react@^1.9.0"],
       "registryDependencies": ["utils", "motion"],
       "files": [
         {
@@ -117,7 +107,7 @@
       "type": "registry:ui",
       "title": "Avatar",
       "description": "Avatar built on Base UI.",
-      "dependencies": ["@base-ui/react"],
+      "dependencies": ["@base-ui/react@^1.9.0"],
       "registryDependencies": ["utils"],
       "files": [
         {
@@ -131,8 +121,8 @@
       "type": "registry:ui",
       "title": "Button",
       "description": "Button built on Base UI.",
-      "dependencies": ["@base-ui/react", "class-variance-authority", "motion"],
-      "registryDependencies": ["utils", "motion"],
+      "dependencies": ["@base-ui/react@^1.9.0", "class-variance-authority@^0.7.1"],
+      "registryDependencies": ["utils"],
       "files": [
         {
           "path": "src/ui/button.tsx",
@@ -144,8 +134,8 @@
       "name": "card",
       "type": "registry:ui",
       "title": "Card",
-      "description": "Composable Card with variant, radius, padding and decorative corner-bracket options. Plain styled container — not a Base UI primitive.",
-      "dependencies": ["class-variance-authority"],
+      "description": "Composable flat card with semantic variants, shared geometry, and optional public-page corner brackets.",
+      "dependencies": ["class-variance-authority@^0.7.1"],
       "registryDependencies": ["utils"],
       "files": [
         {
@@ -159,7 +149,7 @@
       "type": "registry:ui",
       "title": "Checkbox Group",
       "description": "Checkbox Group built on Base UI.",
-      "dependencies": ["@base-ui/react"],
+      "dependencies": ["@base-ui/react@^1.9.0"],
       "registryDependencies": ["utils"],
       "files": [
         {
@@ -173,7 +163,7 @@
       "type": "registry:ui",
       "title": "Checkbox",
       "description": "Checkbox built on Base UI.",
-      "dependencies": ["@base-ui/react", "motion"],
+      "dependencies": ["@base-ui/react@^1.9.0", "motion@^12.43.0"],
       "registryDependencies": ["utils", "motion"],
       "files": [
         {
@@ -186,8 +176,8 @@
       "name": "code",
       "type": "registry:ui",
       "title": "Code",
-      "description": "Single-line or multi-line code snippet with an optional title strip, syntax highlighting and a copy button. Plain styled container — not a Base UI primitive.",
-      "dependencies": ["@base-ui/react", "motion", "class-variance-authority"],
+      "description": "Single-line or multi-line code snippet with an optional title strip, syntax highlighting and a copy button. Plain styled container \u2014 not a Base UI primitive.",
+      "dependencies": ["@base-ui/react@^1.9.0", "motion@^12.43.0", "class-variance-authority@^0.7.1"],
       "registryDependencies": ["utils", "motion", "highlight"],
       "files": [
         {
@@ -201,7 +191,7 @@
       "type": "registry:ui",
       "title": "Collapsible",
       "description": "Collapsible built on Base UI.",
-      "dependencies": ["@base-ui/react"],
+      "dependencies": ["@base-ui/react@^1.9.0"],
       "registryDependencies": ["utils"],
       "files": [
         {
@@ -215,7 +205,7 @@
       "type": "registry:ui",
       "title": "Combobox",
       "description": "Combobox built on Base UI.",
-      "dependencies": ["@base-ui/react"],
+      "dependencies": ["@base-ui/react@^1.9.0"],
       "registryDependencies": ["utils", "motion"],
       "files": [
         {
@@ -229,7 +219,7 @@
       "type": "registry:ui",
       "title": "Context Menu",
       "description": "Context Menu built on Base UI.",
-      "dependencies": ["@base-ui/react"],
+      "dependencies": ["@base-ui/react@^1.9.0"],
       "registryDependencies": ["utils", "motion"],
       "files": [
         {
@@ -243,7 +233,7 @@
       "type": "registry:ui",
       "title": "Dialog",
       "description": "Dialog built on Base UI.",
-      "dependencies": ["@base-ui/react"],
+      "dependencies": ["@base-ui/react@^1.9.0"],
       "registryDependencies": ["utils", "motion"],
       "files": [
         {
@@ -271,7 +261,7 @@
       "type": "registry:ui",
       "title": "Drawer",
       "description": "Drawer built on Base UI.",
-      "dependencies": ["@base-ui/react"],
+      "dependencies": ["@base-ui/react@^1.9.0"],
       "registryDependencies": ["utils"],
       "files": [
         {
@@ -285,7 +275,7 @@
       "type": "registry:ui",
       "title": "Field",
       "description": "Field built on Base UI.",
-      "dependencies": ["@base-ui/react"],
+      "dependencies": ["@base-ui/react@^1.9.0"],
       "registryDependencies": ["utils"],
       "files": [
         {
@@ -299,7 +289,7 @@
       "type": "registry:ui",
       "title": "Fieldset",
       "description": "Fieldset built on Base UI.",
-      "dependencies": ["@base-ui/react"],
+      "dependencies": ["@base-ui/react@^1.9.0"],
       "registryDependencies": ["utils"],
       "files": [
         {
@@ -313,7 +303,7 @@
       "type": "registry:ui",
       "title": "Form",
       "description": "Form built on Base UI.",
-      "dependencies": ["@base-ui/react"],
+      "dependencies": ["@base-ui/react@^1.9.0"],
       "registryDependencies": ["utils"],
       "files": [
         {
@@ -327,7 +317,7 @@
       "type": "registry:ui",
       "title": "Input",
       "description": "Input built on Base UI.",
-      "dependencies": ["@base-ui/react"],
+      "dependencies": ["@base-ui/react@^1.9.0"],
       "registryDependencies": ["utils"],
       "files": [
         {
@@ -341,7 +331,7 @@
       "type": "registry:ui",
       "title": "Menu",
       "description": "Menu built on Base UI.",
-      "dependencies": ["@base-ui/react"],
+      "dependencies": ["@base-ui/react@^1.9.0"],
       "registryDependencies": ["utils", "motion"],
       "files": [
         {
@@ -355,7 +345,7 @@
       "type": "registry:ui",
       "title": "Menubar",
       "description": "Menubar built on Base UI.",
-      "dependencies": ["@base-ui/react"],
+      "dependencies": ["@base-ui/react@^1.9.0"],
       "registryDependencies": ["utils"],
       "files": [
         {
@@ -369,7 +359,7 @@
       "type": "registry:ui",
       "title": "Meter",
       "description": "Meter built on Base UI.",
-      "dependencies": ["@base-ui/react"],
+      "dependencies": ["@base-ui/react@^1.9.0"],
       "registryDependencies": ["utils"],
       "files": [
         {
@@ -383,7 +373,7 @@
       "type": "registry:ui",
       "title": "Navigation Menu",
       "description": "Navigation Menu built on Base UI.",
-      "dependencies": ["@base-ui/react"],
+      "dependencies": ["@base-ui/react@^1.9.0"],
       "registryDependencies": ["utils", "motion"],
       "files": [
         {
@@ -397,7 +387,7 @@
       "type": "registry:ui",
       "title": "Number Field",
       "description": "Number Field built on Base UI.",
-      "dependencies": ["@base-ui/react"],
+      "dependencies": ["@base-ui/react@^1.9.0"],
       "registryDependencies": ["utils"],
       "files": [
         {
@@ -411,7 +401,7 @@
       "type": "registry:ui",
       "title": "OTP Field",
       "description": "OTP Field built on Base UI.",
-      "dependencies": ["@base-ui/react"],
+      "dependencies": ["@base-ui/react@^1.9.0"],
       "registryDependencies": ["utils"],
       "files": [
         {
@@ -425,7 +415,7 @@
       "type": "registry:ui",
       "title": "Popover",
       "description": "Popover built on Base UI.",
-      "dependencies": ["@base-ui/react"],
+      "dependencies": ["@base-ui/react@^1.9.0"],
       "registryDependencies": ["utils", "motion"],
       "files": [
         {
@@ -439,7 +429,7 @@
       "type": "registry:ui",
       "title": "Preview Card",
       "description": "Preview Card built on Base UI.",
-      "dependencies": ["@base-ui/react"],
+      "dependencies": ["@base-ui/react@^1.9.0"],
       "registryDependencies": ["utils", "motion"],
       "files": [
         {
@@ -453,7 +443,7 @@
       "type": "registry:ui",
       "title": "Progress",
       "description": "Progress built on Base UI.",
-      "dependencies": ["@base-ui/react"],
+      "dependencies": ["@base-ui/react@^1.9.0"],
       "registryDependencies": ["utils"],
       "files": [
         {
@@ -467,7 +457,7 @@
       "type": "registry:ui",
       "title": "Radio Group",
       "description": "Radio Group built on Base UI.",
-      "dependencies": ["@base-ui/react", "motion"],
+      "dependencies": ["@base-ui/react@^1.9.0", "motion@^12.43.0"],
       "registryDependencies": ["utils", "motion"],
       "files": [
         {
@@ -481,7 +471,7 @@
       "type": "registry:ui",
       "title": "Scroll Area",
       "description": "Scroll Area built on Base UI.",
-      "dependencies": ["@base-ui/react"],
+      "dependencies": ["@base-ui/react@^1.9.0"],
       "registryDependencies": ["utils"],
       "files": [
         {
@@ -495,7 +485,7 @@
       "type": "registry:ui",
       "title": "Select",
       "description": "Select built on Base UI.",
-      "dependencies": ["@base-ui/react"],
+      "dependencies": ["@base-ui/react@^1.9.0"],
       "registryDependencies": ["utils", "motion"],
       "files": [
         {
@@ -509,7 +499,7 @@
       "type": "registry:ui",
       "title": "Separator",
       "description": "Separator built on Base UI.",
-      "dependencies": ["@base-ui/react"],
+      "dependencies": ["@base-ui/react@^1.9.0"],
       "registryDependencies": ["utils"],
       "files": [
         {
@@ -523,7 +513,7 @@
       "type": "registry:ui",
       "title": "Slider",
       "description": "Slider built on Base UI.",
-      "dependencies": ["@base-ui/react", "motion"],
+      "dependencies": ["@base-ui/react@^1.9.0", "motion@^12.43.0"],
       "registryDependencies": ["utils", "motion"],
       "files": [
         {
@@ -537,7 +527,7 @@
       "type": "registry:ui",
       "title": "Switch",
       "description": "Switch built on Base UI.",
-      "dependencies": ["@base-ui/react", "motion"],
+      "dependencies": ["@base-ui/react@^1.9.0", "motion@^12.43.0"],
       "registryDependencies": ["utils", "motion"],
       "files": [
         {
@@ -551,7 +541,7 @@
       "type": "registry:ui",
       "title": "Tabs",
       "description": "Tabs built on Base UI.",
-      "dependencies": ["@base-ui/react", "motion"],
+      "dependencies": ["@base-ui/react@^1.9.0", "motion@^12.43.0"],
       "registryDependencies": ["utils", "motion"],
       "files": [
         {
@@ -565,7 +555,7 @@
       "type": "registry:ui",
       "title": "Toast",
       "description": "Toast built on Base UI.",
-      "dependencies": ["@base-ui/react"],
+      "dependencies": ["@base-ui/react@^1.9.0"],
       "registryDependencies": ["utils"],
       "files": [
         {
@@ -579,7 +569,7 @@
       "type": "registry:ui",
       "title": "Toggle Group",
       "description": "Toggle Group built on Base UI.",
-      "dependencies": ["@base-ui/react"],
+      "dependencies": ["@base-ui/react@^1.9.0"],
       "registryDependencies": ["utils"],
       "files": [
         {
@@ -593,7 +583,7 @@
       "type": "registry:ui",
       "title": "Toggle",
       "description": "Toggle built on Base UI.",
-      "dependencies": ["@base-ui/react", "motion"],
+      "dependencies": ["@base-ui/react@^1.9.0", "motion@^12.43.0"],
       "registryDependencies": ["utils", "motion"],
       "files": [
         {
@@ -607,7 +597,7 @@
       "type": "registry:ui",
       "title": "Toolbar",
       "description": "Toolbar built on Base UI.",
-      "dependencies": ["@base-ui/react"],
+      "dependencies": ["@base-ui/react@^1.9.0"],
       "registryDependencies": ["utils"],
       "files": [
         {
@@ -621,7 +611,7 @@
       "type": "registry:ui",
       "title": "Tooltip",
       "description": "Tooltip built on Base UI.",
-      "dependencies": ["@base-ui/react"],
+      "dependencies": ["@base-ui/react@^1.9.0"],
       "registryDependencies": ["utils", "motion"],
       "files": [
         {
@@ -640,6 +630,280 @@
       "files": [
         {
           "path": "src/ui/ascii-svg.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "page-layout",
+      "type": "registry:ui",
+      "title": "Page Layout",
+      "description": "Shared page container, title, description, actions, and sections.",
+      "dependencies": [],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/ui/page-layout.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "auth-layout",
+      "type": "registry:ui",
+      "title": "Auth Layout",
+      "description": "Centered responsive authentication composition, without auth logic.",
+      "dependencies": [],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/ui/auth-layout.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "app-shell",
+      "type": "registry:ui",
+      "title": "App Shell",
+      "description": "Application header, body, and independent main scroll region.",
+      "dependencies": [],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/ui/app-shell.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "sidebar",
+      "type": "registry:ui",
+      "title": "Sidebar",
+      "description": "Composable app-owned navigation links, buttons, and sidebar regions.",
+      "dependencies": [],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/ui/sidebar.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "sidebar-drawer",
+      "type": "registry:ui",
+      "title": "Sidebar Drawer",
+      "description": "Accessible controlled mobile navigation with focus restoration.",
+      "dependencies": ["@base-ui/react@^1.9.0"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/ui/sidebar-drawer.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "split-pane",
+      "type": "registry:ui",
+      "title": "Split Pane",
+      "description": "Controlled responsive list/detail panes with mobile focus management.",
+      "dependencies": [],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/ui/split-pane.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "settings-section",
+      "type": "registry:ui",
+      "title": "Settings Section",
+      "description": "Consistent settings heading, description, body, and actions.",
+      "dependencies": [],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/ui/settings-section.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "stat",
+      "type": "registry:ui",
+      "title": "Stat",
+      "description": "Compact, accessible dashboard label/value composition.",
+      "dependencies": [],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/ui/stat.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "badge",
+      "type": "registry:ui",
+      "title": "Badge",
+      "description": "Text-first semantic status label.",
+      "dependencies": [],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/ui/badge.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "alert",
+      "type": "registry:ui",
+      "title": "Alert",
+      "description": "Inline informational, success, warning, or error feedback.",
+      "dependencies": [],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/ui/alert.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "empty-state",
+      "type": "registry:ui",
+      "title": "Empty State",
+      "description": "Empty or recovery state with an explanation and optional next action.",
+      "dependencies": [],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/ui/empty-state.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "spinner",
+      "type": "registry:ui",
+      "title": "Spinner",
+      "description": "Accessible progress feedback for a small pending action.",
+      "dependencies": [],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/ui/spinner.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:ui",
+      "title": "Skeleton",
+      "description": "Reduced-motion-aware content loading placeholder.",
+      "dependencies": [],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/ui/skeleton.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "input-group",
+      "type": "registry:ui",
+      "title": "Input Group",
+      "description": "Joined inputs and addons with automatic outer corners.",
+      "dependencies": [],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/ui/input-group.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "textarea",
+      "type": "registry:ui",
+      "title": "Textarea",
+      "description": "Native multiline input with shared field states.",
+      "dependencies": [],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/ui/textarea.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "auth-example",
+      "type": "registry:block",
+      "title": "Authentication Example",
+      "description": "Complete centered authentication form with illustrative local submission.",
+      "dependencies": [],
+      "registryDependencies": ["auth-layout", "alert", "button", "card", "input"],
+      "files": [
+        {
+          "path": "src/ui/auth-example.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "admin-example",
+      "type": "registry:block",
+      "title": "Admin Example",
+      "description": "Complete metrics and filterable table page with fictional data.",
+      "dependencies": [],
+      "registryDependencies": ["badge", "button", "card", "data-table", "page-layout", "stat"],
+      "files": [
+        {
+          "path": "src/ui/admin-example.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "settings-example",
+      "type": "registry:block",
+      "title": "Settings Example",
+      "description": "Complete settings form, joined input, switch, and local feedback.",
+      "dependencies": [],
+      "registryDependencies": ["alert", "button", "input", "input-group", "page-layout", "settings-section", "switch"],
+      "files": [
+        {
+          "path": "src/ui/settings-example.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "workspace-example",
+      "type": "registry:block",
+      "title": "Workspace Example",
+      "description": "Complete responsive sidebar/list/detail workspace with fictional messages.",
+      "dependencies": [],
+      "registryDependencies": [
+        "app-shell",
+        "button",
+        "empty-state",
+        "input",
+        "sidebar",
+        "sidebar-drawer",
+        "split-pane"
+      ],
+      "files": [
+        {
+          "path": "src/ui/workspace-example.tsx",
           "type": "registry:ui"
         }
       ]

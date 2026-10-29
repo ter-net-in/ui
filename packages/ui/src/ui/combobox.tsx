@@ -1,60 +1,43 @@
 'use client';
-
 import { Combobox as BaseCombobox } from '@base-ui/react/combobox';
 import type * as React from 'react';
-
 import { useMotionPopupRender } from '@/lib/motion';
-import {
-  type ContainerRadiusProps,
-  cn,
-  containerRadiusVariants,
-  contentRadiusStyle,
-  NESTED_RADIUS,
-  type RadiusProps,
-  radiusVariants
-} from '@/lib/utils';
-
+import { cn, NESTED_RADIUS } from '@/lib/utils';
 export const Combobox = BaseCombobox.Root;
 export const ComboboxValue = BaseCombobox.Value;
-
-export function ComboboxInput({
-  className,
-  radius,
-  ...props
-}: React.ComponentProps<typeof BaseCombobox.Input> & RadiusProps) {
+export function ComboboxInput({ className, ...props }: React.ComponentProps<typeof BaseCombobox.Input>) {
   return (
     <BaseCombobox.Input
       className={cn(
-        'flex h-10 w-full border border-input bg-background px-3 py-2 text-sm leading-5 outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring',
-        radiusVariants({ radius }),
+        'flex h-9 w-full border border-input bg-background px-3 py-2 text-sm leading-5 outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring',
+        'rounded-control',
         className
       )}
       {...props}
     />
   );
 }
-
 export function ComboboxContent({
   className,
   children,
   sideOffset = 4,
-  radius,
   style,
   ...props
-}: React.ComponentProps<typeof BaseCombobox.Popup> & { sideOffset?: number } & ContainerRadiusProps) {
+}: React.ComponentProps<typeof BaseCombobox.Popup> & {
+  sideOffset?: number;
+}) {
   // A results list appearing under an input: no scale, it would look like a
   // zoom on text the user is actively reading. Just a short slide and fade.
   const renderPopup = useMotionPopupRender({ scale: 1, offset: 6 });
-
   return (
     <BaseCombobox.Portal>
       <BaseCombobox.Positioner sideOffset={sideOffset} className="z-50">
         <BaseCombobox.Popup
-          // Publishes `--content-radius` so items can stay concentric with the popup.
-          style={{ ...contentRadiusStyle(radius), ...style }}
+          // Nested items follow the fixed popup corner treatment.
+          style={style}
           className={cn(
-            'max-h-64 min-w-[var(--anchor-width)] overflow-y-auto border border-border bg-popover p-1 text-popover-foreground shadow-[0_10px_30px_var(--shadow-color)] outline-none',
-            containerRadiusVariants({ radius }),
+            'max-h-64 min-w-[var(--anchor-width)] overflow-y-auto border border-border bg-popover p-1 text-popover-foreground shadow-popup outline-none',
+            'rounded-surface',
             className
           )}
           render={renderPopup}
@@ -69,7 +52,6 @@ export function ComboboxContent({
     </BaseCombobox.Portal>
   );
 }
-
 export function ComboboxItem({ className, children, ...props }: React.ComponentProps<typeof BaseCombobox.Item>) {
   return (
     <BaseCombobox.Item

@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-
 import {
   ContextMenu,
   ContextMenuContent,
@@ -13,18 +12,16 @@ const meta = {
   component: ContextMenu,
   tags: ['autodocs']
 } satisfies Meta<typeof ContextMenu>;
-
 export default meta;
-
-export const Playground: StoryObj<{ radius: 'none' | 'sm' | 'md' | 'lg' }> = {
-  args: { radius: 'md' },
-  argTypes: { radius: { control: 'inline-radio', options: ['none', 'sm', 'md', 'lg'] } },
-  render: ({ radius }) => (
+export const Playground: StoryObj = {
+  args: {},
+  argTypes: {},
+  render: () => (
     <ContextMenu>
       <ContextMenuTrigger className="flex h-40 w-full max-w-sm items-center justify-center border border-dashed border-border text-sm text-muted-foreground">
         Right click here
       </ContextMenuTrigger>
-      <ContextMenuContent radius={radius}>
+      <ContextMenuContent>
         <ContextMenuItem>Back</ContextMenuItem>
         <ContextMenuItem>Forward</ContextMenuItem>
         <ContextMenuItem>Reload</ContextMenuItem>

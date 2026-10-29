@@ -1,12 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { type ComponentProps, useId } from 'react';
-
 import { Checkbox } from '@/ui/checkbox';
 import { CheckboxGroup } from '@/ui/checkbox-group';
 
-function CheckboxOption({ label, ...props }: ComponentProps<typeof Checkbox> & { label: string }) {
+function CheckboxOption({
+  label,
+  ...props
+}: ComponentProps<typeof Checkbox> & {
+  label: string;
+}) {
   const id = useId();
-
   return (
     <span className="flex items-center gap-2 text-sm">
       <Checkbox id={id} {...props} />
@@ -16,17 +19,16 @@ function CheckboxOption({ label, ...props }: ComponentProps<typeof Checkbox> & {
     </span>
   );
 }
-
 const meta = {
   title: 'UI/CheckboxGroup',
   component: CheckboxGroup,
   tags: ['autodocs']
 } satisfies Meta<typeof CheckboxGroup>;
-
 export default meta;
 type Story = StoryObj<typeof meta>;
-
-export const Playground: StoryObj<{ orientation: 'vertical' | 'horizontal' }> = {
+export const Playground: StoryObj<{
+  orientation: 'vertical' | 'horizontal';
+}> = {
   args: { orientation: 'vertical' },
   argTypes: { orientation: { control: 'inline-radio', options: ['vertical', 'horizontal'] } },
   render: ({ orientation }) => (
@@ -37,7 +39,6 @@ export const Playground: StoryObj<{ orientation: 'vertical' | 'horizontal' }> = 
     </CheckboxGroup>
   )
 };
-
 export const Horizontal: Story = {
   render: () => (
     <CheckboxGroup orientation="horizontal" defaultValue={['ws']}>

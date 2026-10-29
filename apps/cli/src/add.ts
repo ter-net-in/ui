@@ -6,7 +6,7 @@ import prompts from 'prompts';
 import type { Config } from './config.js';
 import { detectPackageManager, installDeps } from './pm.js';
 import { type RegistryFile, resolveItems } from './registry.js';
-import { applyDefaults, DEFAULTS_FILE, transformImports } from './transform.js';
+import { transformImports } from './transform.js';
 import { c, log } from './utils.js';
 
 export interface AddOptions {
@@ -50,6 +50,15 @@ export async function addComponents(
   opts: AddOptions = {}
 ): Promise<void> {
   const items = await resolveItems(config, names);
+  if (
+    items.some(
+      (item) => item.name === 'ui-defaults' || item.files.some((file) => path.basename(file.path) === 'ui-defaults.ts')
+    )
+  ) {
+    throw new Error(
+      'This legacy registry uses configurable visual defaults. Use the current registry with internet-ui 0.2 or retain your older CLI and registry together. No files were written.'
+    );
+  }
   if (items.length === 0) {
     log.warn('Nothing to add.');
     return;
@@ -65,8 +74,7 @@ export async function addComponents(
     for (const file of item.files) {
       const dest = destFor(file, config, cwd);
       const rel = path.relative(cwd, dest);
-      let content = file.type === 'registry:style' ? file.content : transformImports(file.content, config);
-      if (path.basename(file.path) === DEFAULTS_FILE) content = applyDefaults(content, config);
+      const content = file.type === 'registry:style' ? file.content : transformImports(file.content, config);
 
       if (existsSync(dest)) {
         const ok = await confirmOverwrite(rel, opts);

@@ -1,34 +1,28 @@
 'use client';
-
 import { ContextMenu as BaseContextMenu } from '@base-ui/react/context-menu';
 import type * as React from 'react';
-
 import { useMotionPopupRender } from '@/lib/motion';
-import { type ContainerRadiusProps, cn, containerRadiusVariants, contentRadiusStyle, NESTED_RADIUS } from '@/lib/utils';
-
+import { cn, NESTED_RADIUS } from '@/lib/utils';
 export const ContextMenu = BaseContextMenu.Root;
 export const ContextMenuTrigger = BaseContextMenu.Trigger;
 export const ContextMenuGroup = BaseContextMenu.Group;
-
 export function ContextMenuContent({
   className,
   children,
-  radius,
   style,
   ...props
-}: React.ComponentProps<typeof BaseContextMenu.Popup> & ContainerRadiusProps) {
+}: React.ComponentProps<typeof BaseContextMenu.Popup>) {
   // Anchored to the pointer, so it grows from the click point with no slide.
   const renderPopup = useMotionPopupRender({ scale: 0.95, offset: 0 });
-
   return (
     <BaseContextMenu.Portal>
       <BaseContextMenu.Positioner className="z-50 outline-none">
         <BaseContextMenu.Popup
-          style={{ ...contentRadiusStyle(radius), ...style }}
+          style={style}
           className={cn(
-            'min-w-40 border border-border bg-popover p-1 text-popover-foreground shadow-[0_10px_30px_var(--shadow-color)] outline-none',
+            'min-w-40 border border-border bg-popover p-1 text-popover-foreground shadow-popup outline-none',
             '[transform-origin:var(--transform-origin)]',
-            containerRadiusVariants({ radius }),
+            'rounded-surface',
             className
           )}
           render={renderPopup}
@@ -40,7 +34,6 @@ export function ContextMenuContent({
     </BaseContextMenu.Portal>
   );
 }
-
 export function ContextMenuItem({ className, ...props }: React.ComponentProps<typeof BaseContextMenu.Item>) {
   return (
     <BaseContextMenu.Item
@@ -55,7 +48,6 @@ export function ContextMenuItem({ className, ...props }: React.ComponentProps<ty
     />
   );
 }
-
 export function ContextMenuSeparator({ className, ...props }: React.ComponentProps<'div'>) {
   return <div className={cn('-mx-1 my-1 h-px bg-border', className)} {...props} />;
 }

@@ -1,24 +1,20 @@
 'use client';
-
 import { Slider as BaseSlider } from '@base-ui/react/slider';
 import { type HTMLMotionProps, motion } from 'motion/react';
 import type * as React from 'react';
-
 import { useControlTransition } from '@/lib/motion';
-import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
-
-export function Slider({ className, radius, ...props }: React.ComponentProps<typeof BaseSlider.Root> & RadiusProps) {
+import { cn } from '@/lib/utils';
+export function Slider({ className, ...props }: React.ComponentProps<typeof BaseSlider.Root>) {
   const transition = useControlTransition();
-
   return (
     <BaseSlider.Root className={cn('relative w-full', className)} {...props}>
       <BaseSlider.Control className="flex w-full items-center py-3">
-        <BaseSlider.Track className={cn('h-1.5 w-full bg-border', radiusVariants({ radius }))}>
-          <BaseSlider.Indicator className={cn('bg-primary', radiusVariants({ radius }))} />
+        <BaseSlider.Track className={cn('h-1.5 w-full bg-border', 'rounded-full')}>
+          <BaseSlider.Indicator className={cn('bg-primary', 'rounded-full')} />
           <BaseSlider.Thumb
             className={cn(
               'size-4 border border-primary bg-background outline-none focus-visible:ring-2 focus-visible:ring-ring',
-              radiusVariants({ radius })
+              'rounded-full'
             )}
             render={(thumbProps, state) => (
               <motion.div
@@ -36,7 +32,6 @@ export function Slider({ className, radius, ...props }: React.ComponentProps<typ
     </BaseSlider.Root>
   );
 }
-
 export function SliderValue({ className, ...props }: React.ComponentProps<typeof BaseSlider.Value>) {
   return <BaseSlider.Value className={cn('text-xs tabular-nums text-muted-foreground', className)} {...props} />;
 }

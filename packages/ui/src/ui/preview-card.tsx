@@ -1,32 +1,28 @@
 'use client';
-
 import { PreviewCard as BasePreviewCard } from '@base-ui/react/preview-card';
 import type * as React from 'react';
-
 import { useMotionPopupRender } from '@/lib/motion';
-import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
-
+import { cn } from '@/lib/utils';
 export const PreviewCard = BasePreviewCard.Root;
 export const PreviewCardTrigger = BasePreviewCard.Trigger;
-
 export function PreviewCardContent({
   className,
   children,
   sideOffset = 8,
-  radius,
   ...props
-}: React.ComponentProps<typeof BasePreviewCard.Popup> & { sideOffset?: number } & ContainerRadiusProps) {
+}: React.ComponentProps<typeof BasePreviewCard.Popup> & {
+  sideOffset?: number;
+}) {
   // Hover-triggered, so it travels a little further than a click-opened popover.
   const renderPopup = useMotionPopupRender({ offset: 6 });
-
   return (
     <BasePreviewCard.Portal>
       <BasePreviewCard.Positioner sideOffset={sideOffset} className="z-50">
         <BasePreviewCard.Popup
           className={cn(
-            'w-72 border border-border bg-popover p-4 text-popover-foreground shadow-[0_10px_30px_var(--shadow-color)] outline-none',
+            'w-72 border border-border bg-popover p-4 text-popover-foreground shadow-popup outline-none',
             '[transform-origin:var(--transform-origin)]',
-            containerRadiusVariants({ radius }),
+            'rounded-surface',
             className
           )}
           render={renderPopup}

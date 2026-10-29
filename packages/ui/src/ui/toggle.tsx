@@ -1,15 +1,11 @@
 'use client';
-
 import { Toggle as BaseToggle } from '@base-ui/react/toggle';
 import { type HTMLMotionProps, motion } from 'motion/react';
 import type * as React from 'react';
-
 import { useTapMotion } from '@/lib/motion';
-import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
-
-export function Toggle({ className, radius, ...props }: React.ComponentProps<typeof BaseToggle> & RadiusProps) {
+import { cn } from '@/lib/utils';
+export function Toggle({ className, ...props }: React.ComponentProps<typeof BaseToggle>) {
   const tap = useTapMotion();
-
   return (
     <BaseToggle
       render={(toggleProps) => <motion.button {...(toggleProps as HTMLMotionProps<'button'>)} {...tap} />}
@@ -19,7 +15,7 @@ export function Toggle({ className, radius, ...props }: React.ComponentProps<typ
         'focus-visible:ring-2 focus-visible:ring-ring',
         'data-[pressed]:border-primary data-[pressed]:bg-primary data-[pressed]:text-primary-foreground',
         'disabled:pointer-events-none disabled:opacity-40',
-        radiusVariants({ radius }),
+        'rounded-control',
         className
       )}
       {...props}

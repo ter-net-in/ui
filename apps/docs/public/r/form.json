@@ -5,7 +5,7 @@
   "title": "Form",
   "description": "Form built on Base UI.",
   "dependencies": [
-    "@base-ui/react"
+    "@base-ui/react@^1.9.0"
   ],
   "registryDependencies": [
     "utils"
@@ -14,7 +14,7 @@
     {
       "path": "src/ui/form.tsx",
       "type": "registry:ui",
-      "content": "'use client';\n\nimport { Form as BaseForm } from '@base-ui/react/form';\nimport type * as React from 'react';\n\nimport { cn } from '@/lib/utils';\n\nexport function Form({ className, ...props }: React.ComponentProps<typeof BaseForm>) {\n  return <BaseForm className={cn('flex flex-col gap-4', className)} {...props} />;\n}\n"
+      "content": "'use client';\nimport { Form as BaseForm } from '@base-ui/react/form';\nimport type * as React from 'react';\nimport { cn } from '@/lib/utils';\nexport function Form({ className, ...props }: React.ComponentProps<typeof BaseForm>) {\n  return <BaseForm className={cn('flex flex-col gap-4', className)} {...props} />;\n}\n"
     }
   ]
 }

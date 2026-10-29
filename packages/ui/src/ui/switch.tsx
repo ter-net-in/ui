@@ -1,21 +1,16 @@
 'use client';
-
 import { Switch as BaseSwitch } from '@base-ui/react/switch';
 import { type HTMLMotionProps, motion } from 'motion/react';
 import type * as React from 'react';
-
 import { useControlTransition } from '@/lib/motion';
-import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 /** Thumb travel, in px, matching `h-6 w-11` track and `size-4` thumb. */
 const THUMB_OFF = 4;
 const THUMB_ON = 24;
-
-export type SwitchProps = React.ComponentProps<typeof BaseSwitch.Root> & RadiusProps;
-
-export function Switch({ className, radius, ...props }: SwitchProps) {
+export type SwitchProps = React.ComponentProps<typeof BaseSwitch.Root>;
+export function Switch({ className, ...props }: SwitchProps) {
   const transition = useControlTransition();
-
   return (
     <BaseSwitch.Root
       className={cn(
@@ -23,7 +18,7 @@ export function Switch({ className, radius, ...props }: SwitchProps) {
         'focus-visible:ring-2 focus-visible:ring-ring',
         'data-[checked]:border-primary data-[checked]:bg-primary',
         'disabled:cursor-not-allowed disabled:opacity-40',
-        radiusVariants({ radius }),
+        'rounded-full',
         className
       )}
       {...props}
@@ -31,7 +26,7 @@ export function Switch({ className, radius, ...props }: SwitchProps) {
       <BaseSwitch.Thumb
         className={cn(
           'block size-4 bg-foreground transition-colors data-[checked]:bg-primary-foreground',
-          radiusVariants({ radius })
+          'rounded-full'
         )}
         render={(thumbProps, state) => (
           <motion.span

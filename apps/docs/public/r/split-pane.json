@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.ter.net.in/schema/registry-item.json",
+  "name": "split-pane",
+  "type": "registry:ui",
+  "title": "Split Pane",
+  "description": "Controlled responsive list/detail panes with mobile focus management.",
+  "dependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/ui/split-pane.tsx",
+      "type": "registry:ui",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport { cn } from '@/lib/utils';\n\ntype Pane = 'primary' | 'secondary';\n\nexport function SplitPane({\n  activePane = 'primary',\n  className,\n  onFocusCapture,\n  ...props\n}: React.ComponentProps<'div'> & { activePane?: Pane }) {\n  const root = React.useRef<HTMLDivElement>(null);\n  const previous = React.useRef(activePane);\n  const focused = React.useRef<Partial<Record<Pane, HTMLElement>>>({});\n\n  React.useEffect(() => {\n    if (previous.current !== activePane && window.matchMedia('(max-width: 1023px)').matches) {\n      const panel = root.current?.querySelector<HTMLElement>(`[data-pane=\"${activePane}\"]`);\n      const remembered = focused.current[activePane];\n      if (remembered?.isConnected && panel?.contains(remembered)) remembered.focus();\n      else panel?.focus();\n    }\n    previous.current = activePane;\n  }, [activePane]);\n\n  return (\n    <div\n      ref={root}\n      data-active-pane={activePane}\n      onFocusCapture={(event) => {\n        const target = event.target;\n        const pane = target.closest<HTMLElement>('[data-pane]')?.dataset.pane as Pane | undefined;\n        if (pane) focused.current[pane] = target;\n        onFocusCapture?.(event);\n      }}\n      className={cn(\n        'group/split grid min-h-0 min-w-0 flex-1 grid-cols-1 lg:grid-cols-[minmax(18rem,24rem)_minmax(0,1fr)]',\n        className\n      )}\n      {...props}\n    />\n  );\n}\n\nexport function SplitPanePrimary({ className, ...props }: React.ComponentProps<'section'>) {\n  return (\n    <section\n      data-pane=\"primary\"\n      tabIndex={-1}\n      className={cn(\n        'flex min-h-0 min-w-0 flex-col border-r border-border outline-none group-data-[active-pane=secondary]/split:hidden lg:group-data-[active-pane=secondary]/split:flex',\n        className\n      )}\n      {...props}\n    />\n  );\n}\nexport function SplitPaneSecondary({ className, ...props }: React.ComponentProps<'section'>) {\n  return (\n    <section\n      data-pane=\"secondary\"\n      tabIndex={-1}\n      className={cn(\n        'flex min-h-0 min-w-0 flex-col bg-card outline-none group-data-[active-pane=primary]/split:hidden lg:group-data-[active-pane=primary]/split:flex',\n        className\n      )}\n      {...props}\n    />\n  );\n}\n"
+    }
+  ]
+}

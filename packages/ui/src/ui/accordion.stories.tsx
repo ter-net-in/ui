@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-
 import { Accordion, AccordionItem, AccordionPanel, AccordionTrigger } from '@/ui/accordion';
 
 const meta = {
@@ -7,18 +6,17 @@ const meta = {
   component: Accordion,
   tags: ['autodocs']
 } satisfies Meta<typeof Accordion>;
-
 export default meta;
 type Story = StoryObj<typeof meta>;
-
-export const Playground: StoryObj<{ variant: 'default' | 'ghost'; radius: 'none' | 'sm' | 'md' | 'lg' }> = {
-  args: { variant: 'default', radius: 'none' },
+export const Playground: StoryObj<{
+  variant: 'default' | 'ghost';
+}> = {
+  args: { variant: 'default' },
   argTypes: {
-    variant: { control: 'inline-radio', options: ['default', 'ghost'] },
-    radius: { control: 'inline-radio', options: ['none', 'sm', 'md', 'lg'] }
+    variant: { control: 'inline-radio', options: ['default', 'ghost'] }
   },
-  render: ({ variant, radius }) => (
-    <Accordion variant={variant} radius={radius} className="w-full max-w-md">
+  render: ({ variant }) => (
+    <Accordion variant={variant} className="w-full max-w-md">
       <AccordionItem value="a">
         <AccordionTrigger>What is this?</AccordionTrigger>
         <AccordionPanel>A copy-paste component library.</AccordionPanel>
@@ -34,22 +32,6 @@ export const Playground: StoryObj<{ variant: 'default' | 'ghost'; radius: 'none'
     </Accordion>
   )
 };
-
-export const Radius: Story = {
-  render: () => (
-    <div className="flex flex-wrap items-center gap-4">
-      {(['none', 'sm', 'md', 'lg'] as const).map((r) => (
-        <Accordion key={r} radius={r} className="w-full max-w-md">
-          <AccordionItem>
-            <AccordionTrigger>{r}</AccordionTrigger>
-            <AccordionPanel>A copy-paste component library.</AccordionPanel>
-          </AccordionItem>
-        </Accordion>
-      ))}
-    </div>
-  )
-};
-
 export const Ghost: Story = {
   render: () => (
     <Accordion variant="ghost" className="w-full max-w-md">
@@ -68,7 +50,6 @@ export const Ghost: Story = {
     </Accordion>
   )
 };
-
 export const DefaultOpen: Story = {
   render: () => (
     <Accordion defaultValue={['a']} className="w-full max-w-md">

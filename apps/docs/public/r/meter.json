@@ -5,7 +5,7 @@
   "title": "Meter",
   "description": "Meter built on Base UI.",
   "dependencies": [
-    "@base-ui/react"
+    "@base-ui/react@^1.9.0"
   ],
   "registryDependencies": [
     "utils"
@@ -14,7 +14,7 @@
     {
       "path": "src/ui/meter.tsx",
       "type": "registry:ui",
-      "content": "'use client';\n\nimport { Meter as BaseMeter } from '@base-ui/react/meter';\nimport type * as React from 'react';\n\nimport { cn, type RadiusProps, radiusVariants } from '@/lib/utils';\n\nexport function Meter({\n  className,\n  children,\n  radius,\n  ...props\n}: React.ComponentProps<typeof BaseMeter.Root> & RadiusProps) {\n  return (\n    <BaseMeter.Root className={cn('flex w-full flex-col gap-1', className)} {...props}>\n      <BaseMeter.Track\n        className={cn('h-2 w-full overflow-hidden border border-border bg-secondary', radiusVariants({ radius }))}\n      >\n        {/* Width is CSS-driven for the same reason as Progress — see progress.tsx. */}\n        <BaseMeter.Indicator className=\"h-full bg-primary transition-[width] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]\" />\n      </BaseMeter.Track>\n      {children}\n    </BaseMeter.Root>\n  );\n}\n\nexport function MeterLabel({ className, ...props }: React.ComponentProps<typeof BaseMeter.Label>) {\n  return (\n    <BaseMeter.Label\n      className={cn('text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground', className)}\n      {...props}\n    />\n  );\n}\n\nexport function MeterValue({ className, ...props }: React.ComponentProps<typeof BaseMeter.Value>) {\n  return <BaseMeter.Value className={cn('text-xs tabular-nums text-muted-foreground', className)} {...props} />;\n}\n"
+      "content": "'use client';\nimport { Meter as BaseMeter } from '@base-ui/react/meter';\nimport type * as React from 'react';\nimport { cn } from '@/lib/utils';\nexport function Meter({ className, children, ...props }: React.ComponentProps<typeof BaseMeter.Root>) {\n  return (\n    <BaseMeter.Root className={cn('flex w-full flex-col gap-1', className)} {...props}>\n      <BaseMeter.Track className={cn('h-2 w-full overflow-hidden border border-border bg-secondary', 'rounded-full')}>\n        {/* Width is CSS-driven for the same reason as Progress — see progress.tsx. */}\n        <BaseMeter.Indicator className=\"h-full bg-primary transition-[width] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]\" />\n      </BaseMeter.Track>\n      {children}\n    </BaseMeter.Root>\n  );\n}\nexport function MeterLabel({ className, ...props }: React.ComponentProps<typeof BaseMeter.Label>) {\n  return (\n    <BaseMeter.Label\n      className={cn('text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground', className)}\n      {...props}\n    />\n  );\n}\nexport function MeterValue({ className, ...props }: React.ComponentProps<typeof BaseMeter.Value>) {\n  return <BaseMeter.Value className={cn('text-xs tabular-nums text-muted-foreground', className)} {...props} />;\n}\n"
     }
   ]
 }

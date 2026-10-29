@@ -1,62 +1,42 @@
 'use client';
-
 import { Autocomplete as BaseAutocomplete } from '@base-ui/react/autocomplete';
 import type * as React from 'react';
-
 import { useMotionPopupRender } from '@/lib/motion';
-import {
-  type ContainerRadiusProps,
-  cn,
-  containerRadiusVariants,
-  contentRadiusStyle,
-  NESTED_RADIUS,
-  type RadiusProps,
-  radiusVariants,
-  type ShadowProps,
-  shadowVariants
-} from '@/lib/utils';
-
+import { cn, NESTED_RADIUS } from '@/lib/utils';
 export const Autocomplete = BaseAutocomplete.Root;
-
-export function AutocompleteInput({
-  className,
-  radius,
-  ...props
-}: React.ComponentProps<typeof BaseAutocomplete.Input> & RadiusProps) {
+export function AutocompleteInput({ className, ...props }: React.ComponentProps<typeof BaseAutocomplete.Input>) {
   return (
     <BaseAutocomplete.Input
       className={cn(
-        'flex h-10 w-full border border-input bg-background px-3 py-2 text-sm leading-5 outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring',
-        radiusVariants({ radius }),
+        'flex h-9 w-full border border-input bg-background px-3 py-2 text-sm leading-5 outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring',
+        'rounded-control',
         className
       )}
       {...props}
     />
   );
 }
-
 export function AutocompleteContent({
   className,
   children,
   sideOffset = 4,
-  radius,
-  shadow,
   style,
   ...props
-}: React.ComponentProps<typeof BaseAutocomplete.Popup> & { sideOffset?: number } & ContainerRadiusProps & ShadowProps) {
+}: React.ComponentProps<typeof BaseAutocomplete.Popup> & {
+  sideOffset?: number;
+}) {
   // Matches Combobox: slide and fade, no scale on a live results list.
   const renderPopup = useMotionPopupRender({ scale: 1, offset: 6 });
-
   return (
     <BaseAutocomplete.Portal>
       <BaseAutocomplete.Positioner sideOffset={sideOffset} className="z-50">
         <BaseAutocomplete.Popup
-          // Publishes `--content-radius` so items can stay concentric with the popup.
-          style={{ ...contentRadiusStyle(radius), ...style }}
+          // Nested items follow the fixed popup corner treatment.
+          style={style}
           className={cn(
             'max-h-64 min-w-[var(--anchor-width)] overflow-y-auto border border-border bg-popover p-1 text-popover-foreground outline-none',
-            shadowVariants({ shadow }),
-            containerRadiusVariants({ radius }),
+            'shadow-popup',
+            'rounded-surface',
             className
           )}
           render={renderPopup}
@@ -71,7 +51,6 @@ export function AutocompleteContent({
     </BaseAutocomplete.Portal>
   );
 }
-
 export function AutocompleteItem({ className, ...props }: React.ComponentProps<typeof BaseAutocomplete.Item>) {
   return (
     <BaseAutocomplete.Item

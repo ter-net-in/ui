@@ -1,35 +1,30 @@
 'use client';
-
 import { Popover as BasePopover } from '@base-ui/react/popover';
 import type * as React from 'react';
-
 import { useMotionPopupRender } from '@/lib/motion';
-import { type ContainerRadiusProps, cn, containerRadiusVariants, type ShadowProps, shadowVariants } from '@/lib/utils';
-
+import { cn } from '@/lib/utils';
 export const Popover = BasePopover.Root;
 export const PopoverTrigger = BasePopover.Trigger;
 export const PopoverClose = BasePopover.Close;
-
 export function PopoverContent({
   className,
   children,
   sideOffset = 8,
-  radius,
-  shadow,
   ...props
-}: React.ComponentProps<typeof BasePopover.Popup> & { sideOffset?: number } & ContainerRadiusProps & ShadowProps) {
+}: React.ComponentProps<typeof BasePopover.Popup> & {
+  sideOffset?: number;
+}) {
   const renderPopup = useMotionPopupRender();
-
   return (
     <BasePopover.Portal>
       <BasePopover.Positioner sideOffset={sideOffset} className="z-50">
         <BasePopover.Popup
           className={cn(
             'w-72 border border-border bg-popover p-3 text-popover-foreground outline-none',
-            shadowVariants({ shadow }),
+            'shadow-popup',
             // Grow out of the anchor rather than the popup's own centre.
             '[transform-origin:var(--transform-origin)]',
-            containerRadiusVariants({ radius }),
+            'rounded-surface',
             className
           )}
           render={renderPopup}
@@ -48,13 +43,11 @@ export function PopoverContent({
     </BasePopover.Portal>
   );
 }
-
 export function PopoverTitle({ className, ...props }: React.ComponentProps<typeof BasePopover.Title>) {
   return (
     <BasePopover.Title className={cn('text-sm font-semibold leading-none tracking-[-0.01em]', className)} {...props} />
   );
 }
-
 export function PopoverDescription({ className, ...props }: React.ComponentProps<typeof BasePopover.Description>) {
   return <BasePopover.Description className={cn('text-sm leading-6 text-muted-foreground', className)} {...props} />;
 }

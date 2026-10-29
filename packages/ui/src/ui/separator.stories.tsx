@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-
 import { Separator } from '@/ui/separator';
 
 const meta = {
@@ -7,11 +6,11 @@ const meta = {
   component: Separator,
   tags: ['autodocs']
 } satisfies Meta<typeof Separator>;
-
 export default meta;
 type Story = StoryObj<typeof meta>;
-
-export const Playground: StoryObj<{ orientation: 'horizontal' | 'vertical' }> = {
+export const Playground: StoryObj<{
+  orientation: 'horizontal' | 'vertical';
+}> = {
   args: { orientation: 'horizontal' },
   argTypes: { orientation: { control: 'inline-radio', options: ['horizontal', 'vertical'] } },
   render: ({ orientation }) =>
@@ -31,7 +30,6 @@ export const Playground: StoryObj<{ orientation: 'horizontal' | 'vertical' }> = 
       </div>
     )
 };
-
 export const Vertical: Story = {
   render: () => (
     <div className="flex h-10 items-center gap-4 text-sm">

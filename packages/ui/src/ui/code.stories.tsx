@@ -1,15 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
-
 import { Code, CodeStack } from '@/ui/code';
 
 const INSTALL = 'npx @ternetin/ui add code';
-
 const SNIPPET = `import { Code } from '@/ui/code';
 
 export function Install() {
   return <Code>npx @ternetin/ui add code</Code>;
 }`;
-
 const meta = {
   title: 'UI/Code',
   component: Code,
@@ -17,7 +14,6 @@ const meta = {
   argTypes: {
     variant: { control: 'inline-radio', options: ['default', 'outline', 'muted', 'ghost'] },
     size: { control: 'inline-radio', options: ['sm', 'default', 'lg'] },
-    radius: { control: 'inline-radio', options: ['none', 'sm', 'md', 'lg'] },
     language: {
       control: 'select',
       options: [undefined, 'shell', 'ts', 'tsx', 'js', 'jsx', 'json', 'css', 'html']
@@ -26,12 +22,10 @@ const meta = {
     multiline: { control: 'inline-radio', options: [undefined, false, true] },
     copy: { control: 'boolean' }
   },
-  args: { variant: 'default', size: 'default', radius: 'none', copy: true }
+  args: { variant: 'default', size: 'default', copy: true }
 } satisfies Meta<typeof Code>;
-
 export default meta;
 type Story = StoryObj<typeof meta>;
-
 export const Playground: Story = {
   render: (args) => (
     <div className="max-w-lg">
@@ -39,7 +33,6 @@ export const Playground: Story = {
     </div>
   )
 };
-
 /** One line, and it stays one line: a long command scrolls sideways rather than wrapping. */
 export const SingleLine: Story = {
   render: () => (
@@ -49,7 +42,6 @@ export const SingleLine: Story = {
     </div>
   )
 };
-
 /** Inferred from the snippet — a string with a newline in it becomes a block. */
 export const MultiLine: Story = {
   render: () => (
@@ -58,7 +50,6 @@ export const MultiLine: Story = {
     </div>
   )
 };
-
 export const Variants: Story = {
   render: () => (
     <div className="grid max-w-md gap-4">
@@ -68,7 +59,6 @@ export const Variants: Story = {
     </div>
   )
 };
-
 export const Sizes: Story = {
   render: () => (
     <div className="grid max-w-md gap-4">
@@ -78,17 +68,6 @@ export const Sizes: Story = {
     </div>
   )
 };
-
-export const Radius: Story = {
-  render: () => (
-    <div className="grid max-w-md gap-4">
-      {(['none', 'sm', 'md', 'lg'] as const).map((r) => (
-        <Code key={r} radius={r}>{`radius="${r}"`}</Code>
-      ))}
-    </div>
-  )
-};
-
 /** A sequence to type in order. */
 export const Stack: Story = {
   render: () => (
@@ -99,7 +78,6 @@ export const Stack: Story = {
     </CodeStack>
   )
 };
-
 /** The title strip takes the copy button off the code itself. */
 export const WithTitle: Story = {
   render: () => (
@@ -111,7 +89,6 @@ export const WithTitle: Story = {
     </div>
   )
 };
-
 /**
  * `language` colours the snippet — three inks off the theme, so it reads as page
  * text with accents rather than a rainbow. Plain-string children only.
@@ -141,7 +118,6 @@ export const Highlighting: Story = {
     </div>
   )
 };
-
 /** `copy={false}` for a snippet nobody needs on their clipboard. */
 export const WithoutCopy: Story = {
   render: () => (
@@ -150,7 +126,6 @@ export const WithoutCopy: Story = {
     </div>
   )
 };
-
 /**
  * The `outline` variant reads as a value to take away rather than a command to run:
  * an API key, an ID, a generated URL.

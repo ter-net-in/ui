@@ -4,7 +4,7 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "noEmit": true,
-    "types": ["node"],
+    "types": ["node", "bun"],
     "lib": ["es2022"],
     "verbatimModuleSyntax": false
   },

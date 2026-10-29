@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-
 import { PreviewCard, PreviewCardContent, PreviewCardTrigger } from '@/ui/preview-card';
 
 const meta = {
@@ -7,20 +6,18 @@ const meta = {
   component: PreviewCard,
   tags: ['autodocs']
 } satisfies Meta<typeof PreviewCard>;
-
 export default meta;
-
-export const Playground: StoryObj<{ radius: 'none' | 'sm' | 'md' | 'lg' }> = {
-  args: { radius: 'md' },
-  argTypes: { radius: { control: 'inline-radio', options: ['none', 'sm', 'md', 'lg'] } },
-  render: ({ radius }) => (
+export const Playground: StoryObj = {
+  args: {},
+  argTypes: {},
+  render: () => (
     <p className="max-w-sm text-sm">
       Built on{' '}
       <PreviewCard>
         <PreviewCardTrigger href="#" className="font-medium underline underline-offset-4">
           Base UI
         </PreviewCardTrigger>
-        <PreviewCardContent radius={radius}>
+        <PreviewCardContent>
           <div className="flex flex-col gap-1">
             <span className="text-sm font-bold uppercase tracking-wide">Base UI</span>
             <span className="text-sm text-muted-foreground">

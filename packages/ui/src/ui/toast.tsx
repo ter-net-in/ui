@@ -1,13 +1,9 @@
 'use client';
-
 import { Toast as BaseToast } from '@base-ui/react/toast';
 import { cva, type VariantProps } from 'class-variance-authority';
-
-import { type ContainerRadiusProps, cn, containerRadiusVariants, type ShadowProps, shadowVariants } from '@/lib/utils';
-
+import { cn } from '@/lib/utils';
 export const ToastProvider = BaseToast.Provider;
 export const useToast = BaseToast.useToastManager;
-
 const viewportVariants = cva('fixed z-50 flex outline-none', {
   variants: {
     position: {
@@ -24,9 +20,7 @@ const viewportVariants = cva('fixed z-50 flex outline-none', {
     position: 'bottom-right'
   }
 });
-
 export type ToastPosition = NonNullable<VariantProps<typeof viewportVariants>['position']>;
-
 /**
  * Which way a toast travels as it arrives and leaves — outward, toward whichever
  * edge it's anchored to.
@@ -39,21 +33,18 @@ const enterFrom: Record<ToastPosition, string> = {
   'top-left': 'data-[starting-style]:[translate:-100%_0] data-[ending-style]:[translate:-100%_0]',
   'top-center': 'data-[starting-style]:[translate:0_-100%] data-[ending-style]:[translate:0_-100%]'
 };
-
-interface ToastListProps extends ContainerRadiusProps, ShadowProps {
+interface ToastListProps {
   position: ToastPosition;
 }
-
-function ToastList({ radius, shadow, position }: ToastListProps) {
+function ToastList({ position }: ToastListProps) {
   const { toasts } = BaseToast.useToastManager();
-
   return toasts.map((toast) => (
     <BaseToast.Root
       key={toast.id}
       toast={toast}
       className={cn(
         'relative w-80 border border-border bg-background p-4 text-foreground',
-        shadowVariants({ shadow }),
+        'shadow-popup',
         // Toast motion is CSS rather than Motion, and deliberately so: during a
         // swipe Base UI drives this element by writing `transform` directly, so a
         // `motion.div` — which owns `transform` — would stop the toast following
@@ -68,7 +59,7 @@ function ToastList({ radius, shadow, position }: ToastListProps) {
         enterFrom[position],
         // While a finger is down the toast must track it exactly, with no easing.
         'data-[swiping]:transition-none',
-        containerRadiusVariants({ radius })
+        'rounded-surface'
       )}
     >
       <BaseToast.Title className="pr-6 text-sm font-semibold leading-none tracking-[-0.01em]" />
@@ -82,8 +73,7 @@ function ToastList({ radius, shadow, position }: ToastListProps) {
     </BaseToast.Root>
   ));
 }
-
-export interface ToasterProps extends ContainerRadiusProps, ShadowProps {
+export interface ToasterProps {
   /**
    * Screen corner the stack is anchored to. Also sets the direction toasts travel
    * as they arrive and leave.
@@ -91,15 +81,13 @@ export interface ToasterProps extends ContainerRadiusProps, ShadowProps {
    */
   position?: ToastPosition;
 }
-
-export function Toaster({ radius, shadow = 'md', position = 'bottom-right' }: ToasterProps) {
+export function Toaster({ position = 'bottom-right' }: ToasterProps) {
   return (
     <BaseToast.Portal>
       <BaseToast.Viewport className={viewportVariants({ position })}>
-        <ToastList radius={radius} shadow={shadow} position={position} />
+        <ToastList position={position} />
       </BaseToast.Viewport>
     </BaseToast.Portal>
   );
 }
-
 export { viewportVariants as toastViewportVariants };

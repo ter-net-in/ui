@@ -17,14 +17,6 @@ const preview: Preview = {
         ],
         dynamicTitle: true
       }
-    },
-    radius: {
-      description: 'Global component radius',
-      defaultValue: 'none'
-    },
-    shadow: {
-      description: 'Global component shadow',
-      defaultValue: 'sm'
     }
   },
   decorators: [
@@ -32,9 +24,8 @@ const preview: Preview = {
       const dark = context.globals.theme === 'dark';
 
       useEffect(() => {
-        document.documentElement.dataset.previewRadius = context.globals.radius;
-        document.documentElement.dataset.previewShadow = context.globals.shadow;
-      }, [context.globals.radius, context.globals.shadow]);
+        document.documentElement.classList.toggle('dark', dark);
+      }, [dark]);
 
       return (
         <div

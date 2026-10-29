@@ -1,15 +1,11 @@
 'use client';
-
 import { OTPField as BaseOTPField } from '@base-ui/react/otp-field';
 import type * as React from 'react';
-
-import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
-
-export interface OtpFieldProps extends Omit<React.ComponentProps<typeof BaseOTPField.Root>, 'length'>, RadiusProps {
+import { cn } from '@/lib/utils';
+export interface OtpFieldProps extends Omit<React.ComponentProps<typeof BaseOTPField.Root>, 'length'> {
   length?: number;
 }
-
-export function OtpField({ className, length = 6, radius, ...props }: OtpFieldProps) {
+export function OtpField({ className, length = 6, ...props }: OtpFieldProps) {
   return (
     <BaseOTPField.Root length={length} className={cn('flex gap-2', className)} {...props}>
       {Array.from({ length }).map((_, i) => (
@@ -18,7 +14,7 @@ export function OtpField({ className, length = 6, radius, ...props }: OtpFieldPr
           key={i}
           className={cn(
             'size-11 border border-input bg-background text-center text-lg tabular-nums outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring',
-            radiusVariants({ radius })
+            'rounded-control'
           )}
         />
       ))}

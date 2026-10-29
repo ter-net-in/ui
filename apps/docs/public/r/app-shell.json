@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.ter.net.in/schema/registry-item.json",
+  "name": "app-shell",
+  "type": "registry:ui",
+  "title": "App Shell",
+  "description": "Application header, body, and independent main scroll region.",
+  "dependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/ui/app-shell.tsx",
+      "type": "registry:ui",
+      "content": "import type * as React from 'react';\nimport { cn } from '@/lib/utils';\n\nexport function AppShell({ className, ...props }: React.ComponentProps<'div'>) {\n  return <div className={cn('flex h-dvh min-h-0 flex-col overflow-hidden bg-background', className)} {...props} />;\n}\nexport function AppHeader({ className, ...props }: React.ComponentProps<'header'>) {\n  return (\n    <header\n      className={cn('flex h-14 shrink-0 items-center gap-3 border-b border-border bg-card px-4 sm:px-6', className)}\n      {...props}\n    />\n  );\n}\nexport function AppBody({ className, ...props }: React.ComponentProps<'div'>) {\n  return <div className={cn('relative flex min-h-0 min-w-0 flex-1', className)} {...props} />;\n}\nexport function AppMain({ className, ...props }: React.ComponentProps<'main'>) {\n  return <main className={cn('min-h-0 min-w-0 flex-1 overflow-y-auto', className)} {...props} />;\n}\n"
+    }
+  ]
+}

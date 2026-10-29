@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-
 import { Field, FieldControl, FieldLabel } from '@/ui/field';
 import { Fieldset, FieldsetLegend } from '@/ui/fieldset';
 
@@ -8,18 +7,17 @@ const meta = {
   component: Fieldset,
   tags: ['autodocs']
 } satisfies Meta<typeof Fieldset>;
-
 export default meta;
 type Story = StoryObj<typeof meta>;
-
-export const Playground: StoryObj<{ variant: 'default' | 'ghost'; radius: 'none' | 'sm' | 'md' | 'lg' }> = {
-  args: { variant: 'default', radius: 'none' },
+export const Playground: StoryObj<{
+  variant: 'default' | 'ghost';
+}> = {
+  args: { variant: 'default' },
   argTypes: {
-    variant: { control: 'inline-radio', options: ['default', 'ghost'] },
-    radius: { control: 'inline-radio', options: ['none', 'sm', 'md', 'lg'] }
+    variant: { control: 'inline-radio', options: ['default', 'ghost'] }
   },
-  render: ({ variant, radius }) => (
-    <Fieldset variant={variant} radius={radius} className="max-w-sm">
+  render: ({ variant }) => (
+    <Fieldset variant={variant} className="max-w-sm">
       <FieldsetLegend>Billing address</FieldsetLegend>
       <Field name="street">
         <FieldLabel>Street</FieldLabel>
@@ -32,23 +30,6 @@ export const Playground: StoryObj<{ variant: 'default' | 'ghost'; radius: 'none'
     </Fieldset>
   )
 };
-
-export const Radius: Story = {
-  render: () => (
-    <div className="flex flex-wrap items-start gap-4">
-      {(['none', 'sm', 'md', 'lg'] as const).map((r) => (
-        <Fieldset key={r} radius={r} className="max-w-xs">
-          <FieldsetLegend>{r}</FieldsetLegend>
-          <Field name="street">
-            <FieldLabel>Street</FieldLabel>
-            <FieldControl placeholder="1 Internet Way" />
-          </Field>
-        </Fieldset>
-      ))}
-    </div>
-  )
-};
-
 export const Ghost: Story = {
   render: () => (
     <Fieldset variant="ghost" className="max-w-sm">

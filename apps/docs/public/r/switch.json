@@ -5,8 +5,8 @@
   "title": "Switch",
   "description": "Switch built on Base UI.",
   "dependencies": [
-    "@base-ui/react",
-    "motion"
+    "@base-ui/react@^1.9.0",
+    "motion@^12.43.0"
   ],
   "registryDependencies": [
     "utils",
@@ -16,7 +16,7 @@
     {
       "path": "src/ui/switch.tsx",
       "type": "registry:ui",
-      "content": "'use client';\n\nimport { Switch as BaseSwitch } from '@base-ui/react/switch';\nimport { type HTMLMotionProps, motion } from 'motion/react';\nimport type * as React from 'react';\n\nimport { useControlTransition } from '@/lib/motion';\nimport { cn, type RadiusProps, radiusVariants } from '@/lib/utils';\n\n/** Thumb travel, in px, matching `h-6 w-11` track and `size-4` thumb. */\nconst THUMB_OFF = 4;\nconst THUMB_ON = 24;\n\nexport type SwitchProps = React.ComponentProps<typeof BaseSwitch.Root> & RadiusProps;\n\nexport function Switch({ className, radius, ...props }: SwitchProps) {\n  const transition = useControlTransition();\n\n  return (\n    <BaseSwitch.Root\n      className={cn(\n        'relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center border border-input bg-background transition-colors outline-none',\n        'focus-visible:ring-2 focus-visible:ring-ring',\n        'data-[checked]:border-primary data-[checked]:bg-primary',\n        'disabled:cursor-not-allowed disabled:opacity-40',\n        radiusVariants({ radius }),\n        className\n      )}\n      {...props}\n    >\n      <BaseSwitch.Thumb\n        className={cn(\n          'block size-4 bg-foreground transition-colors data-[checked]:bg-primary-foreground',\n          radiusVariants({ radius })\n        )}\n        render={(thumbProps, state) => (\n          <motion.span\n            {...(thumbProps as HTMLMotionProps<'span'>)}\n            // `initial={false}` so a switch that starts checked renders in place\n            // instead of sliding across on first paint.\n            initial={false}\n            animate={{ x: state.checked ? THUMB_ON : THUMB_OFF }}\n            transition={transition}\n          />\n        )}\n      />\n    </BaseSwitch.Root>\n  );\n}\n"
+      "content": "'use client';\nimport { Switch as BaseSwitch } from '@base-ui/react/switch';\nimport { type HTMLMotionProps, motion } from 'motion/react';\nimport type * as React from 'react';\nimport { useControlTransition } from '@/lib/motion';\nimport { cn } from '@/lib/utils';\n\n/** Thumb travel, in px, matching `h-6 w-11` track and `size-4` thumb. */\nconst THUMB_OFF = 4;\nconst THUMB_ON = 24;\nexport type SwitchProps = React.ComponentProps<typeof BaseSwitch.Root>;\nexport function Switch({ className, ...props }: SwitchProps) {\n  const transition = useControlTransition();\n  return (\n    <BaseSwitch.Root\n      className={cn(\n        'relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center border border-input bg-background transition-colors outline-none',\n        'focus-visible:ring-2 focus-visible:ring-ring',\n        'data-[checked]:border-primary data-[checked]:bg-primary',\n        'disabled:cursor-not-allowed disabled:opacity-40',\n        'rounded-full',\n        className\n      )}\n      {...props}\n    >\n      <BaseSwitch.Thumb\n        className={cn(\n          'block size-4 bg-foreground transition-colors data-[checked]:bg-primary-foreground',\n          'rounded-full'\n        )}\n        render={(thumbProps, state) => (\n          <motion.span\n            {...(thumbProps as HTMLMotionProps<'span'>)}\n            // `initial={false}` so a switch that starts checked renders in place\n            // instead of sliding across on first paint.\n            initial={false}\n            animate={{ x: state.checked ? THUMB_ON : THUMB_OFF }}\n            transition={transition}\n          />\n        )}\n      />\n    </BaseSwitch.Root>\n  );\n}\n"
     }
   ]
 }

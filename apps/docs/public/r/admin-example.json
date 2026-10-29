@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.ter.net.in/schema/registry-item.json",
+  "name": "admin-example",
+  "type": "registry:block",
+  "title": "Admin Example",
+  "description": "Complete metrics and filterable table page with fictional data.",
+  "dependencies": [],
+  "registryDependencies": [
+    "badge",
+    "button",
+    "card",
+    "data-table",
+    "page-layout",
+    "stat"
+  ],
+  "files": [
+    {
+      "path": "src/ui/admin-example.tsx",
+      "type": "registry:ui",
+      "content": "'use client';\n\nimport type { ColumnDef } from '@tanstack/react-table';\nimport { Badge } from '@/ui/badge';\nimport { Button } from '@/ui/button';\nimport { Card, CardContent, CardHeader, CardTitle } from '@/ui/card';\nimport { DataTable } from '@/ui/data-table';\nimport { PageActions, PageContainer, PageDescription, PageHeader, PageTitle } from '@/ui/page-layout';\nimport { Stat } from '@/ui/stat';\n\nconst services = [\n  { name: 'docs', endpoint: 'docs.example.com', status: 'Connected', requests: 1248 },\n  { name: 'preview', endpoint: 'preview.example.com', status: 'Connected', requests: 326 },\n  { name: 'development', endpoint: 'dev.example.com', status: 'Offline', requests: 0 },\n  { name: 'webhook', endpoint: 'hooks.example.com', status: 'Connected', requests: 87 }\n];\nconst columns: ColumnDef<(typeof services)[number]>[] = [\n  {\n    accessorKey: 'name',\n    header: 'Service',\n    cell: ({ row }) => (\n      <div>\n        <span className=\"font-medium\">{row.original.name}</span>\n        <p className=\"mt-0.5 text-xs text-muted-foreground\">{row.original.endpoint}</p>\n      </div>\n    )\n  },\n  {\n    accessorKey: 'status',\n    header: 'Status',\n    cell: ({ row }) => (\n      <Badge tone={row.original.status === 'Connected' ? 'success' : 'neutral'}>{row.original.status}</Badge>\n    )\n  },\n  {\n    accessorKey: 'requests',\n    header: 'Requests',\n    cell: ({ row }) => <span className=\"tabular-nums\">{row.original.requests.toLocaleString('en')}</span>\n  }\n];\n\n/** Fictional fixture data; no service or account requests are made. */\nexport function AdminExample() {\n  return (\n    <PageContainer>\n      <PageHeader>\n        <div>\n          <PageTitle>Services</PageTitle>\n          <PageDescription>\n            A compact admin layout with shared metrics, status labels, and a searchable table.\n          </PageDescription>\n        </div>\n        <PageActions>\n          <Button variant=\"outline\" render={<a href=\"/examples\" />}>\n            All examples\n          </Button>\n        </PageActions>\n      </PageHeader>\n      <div className=\"grid gap-4 sm:grid-cols-3\">\n        <Stat label=\"Services\" value={4} />\n        <Stat label=\"Connected\" value={3} />\n        <Stat label=\"Requests\" value=\"1,661\" hint=\"Fictional example data\" />\n      </div>\n      <Card padding=\"none\">\n        <CardHeader className=\"border-b border-border p-5\">\n          <CardTitle>Service directory</CardTitle>\n        </CardHeader>\n        <CardContent className=\"p-4\">\n          <DataTable\n            columns={columns}\n            data={services}\n            getRowId={(service) => service.name}\n            enableRowSelection={false}\n            initialPageSize={5}\n            pageSizeOptions={[5, 10, 20]}\n            searchPlaceholder=\"Find a service\"\n            emptyMessage=\"No services match your search.\"\n          />\n        </CardContent>\n      </Card>\n    </PageContainer>\n  );\n}\n"
+    }
+  ]
+}

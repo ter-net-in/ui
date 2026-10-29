@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.ter.net.in/schema/registry-item.json",
+  "name": "input-group",
+  "type": "registry:ui",
+  "title": "Input Group",
+  "description": "Joined inputs and addons with automatic outer corners.",
+  "dependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/ui/input-group.tsx",
+      "type": "registry:ui",
+      "content": "import type * as React from 'react';\nimport { cn } from '@/lib/utils';\n\nexport function InputGroup({ className, ...props }: React.ComponentProps<'div'>) {\n  return (\n    <div\n      className={cn('ui-input-group flex min-w-0 items-stretch [&>input]:min-w-0 [&>input]:flex-1', className)}\n      {...props}\n    />\n  );\n}\nexport function InputAddon({ className, ...props }: React.ComponentProps<'span'>) {\n  return (\n    <span\n      className={cn(\n        'inline-flex shrink-0 items-center rounded-control border border-input bg-muted px-3 text-sm text-muted-foreground',\n        className\n      )}\n      {...props}\n    />\n  );\n}\n"
+    }
+  ]
+}

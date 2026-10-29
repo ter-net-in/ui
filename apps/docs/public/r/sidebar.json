@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.ter.net.in/schema/registry-item.json",
+  "name": "sidebar",
+  "type": "registry:ui",
+  "title": "Sidebar",
+  "description": "Composable app-owned navigation links, buttons, and sidebar regions.",
+  "dependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/ui/sidebar.tsx",
+      "type": "registry:ui",
+      "content": "import type * as React from 'react';\nimport { cn } from '@/lib/utils';\n\nexport function Sidebar({ className, ...props }: React.ComponentProps<'aside'>) {\n  return <aside className={cn('flex w-56 shrink-0 flex-col border-r border-border bg-card', className)} {...props} />;\n}\nexport function SidebarHeader({ className, ...props }: React.ComponentProps<'div'>) {\n  return (\n    <div\n      className={cn('flex min-h-14 shrink-0 items-center justify-between gap-3 border-b border-border px-4', className)}\n      {...props}\n    />\n  );\n}\nexport function SidebarContent({ className, ...props }: React.ComponentProps<'nav'>) {\n  return <nav className={cn('min-h-0 flex-1 space-y-1 overflow-y-auto p-2', className)} {...props} />;\n}\nexport function SidebarFooter({ className, ...props }: React.ComponentProps<'div'>) {\n  return (\n    <div className={cn('shrink-0 border-t border-border p-4 text-xs text-muted-foreground', className)} {...props} />\n  );\n}\nconst itemClass =\n  'ui-control flex min-h-9 w-full items-center gap-3 rounded-control px-3 py-2 text-left text-sm transition-colors outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring [&_svg]:size-4 [&_svg]:shrink-0';\nexport function SidebarLink({ active, className, ...props }: React.ComponentProps<'a'> & { active?: boolean }) {\n  return (\n    <a\n      aria-current={active ? 'page' : undefined}\n      className={cn(itemClass, active && 'bg-accent font-medium text-accent-foreground', className)}\n      {...props}\n    />\n  );\n}\nexport function SidebarButton({ active, className, ...props }: React.ComponentProps<'button'> & { active?: boolean }) {\n  return (\n    <button\n      type=\"button\"\n      aria-pressed={active}\n      className={cn(itemClass, 'cursor-pointer', active && 'bg-accent font-medium text-accent-foreground', className)}\n      {...props}\n    />\n  );\n}\n"
+    }
+  ]
+}

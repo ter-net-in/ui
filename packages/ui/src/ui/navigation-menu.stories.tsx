@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -14,14 +13,12 @@ const meta = {
   component: NavigationMenu,
   tags: ['autodocs']
 } satisfies Meta<typeof NavigationMenu>;
-
 export default meta;
-
-export const Playground: StoryObj<{ radius: 'none' | 'sm' | 'md' | 'lg' }> = {
-  args: { radius: 'md' },
-  argTypes: { radius: { control: 'inline-radio', options: ['none', 'sm', 'md', 'lg'] } },
-  render: ({ radius }) => (
-    <NavigationMenu radius={radius}>
+export const Playground: StoryObj = {
+  args: {},
+  argTypes: {},
+  render: () => (
+    <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
           <NavigationMenuTrigger>Products</NavigationMenuTrigger>

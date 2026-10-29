@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.ter.net.in/schema/registry-item.json",
+  "name": "skeleton",
+  "type": "registry:ui",
+  "title": "Skeleton",
+  "description": "Reduced-motion-aware content loading placeholder.",
+  "dependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/ui/skeleton.tsx",
+      "type": "registry:ui",
+      "content": "import type * as React from 'react';\nimport { cn } from '@/lib/utils';\n\nexport function Skeleton({ className, ...props }: React.ComponentProps<'div'>) {\n  return (\n    <div\n      aria-hidden=\"true\"\n      className={cn('animate-pulse rounded-control bg-muted motion-reduce:animate-none', className)}\n      {...props}\n    />\n  );\n}\n"
+    }
+  ]
+}

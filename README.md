@@ -24,27 +24,18 @@ Use a registry override when testing locally or hosting a fork:
 npx @ternetin/ui add button --registry http://localhost:3000
 ```
 
-## Project defaults
+## Shared styling and layouts
 
-Set shared radius and shadow defaults once in `internet-ui.json`:
+Controls use 6px corners, containers use 8px corners, and shadows are reserved for floating surfaces. These are fixed component rules. Component props, CLI configuration, and previews no longer expose radius or shadow choices.
 
-```json
-{
-  "defaults": {
-    "radius": "md",
-    "containerRadius": "md",
-    "shadow": "sm"
-  }
-}
-```
-
-Supported radius values are `none`, `sm`, `md`, `lg`, and `full`. `containerRadius` excludes `full`. Supported shadow values are `none`, `sm`, `md`, `lg`, and `xl`.
-
-Defaults are written into `lib/ui-defaults.ts`, making them ordinary source code with no runtime configuration dependency. Reapply changed config with:
+Install layouts and supporting components individually, or start from a complete working example:
 
 ```bash
-npx @ternetin/ui add ui-defaults --overwrite
+npx @ternetin/ui add app-shell sidebar sidebar-drawer page-layout split-pane
+npx @ternetin/ui add auth-example admin-example settings-example workspace-example
 ```
+
+Examples use fictional local data. Applications own routing, authentication, navigation, and persistence. See [the examples](https://ui.ter.net.in/examples) and [the 0.2 migration guide](https://ui.ter.net.in/migration) before updating existing source copies. Compare local changes before overwriting files. Legacy `defaults` configuration is ignored with a migration notice; it is never rewritten automatically.
 
 ## Repository
 

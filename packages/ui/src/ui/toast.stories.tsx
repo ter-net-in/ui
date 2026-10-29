@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-
 import { Button } from '@/ui/button';
 import { Toaster, ToastProvider, useToast } from '@/ui/toast';
 
@@ -8,9 +7,7 @@ const meta = {
   component: ToastProvider,
   tags: ['autodocs']
 } satisfies Meta<typeof ToastProvider>;
-
 export default meta;
-
 function ToastDemo() {
   const toast = useToast();
   return (
@@ -40,25 +37,20 @@ function ToastDemo() {
     </div>
   );
 }
-
 export const Playground: StoryObj<{
-  radius: 'none' | 'sm' | 'md' | 'lg';
-  shadow: 'none' | 'sm' | 'md' | 'lg' | 'xl';
   position: 'bottom-right' | 'bottom-left' | 'bottom-center' | 'top-right' | 'top-left' | 'top-center';
 }> = {
-  args: { radius: 'md', shadow: 'sm', position: 'bottom-right' },
+  args: { position: 'bottom-right' },
   argTypes: {
-    radius: { control: 'inline-radio', options: ['none', 'sm', 'md', 'lg'] },
-    shadow: { control: 'inline-radio', options: ['none', 'sm', 'md', 'lg', 'xl'] },
     position: {
       control: 'select',
       options: ['bottom-right', 'bottom-left', 'bottom-center', 'top-right', 'top-left', 'top-center']
     }
   },
-  render: ({ radius, shadow, position }) => (
+  render: ({ position }) => (
     <ToastProvider>
       <ToastDemo />
-      <Toaster radius={radius} shadow={shadow} position={position} />
+      <Toaster position={position} />
     </ToastProvider>
   )
 };

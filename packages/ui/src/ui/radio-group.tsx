@@ -1,11 +1,9 @@
 'use client';
-
 import { Radio as BaseRadio } from '@base-ui/react/radio';
 import { RadioGroup as BaseRadioGroup } from '@base-ui/react/radio-group';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { type HTMLMotionProps, motion } from 'motion/react';
 import type * as React from 'react';
-
 import { useControlTransition } from '@/lib/motion';
 import { cn } from '@/lib/utils';
 
@@ -20,18 +18,14 @@ const radioGroupVariants = cva('flex gap-2', {
     orientation: 'vertical'
   }
 });
-
 export interface RadioGroupProps
   extends React.ComponentProps<typeof BaseRadioGroup>,
     VariantProps<typeof radioGroupVariants> {}
-
 export function RadioGroup({ className, orientation, ...props }: RadioGroupProps) {
   return <BaseRadioGroup className={cn(radioGroupVariants({ orientation }), className)} {...props} />;
 }
-
 export function RadioGroupItem({ className, ...props }: React.ComponentProps<typeof BaseRadio.Root>) {
   const transition = useControlTransition();
-
   return (
     <BaseRadio.Root
       className={cn(
@@ -59,5 +53,4 @@ export function RadioGroupItem({ className, ...props }: React.ComponentProps<typ
     </BaseRadio.Root>
   );
 }
-
 export { radioGroupVariants };

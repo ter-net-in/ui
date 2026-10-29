@@ -5,7 +5,7 @@
   "title": "Menubar",
   "description": "Menubar built on Base UI.",
   "dependencies": [
-    "@base-ui/react"
+    "@base-ui/react@^1.9.0"
   ],
   "registryDependencies": [
     "utils"
@@ -14,7 +14,7 @@
     {
       "path": "src/ui/menubar.tsx",
       "type": "registry:ui",
-      "content": "'use client';\n\nimport { Menubar as BaseMenubar } from '@base-ui/react/menubar';\nimport type * as React from 'react';\n\nimport { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';\n\nexport function Menubar({\n  className,\n  radius,\n  ...props\n}: React.ComponentProps<typeof BaseMenubar> & ContainerRadiusProps) {\n  return (\n    <BaseMenubar\n      className={cn(\n        'flex items-center gap-0 overflow-hidden border border-border bg-background [&>*+*]:border-l',\n        containerRadiusVariants({ radius }),\n        className\n      )}\n      {...props}\n    />\n  );\n}\n"
+      "content": "'use client';\nimport { Menubar as BaseMenubar } from '@base-ui/react/menubar';\nimport type * as React from 'react';\nimport { cn } from '@/lib/utils';\nexport function Menubar({ className, ...props }: React.ComponentProps<typeof BaseMenubar>) {\n  return (\n    <BaseMenubar\n      className={cn(\n        'flex items-center gap-0 overflow-hidden border border-border bg-background [&>*+*]:border-l',\n        'rounded-surface',\n        className\n      )}\n      {...props}\n    />\n  );\n}\n"
     }
   ]
 }

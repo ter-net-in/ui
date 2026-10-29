@@ -1,20 +1,12 @@
 'use client';
-
 import { Progress as BaseProgress } from '@base-ui/react/progress';
 import type * as React from 'react';
-
-import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
-
-export function Progress({
-  className,
-  children,
-  radius,
-  ...props
-}: React.ComponentProps<typeof BaseProgress.Root> & RadiusProps) {
+import { cn } from '@/lib/utils';
+export function Progress({ className, children, ...props }: React.ComponentProps<typeof BaseProgress.Root>) {
   return (
     <BaseProgress.Root className={cn('flex w-full flex-col gap-1', className)} {...props}>
       <BaseProgress.Track
-        className={cn('h-2 w-full overflow-hidden border border-border bg-secondary', radiusVariants({ radius }))}
+        className={cn('h-2 w-full overflow-hidden border border-border bg-secondary', 'rounded-full')}
       >
         {/*
           Width stays in CSS: Base UI writes the filled width as an inline style
@@ -34,7 +26,6 @@ export function Progress({
     </BaseProgress.Root>
   );
 }
-
 export function ProgressLabel({ className, ...props }: React.ComponentProps<typeof BaseProgress.Label>) {
   return (
     <BaseProgress.Label
@@ -43,7 +34,6 @@ export function ProgressLabel({ className, ...props }: React.ComponentProps<type
     />
   );
 }
-
 export function ProgressValue({ className, ...props }: React.ComponentProps<typeof BaseProgress.Value>) {
   return <BaseProgress.Value className={cn('text-xs tabular-nums text-muted-foreground', className)} {...props} />;
 }

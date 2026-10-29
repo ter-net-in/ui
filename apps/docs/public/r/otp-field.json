@@ -5,7 +5,7 @@
   "title": "OTP Field",
   "description": "OTP Field built on Base UI.",
   "dependencies": [
-    "@base-ui/react"
+    "@base-ui/react@^1.9.0"
   ],
   "registryDependencies": [
     "utils"
@@ -14,7 +14,7 @@
     {
       "path": "src/ui/otp-field.tsx",
       "type": "registry:ui",
-      "content": "'use client';\n\nimport { OTPField as BaseOTPField } from '@base-ui/react/otp-field';\nimport type * as React from 'react';\n\nimport { cn, type RadiusProps, radiusVariants } from '@/lib/utils';\n\nexport interface OtpFieldProps extends Omit<React.ComponentProps<typeof BaseOTPField.Root>, 'length'>, RadiusProps {\n  length?: number;\n}\n\nexport function OtpField({ className, length = 6, radius, ...props }: OtpFieldProps) {\n  return (\n    <BaseOTPField.Root length={length} className={cn('flex gap-2', className)} {...props}>\n      {Array.from({ length }).map((_, i) => (\n        <BaseOTPField.Input\n          // biome-ignore lint/suspicious/noArrayIndexKey: fixed-length OTP cells\n          key={i}\n          className={cn(\n            'size-11 border border-input bg-background text-center text-lg tabular-nums outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring',\n            radiusVariants({ radius })\n          )}\n        />\n      ))}\n    </BaseOTPField.Root>\n  );\n}\n"
+      "content": "'use client';\nimport { OTPField as BaseOTPField } from '@base-ui/react/otp-field';\nimport type * as React from 'react';\nimport { cn } from '@/lib/utils';\nexport interface OtpFieldProps extends Omit<React.ComponentProps<typeof BaseOTPField.Root>, 'length'> {\n  length?: number;\n}\nexport function OtpField({ className, length = 6, ...props }: OtpFieldProps) {\n  return (\n    <BaseOTPField.Root length={length} className={cn('flex gap-2', className)} {...props}>\n      {Array.from({ length }).map((_, i) => (\n        <BaseOTPField.Input\n          // biome-ignore lint/suspicious/noArrayIndexKey: fixed-length OTP cells\n          key={i}\n          className={cn(\n            'size-11 border border-input bg-background text-center text-lg tabular-nums outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring',\n            'rounded-control'\n          )}\n        />\n      ))}\n    </BaseOTPField.Root>\n  );\n}\n"
     }
   ]
 }

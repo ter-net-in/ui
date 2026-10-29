@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.ter.net.in/schema/registry-item.json",
+  "name": "settings-section",
+  "type": "registry:ui",
+  "title": "Settings Section",
+  "description": "Consistent settings heading, description, body, and actions.",
+  "dependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/ui/settings-section.tsx",
+      "type": "registry:ui",
+      "content": "import type * as React from 'react';\nimport { cn } from '@/lib/utils';\n\nexport function SettingsSection({\n  title,\n  description,\n  actions,\n  children,\n  headingLevel = 2,\n  className,\n  ...props\n}: Omit<React.ComponentProps<'section'>, 'title'> & {\n  title: React.ReactNode;\n  description?: React.ReactNode;\n  actions?: React.ReactNode;\n  headingLevel?: 2 | 3;\n}) {\n  const Heading = headingLevel === 3 ? 'h3' : 'h2';\n  return (\n    <section className={cn('space-y-4 border-b border-border py-6 last:border-b-0', className)} {...props}>\n      <div className=\"flex flex-wrap items-start justify-between gap-3\">\n        <div>\n          <Heading className=\"text-sm font-semibold\">{title}</Heading>\n          {description && <p className=\"mt-1 max-w-prose text-sm leading-6 text-muted-foreground\">{description}</p>}\n        </div>\n        {actions}\n      </div>\n      {children}\n    </section>\n  );\n}\n"
+    }
+  ]
+}

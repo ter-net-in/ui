@@ -5,7 +5,7 @@
   "title": "Motion presets",
   "description": "Shared animation language: easing curves, duration and spring tokens, and the render-prop helpers that animate Base UI popups with Motion.",
   "dependencies": [
-    "motion"
+    "motion@^12.43.0"
   ],
   "registryDependencies": [],
   "files": [

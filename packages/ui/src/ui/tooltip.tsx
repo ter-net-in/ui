@@ -1,10 +1,8 @@
 'use client';
-
 import { Tooltip as BaseTooltip } from '@base-ui/react/tooltip';
 import type * as React from 'react';
-
 import { transitions, useMotionPopupRender } from '@/lib/motion';
-import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 /**
  * Base UI waits 600ms before showing a tooltip. That's long enough that a hover
@@ -16,7 +14,6 @@ import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/ut
  */
 const OPEN_DELAY = 200;
 const CLOSE_DELAY = 100;
-
 export function TooltipProvider({
   delay = OPEN_DELAY,
   closeDelay = CLOSE_DELAY,
@@ -24,9 +21,7 @@ export function TooltipProvider({
 }: BaseTooltip.Provider.Props) {
   return <BaseTooltip.Provider delay={delay} closeDelay={closeDelay} {...props} />;
 }
-
 export const Tooltip = BaseTooltip.Root;
-
 /**
  * Carries the same delay default as {@link TooltipProvider}, so a tooltip used
  * without a provider is just as responsive. A provider, when present, still wins
@@ -35,14 +30,14 @@ export const Tooltip = BaseTooltip.Root;
 export function TooltipTrigger({ delay = OPEN_DELAY, ...props }: BaseTooltip.Trigger.Props) {
   return <BaseTooltip.Trigger delay={delay} {...props} />;
 }
-
 export function TooltipContent({
   className,
   sideOffset = 8,
   children,
-  radius,
   ...props
-}: React.ComponentProps<typeof BaseTooltip.Popup> & { sideOffset?: number } & ContainerRadiusProps) {
+}: React.ComponentProps<typeof BaseTooltip.Popup> & {
+  sideOffset?: number;
+}) {
   // Tooltips are the lightest surface in the library: barely any scale, and a
   // faster curve than the rest, since they follow the pointer around.
   const renderPopup = useMotionPopupRender({
@@ -50,7 +45,6 @@ export function TooltipContent({
     offset: 3,
     transition: { duration: transitions.fade.duration, ease: 'easeOut' }
   });
-
   return (
     <BaseTooltip.Portal>
       <BaseTooltip.Positioner sideOffset={sideOffset} className="z-50">
@@ -58,7 +52,7 @@ export function TooltipContent({
           className={cn(
             'border border-border bg-foreground px-2 py-1 text-xs font-medium leading-none tracking-[-0.01em] text-background',
             '[transform-origin:var(--transform-origin)]',
-            containerRadiusVariants({ radius }),
+            'rounded-surface',
             className
           )}
           render={renderPopup}

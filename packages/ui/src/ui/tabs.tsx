@@ -1,15 +1,11 @@
 'use client';
-
 import { Tabs as BaseTabs } from '@base-ui/react/tabs';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { type HTMLMotionProps, motion } from 'motion/react';
 import type * as React from 'react';
-
 import { transitions, useControlTransition } from '@/lib/motion';
 import { cn } from '@/lib/utils';
-
 export const Tabs = BaseTabs.Root;
-
 const tabsListVariants = cva('relative inline-flex items-center', {
   variants: {
     variant: {
@@ -25,7 +21,6 @@ const tabsListVariants = cva('relative inline-flex items-center', {
     variant: 'default'
   }
 });
-
 /**
  * The indicator is the same element in every variant, restyled — which is what
  * lets it animate between tabs. The `muted` variant grows it to a full-height
@@ -43,9 +38,7 @@ const tabsIndicatorVariants = cva('absolute left-0 z-0', {
     variant: 'default'
   }
 });
-
 export type TabsVariant = NonNullable<VariantProps<typeof tabsListVariants>['variant']>;
-
 export function TabsList({
   className,
   variant,
@@ -59,7 +52,6 @@ export function TabsList({
     </BaseTabs.List>
   );
 }
-
 export function TabsIndicator({
   className,
   variant,
@@ -82,7 +74,6 @@ export function TabsIndicator({
     />
   );
 }
-
 export function TabsTab({ className, ...props }: React.ComponentProps<typeof BaseTabs.Tab>) {
   return (
     <BaseTabs.Tab
@@ -98,10 +89,8 @@ export function TabsTab({ className, ...props }: React.ComponentProps<typeof Bas
     />
   );
 }
-
 export function TabsPanel({ className, ...props }: React.ComponentProps<typeof BaseTabs.Panel>) {
   const transition = useControlTransition(transitions.enter);
-
   return (
     <BaseTabs.Panel
       className={cn('mt-4 outline-none focus-visible:ring-2 focus-visible:ring-ring', className)}
@@ -121,5 +110,4 @@ export function TabsPanel({ className, ...props }: React.ComponentProps<typeof B
     />
   );
 }
-
 export { tabsIndicatorVariants, tabsListVariants };

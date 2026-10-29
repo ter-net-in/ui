@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-
 import { AsciiSvg } from '@/ui/ascii-svg';
 
 const meta = {
@@ -7,28 +6,22 @@ const meta = {
   component: AsciiSvg,
   tags: ['autodocs']
 } satisfies Meta<typeof AsciiSvg>;
-
 export default meta;
-
 const Star = (
   <svg width="120" height="120" viewBox="0 0 24 24" fill="currentColor" role="img" aria-label="Star">
     <title>Star</title>
     <path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7-6.3-3.8-6.3 3.8 1.7-7L2 9.5l7.1-.6z" />
   </svg>
 );
-
 export const Playground: StoryObj<typeof meta> = {
   args: { cols: 40, children: Star }
 };
-
 export const Static: StoryObj<typeof meta> = {
   args: { cols: 40, children: Star }
 };
-
 export const Blocks: StoryObj<typeof meta> = {
   args: { cols: 40, chars: ' ░▒▓█', children: Star }
 };
-
 export const Live: StoryObj<typeof meta> = {
   args: {
     cols: 44,

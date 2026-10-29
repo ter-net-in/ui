@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.ter.net.in/schema/registry-item.json",
+  "name": "alert",
+  "type": "registry:ui",
+  "title": "Alert",
+  "description": "Inline informational, success, warning, or error feedback.",
+  "dependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/ui/alert.tsx",
+      "type": "registry:ui",
+      "content": "import type * as React from 'react';\nimport { cn } from '@/lib/utils';\n\nconst tones = {\n  info: 'border-info/30 bg-info-muted text-info',\n  success: 'border-success/30 bg-success-muted text-success',\n  warning: 'border-warning/30 bg-warning-muted text-warning',\n  danger: 'border-destructive/30 bg-destructive/5 text-destructive'\n};\nexport function Alert({\n  tone = 'info',\n  className,\n  role,\n  ...props\n}: React.ComponentProps<'div'> & { tone?: keyof typeof tones }) {\n  return (\n    <div\n      role={role ?? (tone === 'danger' ? 'alert' : undefined)}\n      className={cn('rounded-surface border p-4 text-sm leading-6', tones[tone], className)}\n      {...props}\n    />\n  );\n}\n"
+    }
+  ]
+}

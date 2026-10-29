@@ -2,6 +2,8 @@ import { existsSync } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
+import { log } from './utils.js';
+
 export const CONFIG_FILE = 'internet-ui.json';
 
 export interface Aliases {
@@ -22,21 +24,6 @@ export interface Paths {
   css: string;
 }
 
-export type Radius = 'none' | 'sm' | 'md' | 'lg' | 'full';
-/** container surfaces cap out at `lg` — a 9999px radius turns a dialog into a lozenge */
-export type ContainerRadius = Exclude<Radius, 'full'>;
-export type Shadow = 'none' | 'sm' | 'md' | 'lg' | 'xl';
-
-/** Project-wide default variants, baked into lib/ui-defaults.ts when it is written. */
-export interface Defaults {
-  /** default for pill/circle-friendly controls (buttons, inputs, toggles) */
-  radius: Radius;
-  /** default for boxy surfaces (dialogs, menus, cards); derived from `radius` when omitted */
-  containerRadius: ContainerRadius;
-  /** default for raised surfaces (dialogs, popovers, toasts) */
-  shadow: Shadow;
-}
-
 export interface Config {
   /** registry base url; items are fetched from `${registry}/r/<name>.json` */
   registry: string;
@@ -44,26 +31,6 @@ export interface Config {
   tsx: boolean;
   aliases: Aliases;
   paths: Paths;
-  /** optional; falls back to DEFAULT_VARIANTS for any key left out */
-  defaults?: Partial<Defaults>;
-}
-
-export const DEFAULT_VARIANTS: Defaults = {
-  radius: 'none',
-  containerRadius: 'none',
-  shadow: 'md'
-};
-
-/**
- * Fill in the variant defaults, deriving `containerRadius` from `radius` when the
- * consumer only set the latter. `full` is capped to `lg` because the container scale
- * has no `full` step — writing it through would emit a value cva can't resolve.
- */
-export function resolveDefaults(config: Config): Defaults {
-  const d = config.defaults ?? {};
-  const radius = d.radius ?? DEFAULT_VARIANTS.radius;
-  const containerRadius = d.containerRadius ?? (radius === 'full' ? 'lg' : radius);
-  return { radius, containerRadius, shadow: d.shadow ?? DEFAULT_VARIANTS.shadow };
 }
 
 export const DEFAULT_REGISTRY = 'https://ui.ter.net.in';
@@ -75,7 +42,18 @@ export function configPath(cwd: string) {
 export async function loadConfig(cwd: string): Promise<Config | null> {
   const file = configPath(cwd);
   if (!existsSync(file)) return null;
-  return JSON.parse(await readFile(file, 'utf8')) as Config;
+  const { defaults, ...config } = JSON.parse(await readFile(file, 'utf8')) as Config & { defaults?: unknown };
+  if (defaults !== undefined) {
+    log.warn(
+      'internet-ui.json: legacy visual defaults are obsolete. Components now share fixed house styles. Your config has not been rewritten.'
+    );
+  }
+  if (!config.paths?.ui || !config.paths.lib || !config.paths.css || !config.aliases?.utils) {
+    throw new Error(
+      'internet-ui.json needs paths.ui, paths.lib, paths.css, and import aliases. See https://ui.ter.net.in/migration.'
+    );
+  }
+  return config;
 }
 
 export async function writeConfig(cwd: string, config: Config): Promise<void> {
@@ -103,7 +81,6 @@ export function detectDefaults(cwd: string): Config {
       ui: `${base}/components/ui`.replace(/^\.\//, ''),
       lib: `${base}/lib`.replace(/^\.\//, ''),
       css
-    },
-    defaults: { ...DEFAULT_VARIANTS }
+    }
   };
 }

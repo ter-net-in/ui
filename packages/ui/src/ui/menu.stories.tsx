@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-
 import { Button } from '@/ui/button';
 import {
   Menu,
@@ -18,17 +17,15 @@ const meta = {
   component: Menu,
   tags: ['autodocs']
 } satisfies Meta<typeof Menu>;
-
 export default meta;
 type Story = StoryObj<typeof meta>;
-
-export const Playground: StoryObj<{ radius: 'none' | 'sm' | 'md' | 'lg' }> = {
-  args: { radius: 'md' },
-  argTypes: { radius: { control: 'inline-radio', options: ['none', 'sm', 'md', 'lg'] } },
-  render: ({ radius }) => (
+export const Playground: StoryObj = {
+  args: {},
+  argTypes: {},
+  render: () => (
     <Menu>
       <MenuTrigger render={<Button variant="outline">Open menu</Button>} />
-      <MenuContent radius={radius}>
+      <MenuContent>
         <MenuItem>New file</MenuItem>
         <MenuItem>Open…</MenuItem>
         <MenuItem>Save</MenuItem>
@@ -38,7 +35,6 @@ export const Playground: StoryObj<{ radius: 'none' | 'sm' | 'md' | 'lg' }> = {
     </Menu>
   )
 };
-
 export const WithGroupsAndSubmenu: Story = {
   render: () => (
     <Menu>

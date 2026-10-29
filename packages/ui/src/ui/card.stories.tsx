@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-
 import { Button } from '@/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/ui/card';
 
@@ -9,17 +8,14 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {
     variant: { control: 'inline-radio', options: ['default', 'outline', 'muted', 'ghost'] },
-    radius: { control: 'inline-radio', options: ['none', 'sm', 'md', 'lg'] },
     padding: { control: 'inline-radio', options: ['none', 'sm', 'md', 'lg'] },
     corners: { control: 'inline-radio', options: ['none', 'diagonal', 'all'] },
     cornerTone: { control: 'inline-radio', options: ['split', 'primary', 'foreground'] }
   },
-  args: { variant: 'default', radius: 'none', padding: 'md', corners: 'none', cornerTone: 'split' }
+  args: { variant: 'default', padding: 'md', corners: 'none', cornerTone: 'split' }
 } satisfies Meta<typeof Card>;
-
 export default meta;
 type Story = StoryObj<typeof meta>;
-
 export const Playground: Story = {
   render: (args) => (
     <Card {...args} className="max-w-sm">
@@ -27,7 +23,7 @@ export const Playground: Story = {
         <CardTitle>Protocol</CardTitle>
         <CardDescription>Tune the card to your use-case.</CardDescription>
       </CardHeader>
-      <CardContent>Adjust variant, radius, padding and corners from the Controls panel.</CardContent>
+      <CardContent>Adjust variant, padding and public-page corners from the Controls panel.</CardContent>
       <CardFooter>
         <Button size="sm">Accept</Button>
         <Button size="sm" variant="ghost">
@@ -37,19 +33,6 @@ export const Playground: Story = {
     </Card>
   )
 };
-
-export const Radius: Story = {
-  render: () => (
-    <div className="flex flex-wrap gap-4">
-      {(['none', 'sm', 'md', 'lg'] as const).map((r) => (
-        <Card key={r} radius={r} className="h-28 w-40 items-center justify-center text-center">
-          <CardTitle className="text-sm">{r}</CardTitle>
-        </Card>
-      ))}
-    </div>
-  )
-};
-
 export const Variants: Story = {
   render: () => (
     <div className="flex flex-wrap gap-4">
@@ -61,7 +44,6 @@ export const Variants: Story = {
     </div>
   )
 };
-
 export const Corners: Story = {
   render: () => (
     <div className="flex flex-wrap gap-8">
@@ -73,7 +55,6 @@ export const Corners: Story = {
     </div>
   )
 };
-
 export const CornerTones: Story = {
   render: () => (
     <div className="flex flex-wrap gap-8">
@@ -85,7 +66,6 @@ export const CornerTones: Story = {
     </div>
   )
 };
-
 /** Brackets read from CSS variables, so any instance can retune them. */
 export const CornerSizing: Story = {
   render: () => (
@@ -112,7 +92,6 @@ export const CornerSizing: Story = {
     </div>
   )
 };
-
 export const Padding: Story = {
   render: () => (
     <div className="flex flex-wrap items-start gap-4">

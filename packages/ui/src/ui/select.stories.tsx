@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select';
 
 const meta = {
@@ -7,19 +6,17 @@ const meta = {
   component: Select,
   tags: ['autodocs']
 } satisfies Meta<typeof Select>;
-
 export default meta;
 type Story = StoryObj<typeof meta>;
-
-export const Playground: StoryObj<{ radius: 'none' | 'sm' | 'md' | 'lg' }> = {
-  args: { radius: 'md' },
-  argTypes: { radius: { control: 'inline-radio', options: ['none', 'sm', 'md', 'lg'] } },
-  render: ({ radius }) => (
+export const Playground: StoryObj = {
+  args: {},
+  argTypes: {},
+  render: () => (
     <Select>
-      <SelectTrigger className="max-w-xs" radius={radius}>
+      <SelectTrigger className="max-w-xs">
         <SelectValue placeholder="Pick a protocol" />
       </SelectTrigger>
-      <SelectContent radius={radius}>
+      <SelectContent>
         <SelectItem value="http">HTTP</SelectItem>
         <SelectItem value="ws">WebSocket</SelectItem>
         <SelectItem value="ftp">FTP</SelectItem>
@@ -27,7 +24,6 @@ export const Playground: StoryObj<{ radius: 'none' | 'sm' | 'md' | 'lg' }> = {
     </Select>
   )
 };
-
 export const WithDefaultValue: Story = {
   render: () => (
     <Select defaultValue="ws">

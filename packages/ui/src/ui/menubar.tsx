@@ -1,20 +1,13 @@
 'use client';
-
 import { Menubar as BaseMenubar } from '@base-ui/react/menubar';
 import type * as React from 'react';
-
-import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
-
-export function Menubar({
-  className,
-  radius,
-  ...props
-}: React.ComponentProps<typeof BaseMenubar> & ContainerRadiusProps) {
+import { cn } from '@/lib/utils';
+export function Menubar({ className, ...props }: React.ComponentProps<typeof BaseMenubar>) {
   return (
     <BaseMenubar
       className={cn(
         'flex items-center gap-0 overflow-hidden border border-border bg-background [&>*+*]:border-l',
-        containerRadiusVariants({ radius }),
+        'rounded-surface',
         className
       )}
       {...props}

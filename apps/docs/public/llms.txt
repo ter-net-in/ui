@@ -18,8 +18,7 @@ npx @ternetin/ui add button input dialog
 ## Components
 
 - [Theme](https://ui.ter.net.in/r/theme.json): internet-ui design tokens (Tailwind v4). Import once from your global stylesheet.
-- [Variant defaults](https://ui.ter.net.in/r/ui-defaults.json): Project-wide default radius and shadow. Values are substituted from the `defaults` block of internet-ui.json at install time.
-- [cn utility](https://ui.ter.net.in/r/utils.json): clsx + tailwind-merge class combiner and shared radius variants used by every component.
+- [cn utility](https://ui.ter.net.in/r/utils.json): Shared clsx/tailwind-merge utility and fixed nested-popup geometry.
 - [Motion presets](https://ui.ter.net.in/r/motion.json): Shared animation language: easing curves, duration and spring tokens, and the render-prop helpers that animate Base UI popups with Motion.
 - [Syntax highlighter](https://ui.ter.net.in/r/highlight.json): Dependency-free tokenizer behind the Code component's language prop. Shell, JS/TS/JSX, JSON, CSS and HTML.
 - [Accordion](https://ui.ter.net.in/r/accordion.json): Accordion built on Base UI.
@@ -27,7 +26,7 @@ npx @ternetin/ui add button input dialog
 - [Autocomplete](https://ui.ter.net.in/r/autocomplete.json): Autocomplete built on Base UI.
 - [Avatar](https://ui.ter.net.in/r/avatar.json): Avatar built on Base UI.
 - [Button](https://ui.ter.net.in/r/button.json): Button built on Base UI.
-- [Card](https://ui.ter.net.in/r/card.json): Composable Card with variant, radius, padding and decorative corner-bracket options. Plain styled container — not a Base UI primitive.
+- [Card](https://ui.ter.net.in/r/card.json): Composable flat card with semantic variants, shared geometry, and optional public-page corner brackets.
 - [Checkbox Group](https://ui.ter.net.in/r/checkbox-group.json): Checkbox Group built on Base UI.
 - [Checkbox](https://ui.ter.net.in/r/checkbox.json): Checkbox built on Base UI.
 - [Code](https://ui.ter.net.in/r/code.json): Single-line or multi-line code snippet with an optional title strip, syntax highlighting and a copy button. Plain styled container — not a Base UI primitive.
@@ -63,3 +62,22 @@ npx @ternetin/ui add button input dialog
 - [Toolbar](https://ui.ter.net.in/r/toolbar.json): Toolbar built on Base UI.
 - [Tooltip](https://ui.ter.net.in/r/tooltip.json): Tooltip built on Base UI.
 - [ASCII SVG](https://ui.ter.net.in/r/ascii-svg.json): Globs an SVG from its children and renders it as live, animatable ASCII art by rasterizing to a canvas and mapping brightness onto a character ramp.
+- [Page Layout](https://ui.ter.net.in/r/page-layout.json): Shared page container, title, description, actions, and sections.
+- [Auth Layout](https://ui.ter.net.in/r/auth-layout.json): Centered responsive authentication composition, without auth logic.
+- [App Shell](https://ui.ter.net.in/r/app-shell.json): Application header, body, and independent main scroll region.
+- [Sidebar](https://ui.ter.net.in/r/sidebar.json): Composable app-owned navigation links, buttons, and sidebar regions.
+- [Sidebar Drawer](https://ui.ter.net.in/r/sidebar-drawer.json): Accessible controlled mobile navigation with focus restoration.
+- [Split Pane](https://ui.ter.net.in/r/split-pane.json): Controlled responsive list/detail panes with mobile focus management.
+- [Settings Section](https://ui.ter.net.in/r/settings-section.json): Consistent settings heading, description, body, and actions.
+- [Stat](https://ui.ter.net.in/r/stat.json): Compact, accessible dashboard label/value composition.
+- [Badge](https://ui.ter.net.in/r/badge.json): Text-first semantic status label.
+- [Alert](https://ui.ter.net.in/r/alert.json): Inline informational, success, warning, or error feedback.
+- [Empty State](https://ui.ter.net.in/r/empty-state.json): Empty or recovery state with an explanation and optional next action.
+- [Spinner](https://ui.ter.net.in/r/spinner.json): Accessible progress feedback for a small pending action.
+- [Skeleton](https://ui.ter.net.in/r/skeleton.json): Reduced-motion-aware content loading placeholder.
+- [Input Group](https://ui.ter.net.in/r/input-group.json): Joined inputs and addons with automatic outer corners.
+- [Textarea](https://ui.ter.net.in/r/textarea.json): Native multiline input with shared field states.
+- [Authentication Example](https://ui.ter.net.in/r/auth-example.json): Complete centered authentication form with illustrative local submission.
+- [Admin Example](https://ui.ter.net.in/r/admin-example.json): Complete metrics and filterable table page with fictional data.
+- [Settings Example](https://ui.ter.net.in/r/settings-example.json): Complete settings form, joined input, switch, and local feedback.
+- [Workspace Example](https://ui.ter.net.in/r/workspace-example.json): Complete responsive sidebar/list/detail workspace with fictional messages.

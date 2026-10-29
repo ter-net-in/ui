@@ -1,10 +1,8 @@
 'use client';
-
 import { Accordion as BaseAccordion } from '@base-ui/react/accordion';
 import { cva, type VariantProps } from 'class-variance-authority';
 import type * as React from 'react';
-
-import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 const accordionVariants = cva('w-full', {
   variants: {
@@ -17,13 +15,10 @@ const accordionVariants = cva('w-full', {
     variant: 'default'
   }
 });
-
 export interface AccordionProps
   extends React.ComponentProps<typeof BaseAccordion.Root>,
-    VariantProps<typeof accordionVariants>,
-    ContainerRadiusProps {}
-
-export function Accordion({ className, variant, radius, ...props }: AccordionProps) {
+    VariantProps<typeof accordionVariants> {}
+export function Accordion({ className, variant, ...props }: AccordionProps) {
   return (
     <BaseAccordion.Root
       className={cn(
@@ -33,33 +28,22 @@ export function Accordion({ className, variant, radius, ...props }: AccordionPro
         // the root's square corners still draw over it.
         'overflow-hidden',
         variant !== 'ghost' && '[&>[data-slot=accordion-item]]:!rounded-none',
-        containerRadiusVariants({ radius }),
+        'rounded-surface',
         className
       )}
       {...props}
     />
   );
 }
-
-/**
- * `radius` here only shows up on the `ghost` variant, where items are separate
- * surfaces. Inside the default bordered `Accordion` the root's radius wins — set
- * it there instead.
- */
-export function AccordionItem({
-  className,
-  radius,
-  ...props
-}: React.ComponentProps<typeof BaseAccordion.Item> & ContainerRadiusProps) {
+export function AccordionItem({ className, ...props }: React.ComponentProps<typeof BaseAccordion.Item>) {
   return (
     <BaseAccordion.Item
       data-slot="accordion-item"
-      className={cn('border-b border-border last:border-b-0', containerRadiusVariants({ radius }), className)}
+      className={cn('border-b border-border last:border-b-0', 'rounded-surface', className)}
       {...props}
     />
   );
 }
-
 export function AccordionTrigger({
   className,
   children,
@@ -91,7 +75,6 @@ export function AccordionTrigger({
     </BaseAccordion.Header>
   );
 }
-
 export function AccordionPanel({ className, ...props }: React.ComponentProps<typeof BaseAccordion.Panel>) {
   return (
     <BaseAccordion.Panel
@@ -117,5 +100,4 @@ export function AccordionPanel({ className, ...props }: React.ComponentProps<typ
     />
   );
 }
-
 export { accordionVariants };

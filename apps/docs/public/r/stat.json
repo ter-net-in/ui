@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.ter.net.in/schema/registry-item.json",
+  "name": "stat",
+  "type": "registry:ui",
+  "title": "Stat",
+  "description": "Compact, accessible dashboard label/value composition.",
+  "dependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/ui/stat.tsx",
+      "type": "registry:ui",
+      "content": "import type * as React from 'react';\nimport { cn } from '@/lib/utils';\n\nexport function Stat({\n  label,\n  value,\n  hint,\n  className,\n  ...props\n}: React.ComponentProps<'dl'> & { label: React.ReactNode; value: React.ReactNode; hint?: React.ReactNode }) {\n  return (\n    <dl className={cn('min-w-0 rounded-surface border border-border bg-card p-4', className)} {...props}>\n      <dt className=\"text-sm text-muted-foreground\">{label}</dt>\n      <dd className=\"mt-2 text-2xl font-semibold tabular-nums tracking-tight\">{value}</dd>\n      {hint && <dd className=\"mt-1 text-xs text-muted-foreground\">{hint}</dd>}\n    </dl>\n  );\n}\n"
+    }
+  ]
+}

@@ -1,13 +1,11 @@
 'use client';
-
 import { Button as BaseButton } from '@base-ui/react/button';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { type HTMLMotionProps, motion } from 'motion/react';
 import * as React from 'react';
-
 import { type Language, type TokenKind, tokenize } from '@/lib/highlight';
 import { useTapMotion } from '@/lib/motion';
-import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 const codeVariants = cva('flex w-full min-w-0 flex-col overflow-hidden font-mono font-medium', {
   variants: {
@@ -28,7 +26,6 @@ const codeVariants = cva('flex w-full min-w-0 flex-col overflow-hidden font-mono
     size: 'default'
   }
 });
-
 /**
  * How each size packs its rows. Separate from the cva above, which only sets the
  * type scale and the box's colours — these are the metrics the header, the snippet
@@ -65,16 +62,13 @@ const SIZES = {
     label: 'text-sm'
   }
 } as const;
-
 /**
  * `whitespace-pre` is the whole difference between the two modes: a block keeps
  * its line breaks, and a one-liner is forbidden from wrapping — it scrolls
  * sideways instead, so the row keeps its height and the copy button never moves.
  */
 const CONTENT = 'min-w-0 flex-1 overflow-x-auto whitespace-pre';
-
 const HEADER = 'flex items-center justify-between gap-2 border-b border-border font-semibold tracking-[-0.01em]';
-
 /**
  * Token colours. Three inks and no more, defined in the theme: the house blue for
  * language keywords, a violet for names, a green for literals. Comments and
@@ -88,7 +82,6 @@ const TOKEN_CLASS: Record<TokenKind, string> = {
   name: 'text-syntax-name',
   punctuation: 'text-muted-foreground'
 };
-
 /**
  * The confirmed state borrows --syntax-keyword rather than --primary: it's the
  * same house blue in light mode, but lifted in dark, where #0047ff as a 16px icon
@@ -96,7 +89,6 @@ const TOKEN_CLASS: Record<TokenKind, string> = {
  */
 const COPY_BUTTON =
   'inline-flex shrink-0 cursor-pointer items-center justify-center border border-transparent text-current transition-colors outline-none hover:bg-foreground/10 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset disabled:cursor-not-allowed disabled:opacity-40 data-[copied]:text-syntax-keyword [&_svg]:shrink-0';
-
 function CopyIcon() {
   return (
     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true">
@@ -105,7 +97,6 @@ function CopyIcon() {
     </svg>
   );
 }
-
 function CheckIcon() {
   return (
     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true">
@@ -113,7 +104,6 @@ function CheckIcon() {
     </svg>
   );
 }
-
 export interface CodeCopyButtonProps extends Omit<React.ComponentProps<typeof BaseButton>, 'children'> {
   /** Text to copy. Falls back to the text content of `target`. */
   code?: string;
@@ -137,7 +127,6 @@ export interface CodeCopyButtonProps extends Omit<React.ComponentProps<typeof Ba
    */
   copiedDuration?: number;
 }
-
 /**
  * Copy-to-clipboard button. Rendered inside {@link Code} by default; export is
  * for placing one somewhere else — a card header, a table row — against a
@@ -156,17 +145,14 @@ export function CodeCopyButton({
 }: CodeCopyButtonProps) {
   const [copied, setCopied] = React.useState(false);
   const tap = useTapMotion();
-
   React.useEffect(() => {
     if (!copied) return;
     const timer = window.setTimeout(() => setCopied(false), copiedDuration);
     return () => window.clearTimeout(timer);
   }, [copied, copiedDuration]);
-
   async function writeToClipboard() {
     const text = code ?? target?.current?.textContent ?? '';
     if (!text) return;
-
     try {
       await navigator.clipboard.writeText(text);
     } catch {
@@ -175,11 +161,9 @@ export function CodeCopyButton({
       // that never landed.
       return;
     }
-
     setCopied(true);
     onCopied?.(text);
   }
-
   return (
     <BaseButton
       aria-label={copied ? copiedLabel : label}
@@ -200,11 +184,7 @@ export function CodeCopyButton({
     </BaseButton>
   );
 }
-
-export interface CodeProps
-  extends React.ComponentProps<'div'>,
-    VariantProps<typeof codeVariants>,
-    ContainerRadiusProps {
+export interface CodeProps extends React.ComponentProps<'div'>, VariantProps<typeof codeVariants> {
   /**
    * Text handed to the clipboard. Defaults to the rendered text content, so it
    * only needs setting when the children aren't the literal snippet — a
@@ -236,7 +216,6 @@ export interface CodeProps
   /** Called with the text that reached the clipboard. */
   onCopied?: (code: string) => void;
 }
-
 /**
  * A command, token or snippet, with a copy button and optional syntax colouring.
  * Plain styled container — not a Base UI primitive.
@@ -245,7 +224,6 @@ export function Code({
   className,
   variant,
   size,
-  radius,
   code,
   title,
   language,
@@ -259,16 +237,13 @@ export function Code({
   const setContentRef = (element: HTMLElement | null) => {
     contentRef.current = element;
   };
-
   const source = typeof children === 'string' ? children : undefined;
   const block = multiline ?? (code ?? source)?.includes('\n') ?? false;
   const metrics = SIZES[size ?? 'default'];
-
   const tokens = React.useMemo(
     () => (language && source !== undefined ? tokenize(source, language) : undefined),
     [language, source]
   );
-
   // Plain runs stay bare strings: fewer elements, and the copy button reads the
   // same text content either way.
   const content = tokens
@@ -282,7 +257,6 @@ export function Code({
         )
       )
     : children;
-
   const copyButton = copy ? (
     <CodeCopyButton
       code={code}
@@ -292,11 +266,10 @@ export function Code({
       className={metrics.button}
     />
   ) : null;
-
   return (
     <div
       data-multiline={block || undefined}
-      className={cn(codeVariants({ variant, size }), containerRadiusVariants({ radius }), className)}
+      className={cn(codeVariants({ variant, size }), 'rounded-surface', className)}
       {...props}
     >
       {title ? (
@@ -329,10 +302,8 @@ export function Code({
     </div>
   );
 }
-
 /** Stacked snippets — a run of one-liners read as a sequence to type in order. */
 export function CodeStack({ className, ...props }: React.ComponentProps<'div'>) {
   return <div className={cn('grid w-full gap-2', className)} {...props} />;
 }
-
 export { codeVariants };

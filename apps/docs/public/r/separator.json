@@ -5,7 +5,7 @@
   "title": "Separator",
   "description": "Separator built on Base UI.",
   "dependencies": [
-    "@base-ui/react"
+    "@base-ui/react@^1.9.0"
   ],
   "registryDependencies": [
     "utils"
@@ -14,7 +14,7 @@
     {
       "path": "src/ui/separator.tsx",
       "type": "registry:ui",
-      "content": "'use client';\n\nimport { Separator as BaseSeparator } from '@base-ui/react/separator';\nimport type * as React from 'react';\n\nimport { cn } from '@/lib/utils';\n\nexport type SeparatorProps = React.ComponentProps<typeof BaseSeparator>;\n\nexport function Separator({ className, ...props }: SeparatorProps) {\n  return (\n    <BaseSeparator\n      className={cn(\n        'shrink-0 bg-border data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-px',\n        className\n      )}\n      {...props}\n    />\n  );\n}\n"
+      "content": "'use client';\nimport { Separator as BaseSeparator } from '@base-ui/react/separator';\nimport type * as React from 'react';\nimport { cn } from '@/lib/utils';\nexport type SeparatorProps = React.ComponentProps<typeof BaseSeparator>;\nexport function Separator({ className, ...props }: SeparatorProps) {\n  return (\n    <BaseSeparator\n      className={cn(\n        'shrink-0 bg-border data-[orientation=horizontal]:h-px data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-px',\n        className\n      )}\n      {...props}\n    />\n  );\n}\n"
     }
   ]
 }

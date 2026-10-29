@@ -1,36 +1,32 @@
 'use client';
-
 import { Menu as BaseMenu } from '@base-ui/react/menu';
 import type * as React from 'react';
-
 import { useMotionPopupRender } from '@/lib/motion';
-import { type ContainerRadiusProps, cn, containerRadiusVariants, contentRadiusStyle, NESTED_RADIUS } from '@/lib/utils';
-
+import { cn, NESTED_RADIUS } from '@/lib/utils';
 export const Menu = BaseMenu.Root;
 export const MenuTrigger = BaseMenu.Trigger;
 export const MenuGroup = BaseMenu.Group;
 export const SubmenuRoot = BaseMenu.SubmenuRoot;
-
 export function MenuContent({
   className,
   children,
   sideOffset = 6,
-  radius,
   style,
   ...props
-}: React.ComponentProps<typeof BaseMenu.Popup> & { sideOffset?: number } & ContainerRadiusProps) {
+}: React.ComponentProps<typeof BaseMenu.Popup> & {
+  sideOffset?: number;
+}) {
   const renderPopup = useMotionPopupRender();
-
   return (
     <BaseMenu.Portal>
       <BaseMenu.Positioner sideOffset={sideOffset} className="z-50 outline-none">
         <BaseMenu.Popup
-          style={{ ...contentRadiusStyle(radius), ...style }}
+          style={style}
           className={cn(
-            'min-w-40 border border-border bg-popover p-1 text-popover-foreground shadow-[0_10px_30px_var(--shadow-color)] outline-none',
+            'min-w-40 border border-border bg-popover p-1 text-popover-foreground shadow-popup outline-none',
             // Unfold from the trigger's edge instead of the popup's centre.
             '[transform-origin:var(--transform-origin)]',
-            containerRadiusVariants({ radius }),
+            'rounded-surface',
             className
           )}
           render={renderPopup}
@@ -42,18 +38,15 @@ export function MenuContent({
     </BaseMenu.Portal>
   );
 }
-
 const itemClasses = cn(
   'flex cursor-pointer select-none items-center gap-2 px-3 py-1.5 text-sm leading-5 outline-none',
   NESTED_RADIUS,
   'data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground',
   'data-[disabled]:pointer-events-none data-[disabled]:opacity-40'
 );
-
 export function MenuItem({ className, ...props }: React.ComponentProps<typeof BaseMenu.Item>) {
   return <BaseMenu.Item className={cn(itemClasses, className)} {...props} />;
 }
-
 export function MenuGroupLabel({ className, ...props }: React.ComponentProps<typeof BaseMenu.GroupLabel>) {
   return (
     <BaseMenu.GroupLabel
@@ -62,11 +55,9 @@ export function MenuGroupLabel({ className, ...props }: React.ComponentProps<typ
     />
   );
 }
-
 export function MenuSeparator({ className, ...props }: React.ComponentProps<'div'>) {
   return <div className={cn('-mx-1 my-1 h-px bg-border', className)} {...props} />;
 }
-
 export function MenuSubmenuTrigger({
   className,
   children,

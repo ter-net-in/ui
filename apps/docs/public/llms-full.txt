@@ -17,7 +17,7 @@ internet-ui design tokens (Tailwind v4). Import once from your global stylesheet
 
 - Type: `registry:style`
 - Install: `npx @ternetin/ui add theme`
-- npm dependencies: `tailwindcss`, `tw-animate-css`
+- npm dependencies: `tailwindcss@^4.3.3`, `tw-animate-css@^1.4.0`
 - Registry dependencies: none
 
 ### `src/theme/globals.css`
@@ -30,12 +30,12 @@ internet-ui design tokens (Tailwind v4). Import once from your global stylesheet
 
 /*
  * internet-ui — design tokens
- * Swiss / International-Typographic with a brutalist lean:
- * cool source-paper neutrals, one loud command accent, sharp corners,
- * hairline borders, and explicit semantic status colors.
+ * Shared application foundations. Public pages opt into expressive display
+ * typography; application components share fixed geometry and quiet surfaces.
  */
 :root {
-  --background: #fcfcfd;
+  color-scheme: light;
+  --background: #f8fafc;
   --foreground: #0b1020;
 
   --card: #ffffff;
@@ -76,7 +76,7 @@ internet-ui design tokens (Tailwind v4). Import once from your global stylesheet
    * fixed grey over it. Text and accents carry the contrast; edges only imply it.
    */
   --border: rgba(15, 23, 42, 0.14);
-  --input: rgba(15, 23, 42, 0.18);
+  --input: #8592a3;
   --ring: #0047ff;
   --shadow-color: rgba(15, 23, 42, 0.16);
 
@@ -91,30 +91,34 @@ internet-ui design tokens (Tailwind v4). Import once from your global stylesheet
   --syntax-name: #6d28d9;
   --syntax-literal: #047857;
 
-  /* sharp corners by default */
-  --radius: 0px;
+  --control-radius: 0.375rem;
+  --surface-radius: 0.5rem;
+  --radius: var(--control-radius);
+  --elevation-popup: 0 4px 16px rgba(15, 23, 42, 0.12);
+  --elevation-modal: 0 16px 48px rgba(15, 23, 42, 0.18);
 
   --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: "SFMono-Regular", "Cascadia Code", "Liberation Mono", Menlo, Consolas, monospace;
 }
 
 .dark {
-  --background: #060812;
+  color-scheme: dark;
+  --background: #101217;
   --foreground: #f8fafc;
 
-  --card: #0a0d18;
+  --card: #181b22;
   --card-foreground: #f8fafc;
-  --popover: #0b0f1c;
+  --popover: #1c2028;
   --popover-foreground: #f8fafc;
 
-  --primary: #4d7cff;
-  --primary-foreground: #ffffff;
+  --primary: #8aabff;
+  --primary-foreground: #08152e;
 
-  --secondary: #111827;
+  --secondary: #20252e;
   --secondary-foreground: #f8fafc;
 
-  --muted: #101624;
-  --muted-foreground: #9aa4b2;
+  --muted: #20252e;
+  --muted-foreground: #a7afbc;
 
   --accent: #12244a;
   --accent-foreground: #dbe6ff;
@@ -135,9 +139,11 @@ internet-ui design tokens (Tailwind v4). Import once from your global stylesheet
   --info-muted: #102246;
 
   --border: rgba(226, 232, 240, 0.14);
-  --input: rgba(226, 232, 240, 0.18);
+  --input: #718097;
   --ring: #7aa2ff;
   --shadow-color: rgba(0, 0, 0, 0.42);
+  --elevation-popup: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --elevation-modal: 0 16px 48px rgba(0, 0, 0, 0.4);
 
   /* Lifted off the accent: #0047ff as *text* on black is barely legible. */
   --syntax-keyword: #9ab8ff;
@@ -181,10 +187,14 @@ internet-ui design tokens (Tailwind v4). Import once from your global stylesheet
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
 
-  --radius-sm: var(--radius);
-  --radius-md: var(--radius);
-  --radius-lg: var(--radius);
-  --radius-xl: var(--radius);
+  --radius-control: var(--control-radius);
+  --radius-surface: var(--surface-radius);
+  --radius-sm: 0.25rem;
+  --radius-md: var(--control-radius);
+  --radius-lg: var(--surface-radius);
+  --radius-xl: 0.75rem;
+  --shadow-popup: var(--elevation-popup);
+  --shadow-modal: var(--elevation-modal);
 }
 
 @layer base {
@@ -196,11 +206,14 @@ internet-ui design tokens (Tailwind v4). Import once from your global stylesheet
     color: var(--color-primary-foreground);
   }
   body {
+    margin: 0;
     accent-color: var(--color-primary);
     background-color: var(--color-background);
     color: var(--color-foreground);
     caret-color: var(--color-primary);
     font-family: var(--font-sans);
+    font-size: 0.875rem;
+    line-height: 1.5;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
@@ -208,9 +221,50 @@ internet-ui design tokens (Tailwind v4). Import once from your global stylesheet
   h1,
   h2,
   h3 {
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    font-weight: 600;
+  }
+  :focus-visible {
+    scroll-margin: 1rem;
+  }
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+}
+
+@layer components {
+  .display-title {
+    font-weight: 700;
     letter-spacing: -0.04em;
     line-height: 0.95;
-    font-weight: 700;
+    text-wrap: balance;
+  }
+}
+
+/* Structural seams take precedence over the child control radius utilities. */
+.ui-input-group > :not(:last-child) {
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+}
+.ui-input-group > :not(:first-child) {
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+}
+.ui-input-group > :not(:first-child) {
+  margin-inline-start: -1px;
+}
+.ui-input-group > :focus-within {
+  position: relative;
+  z-index: 1;
+}
+
+@media (pointer: coarse) {
+  .ui-control {
+    min-height: 2.75rem;
+    min-width: 2.75rem;
   }
 }
 
@@ -224,151 +278,27 @@ internet-ui design tokens (Tailwind v4). Import once from your global stylesheet
 }
 ````
 
-## Variant defaults (`ui-defaults`)
-
-Project-wide default radius and shadow. Values are substituted from the `defaults` block of internet-ui.json at install time.
-
-- Type: `registry:lib`
-- Install: `npx @ternetin/ui add ui-defaults`
-- npm dependencies: none
-- Registry dependencies: none
-
-### `src/lib/ui-defaults.ts`
-
-````ts
-/**
- * Project-wide default variants.
- *
- * The `internet-ui` CLI substitutes these values from the `defaults` block of your
- * internet-ui.json when it writes this file, so a project can pick its own house
- * style once instead of passing `radius`/`shadow` at every call site. Editing this
- * file by hand afterwards is expected and supported — it's your code.
- *
- * To re-apply internet-ui.json after changing it: `internet-ui add ui-defaults -o`
- *
- * Every component leaves its `radius`/`shadow` prop undefined by default, which makes
- * cva fall back to the `defaultVariants` in utils.ts — and those read from here.
- */
-export const UI_DEFAULTS = {
-  /** default for pill/circle-friendly controls: none | sm | md | lg | full */
-  radius: 'none',
-  /** default for boxy surfaces (dialogs, menus, cards): none | sm | md | lg */
-  containerRadius: 'none',
-  /** default for raised surfaces (dialogs, popovers, toasts): none | sm | md | lg | xl */
-  shadow: 'sm'
-} as const;
-````
-
 ## cn utility (`utils`)
 
-clsx + tailwind-merge class combiner and shared radius variants used by every component.
+Shared clsx/tailwind-merge utility and fixed nested-popup geometry.
 
 - Type: `registry:lib`
 - Install: `npx @ternetin/ui add utils`
-- npm dependencies: `clsx`, `tailwind-merge`, `class-variance-authority`
-- Registry dependencies: `ui-defaults`
+- npm dependencies: `clsx@^2.1.1`, `tailwind-merge@^3.7.0`
+- Registry dependencies: none
 
 ### `src/lib/utils.ts`
 
 ````ts
-import { cva, type VariantProps } from 'class-variance-authority';
 import { type ClassValue, clsx } from 'clsx';
-import type * as React from 'react';
 import { twMerge } from 'tailwind-merge';
-
-import { UI_DEFAULTS } from '@/lib/ui-defaults';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-/**
- * Shared radius scale for every component's `radius` prop.
- *
- * NOTE: the theme zeroes --radius-sm/md/lg/xl, so Tailwind's rounded-sm/md/lg all
- * render flat. These literal radii let a component opt out of the sharp default.
- */
-export const radiusVariants = cva('ui-radius', {
-  variants: {
-    radius: {
-      none: 'rounded-none',
-      sm: 'rounded-[0.25rem]',
-      md: 'rounded-[0.5rem]',
-      lg: 'rounded-[1rem]',
-      full: 'rounded-full'
-    }
-  },
-  defaultVariants: {
-    radius: UI_DEFAULTS.radius
-  }
-});
-
-export type RadiusProps = VariantProps<typeof radiusVariants>;
-export type Radius = NonNullable<RadiusProps['radius']>;
-
-/**
- * Capped radius scale for large container surfaces (dialogs, menus, cards, panels).
- * Excludes `full` — a 9999px radius turns a rectangle into a lozenge. Max is `lg`.
- * Use this for boxy surfaces; use radiusVariants for pill/circle-friendly controls.
- */
-export const containerRadiusVariants = cva('ui-container-radius', {
-  variants: {
-    radius: {
-      none: 'rounded-none',
-      sm: 'rounded-[0.25rem]',
-      md: 'rounded-[0.5rem]',
-      lg: 'rounded-[1rem]'
-    }
-  },
-  defaultVariants: {
-    radius: UI_DEFAULTS.containerRadius
-  }
-});
-
-export type ContainerRadiusProps = VariantProps<typeof containerRadiusVariants>;
-export type ContainerRadius = NonNullable<ContainerRadiusProps['radius']>;
-
-/**
- * Shared shadow scale for raised surfaces (dialogs, popovers, toasts).
- *
- * The house shadow is now quiet and ambient. The system keeps crisp borders for
- * structure, then uses soft elevation only when a surface genuinely floats.
- */
-export const shadowVariants = cva('ui-shadow', {
-  variants: {
-    shadow: {
-      none: 'shadow-none',
-      sm: 'shadow-[0_4px_12px_var(--shadow-color)]',
-      md: 'shadow-[0_10px_30px_var(--shadow-color)]',
-      lg: 'shadow-[0_18px_44px_var(--shadow-color)]',
-      xl: 'shadow-[0_28px_64px_var(--shadow-color)]'
-    }
-  },
-  defaultVariants: {
-    shadow: UI_DEFAULTS.shadow
-  }
-});
-
-export type ShadowProps = VariantProps<typeof shadowVariants>;
-export type Shadow = NonNullable<ShadowProps['shadow']>;
-
-/**
- * Radius for an item sitting inside a padded container, so that the item's corner
- * stays concentric with the container's: inner radius = outer radius − padding.
- *
- * The container publishes its radius as `--content-radius` and the item subtracts
- * its own inset, clamped at 0 so a square container can't produce a negative
- * radius. Menus, selects and comboboxes all pad their popup by `0.25rem`.
- */
-export const NESTED_RADIUS =
-  'ui-nested-radius rounded-[max(0px,calc(var(--preview-content-radius,var(--content-radius,0px))-0.25rem))]';
-
-/** Inline style that publishes a container's radius for {@link NESTED_RADIUS}. */
-export function contentRadiusStyle(radius: ContainerRadius | null | undefined): React.CSSProperties {
-  return {
-    '--content-radius': { none: '0px', sm: '0.25rem', md: '0.5rem', lg: '1rem' }[radius ?? 'none']
-  } as React.CSSProperties;
-}
+/** Fixed inner corner for an item inside a padded popup. */
+export const NESTED_RADIUS = 'rounded-[calc(var(--surface-radius)-0.25rem)]';
 ````
 
 ## Motion presets (`motion`)
@@ -377,7 +307,7 @@ Shared animation language: easing curves, duration and spring tokens, and the re
 
 - Type: `registry:lib`
 - Install: `npx @ternetin/ui add motion`
-- npm dependencies: `motion`
+- npm dependencies: `motion@^12.43.0`
 - Registry dependencies: none
 
 ### `src/lib/motion.tsx`
@@ -866,19 +796,17 @@ Accordion built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add accordion`
-- npm dependencies: `@base-ui/react`
+- npm dependencies: `@base-ui/react@^1.9.0`
 - Registry dependencies: `utils`
 
 ### `src/ui/accordion.tsx`
 
 ````tsx
 'use client';
-
 import { Accordion as BaseAccordion } from '@base-ui/react/accordion';
 import { cva, type VariantProps } from 'class-variance-authority';
 import type * as React from 'react';
-
-import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 const accordionVariants = cva('w-full', {
   variants: {
@@ -891,13 +819,10 @@ const accordionVariants = cva('w-full', {
     variant: 'default'
   }
 });
-
 export interface AccordionProps
   extends React.ComponentProps<typeof BaseAccordion.Root>,
-    VariantProps<typeof accordionVariants>,
-    ContainerRadiusProps {}
-
-export function Accordion({ className, variant, radius, ...props }: AccordionProps) {
+    VariantProps<typeof accordionVariants> {}
+export function Accordion({ className, variant, ...props }: AccordionProps) {
   return (
     <BaseAccordion.Root
       className={cn(
@@ -907,33 +832,22 @@ export function Accordion({ className, variant, radius, ...props }: AccordionPro
         // the root's square corners still draw over it.
         'overflow-hidden',
         variant !== 'ghost' && '[&>[data-slot=accordion-item]]:!rounded-none',
-        containerRadiusVariants({ radius }),
+        'rounded-surface',
         className
       )}
       {...props}
     />
   );
 }
-
-/**
- * `radius` here only shows up on the `ghost` variant, where items are separate
- * surfaces. Inside the default bordered `Accordion` the root's radius wins — set
- * it there instead.
- */
-export function AccordionItem({
-  className,
-  radius,
-  ...props
-}: React.ComponentProps<typeof BaseAccordion.Item> & ContainerRadiusProps) {
+export function AccordionItem({ className, ...props }: React.ComponentProps<typeof BaseAccordion.Item>) {
   return (
     <BaseAccordion.Item
       data-slot="accordion-item"
-      className={cn('border-b border-border last:border-b-0', containerRadiusVariants({ radius }), className)}
+      className={cn('border-b border-border last:border-b-0', 'rounded-surface', className)}
       {...props}
     />
   );
 }
-
 export function AccordionTrigger({
   className,
   children,
@@ -965,7 +879,6 @@ export function AccordionTrigger({
     </BaseAccordion.Header>
   );
 }
-
 export function AccordionPanel({ className, ...props }: React.ComponentProps<typeof BaseAccordion.Panel>) {
   return (
     <BaseAccordion.Panel
@@ -991,7 +904,6 @@ export function AccordionPanel({ className, ...props }: React.ComponentProps<typ
     />
   );
 }
-
 export { accordionVariants };
 ````
 
@@ -1001,44 +913,37 @@ Alert Dialog built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add alert-dialog`
-- npm dependencies: `@base-ui/react`
+- npm dependencies: `@base-ui/react@^1.9.0`
 - Registry dependencies: `utils`, `motion`
 
 ### `src/ui/alert-dialog.tsx`
 
 ````tsx
 'use client';
-
 import { AlertDialog as BaseAlertDialog } from '@base-ui/react/alert-dialog';
 import type * as React from 'react';
-
 import { useMotionBackdropRender, useMotionPopupRender } from '@/lib/motion';
-import { type ContainerRadiusProps, cn, containerRadiusVariants, type ShadowProps, shadowVariants } from '@/lib/utils';
-
+import { cn } from '@/lib/utils';
 export const AlertDialog = BaseAlertDialog.Root;
 export const AlertDialogTrigger = BaseAlertDialog.Trigger;
 export const AlertDialogClose = BaseAlertDialog.Close;
-
 export function AlertDialogContent({
   className,
   children,
-  radius,
-  shadow,
   ...props
-}: React.ComponentProps<typeof BaseAlertDialog.Popup> & ContainerRadiusProps & ShadowProps) {
+}: React.ComponentProps<typeof BaseAlertDialog.Popup>) {
   const renderBackdrop = useMotionBackdropRender();
   // No anchor to grow from, so it scales in place rather than sliding.
   const renderPopup = useMotionPopupRender({ scale: 0.97, offset: 0 });
-
   return (
     <BaseAlertDialog.Portal>
       <BaseAlertDialog.Backdrop className="fixed inset-0 z-50 bg-foreground/40" render={renderBackdrop} />
       <BaseAlertDialog.Popup
         className={cn(
-          'fixed left-1/2 top-1/2 z-50 grid w-full max-w-md -translate-x-1/2 -translate-y-1/2 gap-4',
+          'fixed left-1/2 top-1/2 z-50 grid w-[calc(100%-2rem)] max-w-md -translate-x-1/2 -translate-y-1/2 gap-4',
           'border border-border bg-background p-5 outline-none',
-          shadowVariants({ shadow }),
-          containerRadiusVariants({ radius }),
+          'shadow-modal',
+          'rounded-surface',
           className
         )}
         render={renderPopup}
@@ -1049,7 +954,6 @@ export function AlertDialogContent({
     </BaseAlertDialog.Portal>
   );
 }
-
 export function AlertDialogTitle({ className, ...props }: React.ComponentProps<typeof BaseAlertDialog.Title>) {
   return (
     <BaseAlertDialog.Title
@@ -1058,7 +962,6 @@ export function AlertDialogTitle({ className, ...props }: React.ComponentProps<t
     />
   );
 }
-
 export function AlertDialogDescription({
   className,
   ...props
@@ -1067,7 +970,6 @@ export function AlertDialogDescription({
     <BaseAlertDialog.Description className={cn('text-sm leading-6 text-muted-foreground', className)} {...props} />
   );
 }
-
 export function AlertDialogFooter({ className, ...props }: React.ComponentProps<'div'>) {
   return <div className={cn('flex flex-col-reverse gap-2 sm:flex-row sm:justify-end', className)} {...props} />;
 }
@@ -1079,71 +981,51 @@ Autocomplete built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add autocomplete`
-- npm dependencies: `@base-ui/react`
+- npm dependencies: `@base-ui/react@^1.9.0`
 - Registry dependencies: `utils`, `motion`
 
 ### `src/ui/autocomplete.tsx`
 
 ````tsx
 'use client';
-
 import { Autocomplete as BaseAutocomplete } from '@base-ui/react/autocomplete';
 import type * as React from 'react';
-
 import { useMotionPopupRender } from '@/lib/motion';
-import {
-  type ContainerRadiusProps,
-  cn,
-  containerRadiusVariants,
-  contentRadiusStyle,
-  NESTED_RADIUS,
-  type RadiusProps,
-  radiusVariants,
-  type ShadowProps,
-  shadowVariants
-} from '@/lib/utils';
-
+import { cn, NESTED_RADIUS } from '@/lib/utils';
 export const Autocomplete = BaseAutocomplete.Root;
-
-export function AutocompleteInput({
-  className,
-  radius,
-  ...props
-}: React.ComponentProps<typeof BaseAutocomplete.Input> & RadiusProps) {
+export function AutocompleteInput({ className, ...props }: React.ComponentProps<typeof BaseAutocomplete.Input>) {
   return (
     <BaseAutocomplete.Input
       className={cn(
-        'flex h-10 w-full border border-input bg-background px-3 py-2 text-sm leading-5 outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring',
-        radiusVariants({ radius }),
+        'flex h-9 w-full border border-input bg-background px-3 py-2 text-sm leading-5 outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring',
+        'rounded-control',
         className
       )}
       {...props}
     />
   );
 }
-
 export function AutocompleteContent({
   className,
   children,
   sideOffset = 4,
-  radius,
-  shadow,
   style,
   ...props
-}: React.ComponentProps<typeof BaseAutocomplete.Popup> & { sideOffset?: number } & ContainerRadiusProps & ShadowProps) {
+}: React.ComponentProps<typeof BaseAutocomplete.Popup> & {
+  sideOffset?: number;
+}) {
   // Matches Combobox: slide and fade, no scale on a live results list.
   const renderPopup = useMotionPopupRender({ scale: 1, offset: 6 });
-
   return (
     <BaseAutocomplete.Portal>
       <BaseAutocomplete.Positioner sideOffset={sideOffset} className="z-50">
         <BaseAutocomplete.Popup
-          // Publishes `--content-radius` so items can stay concentric with the popup.
-          style={{ ...contentRadiusStyle(radius), ...style }}
+          // Nested items follow the fixed popup corner treatment.
+          style={style}
           className={cn(
             'max-h-64 min-w-[var(--anchor-width)] overflow-y-auto border border-border bg-popover p-1 text-popover-foreground outline-none',
-            shadowVariants({ shadow }),
-            containerRadiusVariants({ radius }),
+            'shadow-popup',
+            'rounded-surface',
             className
           )}
           render={renderPopup}
@@ -1158,7 +1040,6 @@ export function AutocompleteContent({
     </BaseAutocomplete.Portal>
   );
 }
-
 export function AutocompleteItem({ className, ...props }: React.ComponentProps<typeof BaseAutocomplete.Item>) {
   return (
     <BaseAutocomplete.Item
@@ -1179,36 +1060,31 @@ Avatar built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add avatar`
-- npm dependencies: `@base-ui/react`
+- npm dependencies: `@base-ui/react@^1.9.0`
 - Registry dependencies: `utils`
 
 ### `src/ui/avatar.tsx`
 
 ````tsx
 'use client';
-
 import { Avatar as BaseAvatar } from '@base-ui/react/avatar';
 import type * as React from 'react';
-
-import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
-
-export function Avatar({ className, radius, ...props }: React.ComponentProps<typeof BaseAvatar.Root> & RadiusProps) {
+import { cn } from '@/lib/utils';
+export function Avatar({ className, ...props }: React.ComponentProps<typeof BaseAvatar.Root>) {
   return (
     <BaseAvatar.Root
       className={cn(
         'inline-flex size-10 shrink-0 select-none items-center justify-center overflow-hidden border border-border bg-muted align-middle text-sm font-medium uppercase',
-        radiusVariants({ radius }),
+        'rounded-full',
         className
       )}
       {...props}
     />
   );
 }
-
 export function AvatarImage({ className, ...props }: React.ComponentProps<typeof BaseAvatar.Image>) {
   return <BaseAvatar.Image className={cn('size-full object-cover', className)} {...props} />;
 }
-
 export function AvatarFallback({ className, ...props }: React.ComponentProps<typeof BaseAvatar.Fallback>) {
   return (
     <BaseAvatar.Fallback
@@ -1225,39 +1101,36 @@ Button built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add button`
-- npm dependencies: `@base-ui/react`, `class-variance-authority`, `motion`
-- Registry dependencies: `utils`, `motion`
+- npm dependencies: `@base-ui/react@^1.9.0`, `class-variance-authority@^0.7.1`
+- Registry dependencies: `utils`
 
 ### `src/ui/button.tsx`
 
 ````tsx
 'use client';
-
 import { Button as BaseButton } from '@base-ui/react/button';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { type HTMLMotionProps, motion } from 'motion/react';
+
 import type * as React from 'react';
 
-import { useTapMotion } from '@/lib/motion';
-import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap border font-medium tracking-[-0.01em] transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:pointer-events-none disabled:opacity-40 [&_svg]:size-4 [&_svg]:shrink-0',
+  'ui-control inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap border font-medium tracking-[-0.01em] transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:pointer-events-none disabled:opacity-40 [&_svg]:size-4 [&_svg]:shrink-0',
   {
     variants: {
       variant: {
-        default: 'border-primary bg-primary text-primary-foreground hover:bg-background hover:text-primary',
+        default: 'border-primary bg-primary text-primary-foreground hover:bg-primary/90',
         outline:
           'border-border bg-background text-foreground hover:border-primary hover:bg-accent hover:text-accent-foreground',
         ghost: 'border-transparent bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground',
-        destructive:
-          'border-destructive bg-destructive text-destructive-foreground hover:bg-destructive/10 hover:text-destructive'
+        destructive: 'border-destructive bg-destructive text-destructive-foreground hover:bg-destructive/90'
       },
       size: {
-        default: 'h-10 px-4 text-sm',
+        default: 'h-9 px-3.5 text-sm',
         sm: 'h-8 px-3 text-xs',
-        lg: 'h-12 px-6 text-base',
-        icon: 'size-10'
+        lg: 'h-11 px-5 text-sm',
+        icon: 'size-9'
       }
     },
     defaultVariants: {
@@ -1266,45 +1139,29 @@ const buttonVariants = cva(
     }
   }
 );
-
-export interface ButtonProps
-  extends React.ComponentProps<typeof BaseButton>,
-    VariantProps<typeof buttonVariants>,
-    RadiusProps {}
-
-export function Button({ className, variant, size, radius, ...props }: ButtonProps) {
-  const tap = useTapMotion();
-
-  return (
-    <BaseButton
-      className={cn(buttonVariants({ variant, size }), radiusVariants({ radius }), className)}
-      render={(buttonProps) => <motion.button {...(buttonProps as HTMLMotionProps<'button'>)} {...tap} />}
-      {...props}
-    />
-  );
+export interface ButtonProps extends React.ComponentProps<typeof BaseButton>, VariantProps<typeof buttonVariants> {}
+export function Button({ className, variant, size, ...props }: ButtonProps) {
+  return <BaseButton className={cn(buttonVariants({ variant, size }), 'rounded-control', className)} {...props} />;
 }
-
 export { buttonVariants };
 ````
 
 ## Card (`card`)
 
-Composable Card with variant, radius, padding and decorative corner-bracket options. Plain styled container — not a Base UI primitive.
+Composable flat card with semantic variants, shared geometry, and optional public-page corner brackets.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add card`
-- npm dependencies: `class-variance-authority`
+- npm dependencies: `class-variance-authority@^0.7.1`
 - Registry dependencies: `utils`
 
 ### `src/ui/card.tsx`
 
 ````tsx
 'use client';
-
 import { cva, type VariantProps } from 'class-variance-authority';
 import type * as React from 'react';
-
-import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 const cardVariants = cva('flex flex-col gap-4 text-card-foreground', {
   variants: {
@@ -1332,12 +1189,11 @@ const cardVariants = cva('flex flex-col gap-4 text-card-foreground', {
     corners: 'none'
   }
 });
-
 /**
  * Decorative corner brackets — L-shaped arms tracing a corner of the card.
  *
  * Each bracket sits 1px outside the card so its arm covers the border it traces.
- * They are drawn for a sharp card: with `radius` set they cut across the curve.
+ * Use brackets on selected public pages, keeping operational cards undecorated.
  *
  * Tunable per instance through CSS variables, so a card can restyle its brackets
  * without reaching into these classes:
@@ -1347,7 +1203,6 @@ const cardVariants = cva('flex flex-col gap-4 text-card-foreground', {
  *   --card-corner-accent  leading bracket color  (default primary)
  */
 const CORNER_BASE = 'pointer-events-none absolute size-[var(--card-corner-size,1.125rem)]';
-
 const CORNER_ARMS = {
   'top-left':
     '-top-px -left-px border-t-[length:var(--card-corner-width,3px)] border-l-[length:var(--card-corner-width,3px)]',
@@ -1358,55 +1213,31 @@ const CORNER_ARMS = {
   'bottom-right':
     '-bottom-px -right-px border-b-[length:var(--card-corner-width,3px)] border-r-[length:var(--card-corner-width,3px)]'
 } as const;
-
 type Corner = keyof typeof CORNER_ARMS;
-
 /** Which brackets each `corners` value draws. */
 const CORNER_LAYOUT: Record<'none' | 'diagonal' | 'all', readonly Corner[]> = {
   none: [],
   diagonal: ['top-left', 'bottom-right'],
   all: ['top-left', 'top-right', 'bottom-left', 'bottom-right']
 };
-
 const ACCENT_TINT = 'border-[color:var(--card-corner-accent,var(--color-primary))]';
 const PLAIN_TINT = 'border-[color:var(--card-corner-color,var(--color-foreground))]';
-
 /** `split` accents the leading (top-left) bracket only; the rest stay foreground. */
 function cornerTint(corner: Corner, tone: CornerTone) {
   if (tone === 'primary') return ACCENT_TINT;
   if (tone === 'foreground') return PLAIN_TINT;
   return corner === 'top-left' ? ACCENT_TINT : PLAIN_TINT;
 }
-
 export type CornerTone = 'split' | 'primary' | 'foreground';
-
-export interface CardProps
-  extends React.ComponentProps<'div'>,
-    VariantProps<typeof cardVariants>,
-    ContainerRadiusProps {
+export interface CardProps extends React.ComponentProps<'div'>, VariantProps<typeof cardVariants> {
   /** Colour of the brackets drawn by `corners`. Ignored when `corners="none"`. */
   cornerTone?: CornerTone;
 }
-
-export function Card({
-  className,
-  variant,
-  radius,
-  padding,
-  corners,
-  cornerTone = 'split',
-  children,
-  ...props
-}: CardProps) {
+export function Card({ className, variant, padding, corners, cornerTone = 'split', children, ...props }: CardProps) {
   const placement = corners ?? 'none';
-
   return (
     <div
-      className={cn(
-        cardVariants({ variant, padding, corners: placement }),
-        containerRadiusVariants({ radius }),
-        className
-      )}
+      className={cn(cardVariants({ variant, padding, corners: placement }), 'rounded-surface', className)}
       {...props}
     >
       {CORNER_LAYOUT[placement].map((corner) => (
@@ -1420,27 +1251,21 @@ export function Card({
     </div>
   );
 }
-
 export function CardHeader({ className, ...props }: React.ComponentProps<'div'>) {
   return <div className={cn('flex flex-col gap-1', className)} {...props} />;
 }
-
 export function CardTitle({ className, ...props }: React.ComponentProps<'div'>) {
   return <div className={cn('text-lg font-semibold leading-none tracking-[-0.02em]', className)} {...props} />;
 }
-
 export function CardDescription({ className, ...props }: React.ComponentProps<'div'>) {
   return <div className={cn('text-sm text-muted-foreground', className)} {...props} />;
 }
-
 export function CardContent({ className, ...props }: React.ComponentProps<'div'>) {
   return <div className={cn('text-sm', className)} {...props} />;
 }
-
 export function CardFooter({ className, ...props }: React.ComponentProps<'div'>) {
   return <div className={cn('flex items-center gap-2', className)} {...props} />;
 }
-
 export { cardVariants };
 ````
 
@@ -1450,18 +1275,16 @@ Checkbox Group built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add checkbox-group`
-- npm dependencies: `@base-ui/react`
+- npm dependencies: `@base-ui/react@^1.9.0`
 - Registry dependencies: `utils`
 
 ### `src/ui/checkbox-group.tsx`
 
 ````tsx
 'use client';
-
 import { CheckboxGroup as BaseCheckboxGroup } from '@base-ui/react/checkbox-group';
 import { cva, type VariantProps } from 'class-variance-authority';
 import type * as React from 'react';
-
 import { cn } from '@/lib/utils';
 
 const checkboxGroupVariants = cva('flex gap-2', {
@@ -1475,15 +1298,12 @@ const checkboxGroupVariants = cva('flex gap-2', {
     orientation: 'vertical'
   }
 });
-
 export interface CheckboxGroupProps
   extends React.ComponentProps<typeof BaseCheckboxGroup>,
     VariantProps<typeof checkboxGroupVariants> {}
-
 export function CheckboxGroup({ className, orientation, ...props }: CheckboxGroupProps) {
   return <BaseCheckboxGroup className={cn(checkboxGroupVariants({ orientation }), className)} {...props} />;
 }
-
 export { checkboxGroupVariants };
 ````
 
@@ -1493,28 +1313,20 @@ Checkbox built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add checkbox`
-- npm dependencies: `@base-ui/react`, `motion`
+- npm dependencies: `@base-ui/react@^1.9.0`, `motion@^12.43.0`
 - Registry dependencies: `utils`, `motion`
 
 ### `src/ui/checkbox.tsx`
 
 ````tsx
 'use client';
-
 import { Checkbox as BaseCheckbox } from '@base-ui/react/checkbox';
 import { type HTMLMotionProps, motion } from 'motion/react';
 import type * as React from 'react';
-
 import { transitions, useControlTransition } from '@/lib/motion';
-import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
-
-export function Checkbox({
-  className,
-  radius,
-  ...props
-}: React.ComponentProps<typeof BaseCheckbox.Root> & RadiusProps) {
+import { cn } from '@/lib/utils';
+export function Checkbox({ className, ...props }: React.ComponentProps<typeof BaseCheckbox.Root>) {
   const transition = useControlTransition();
-
   return (
     <BaseCheckbox.Root
       className={cn(
@@ -1522,16 +1334,16 @@ export function Checkbox({
         'focus-visible:ring-2 focus-visible:ring-ring',
         'data-[checked]:border-primary data-[checked]:bg-primary data-[checked]:text-primary-foreground',
         'disabled:cursor-not-allowed disabled:opacity-40',
-        radiusVariants({ radius }),
+        'rounded-control',
         className
       )}
       {...props}
     >
       {/*
-        `keepMounted` so the tick can animate both ways. Without it Base UI drops
-        the indicator from the DOM the moment the box is unticked, and there's
-        nothing left to animate out.
-      */}
+          `keepMounted` so the tick can animate both ways. Without it Base UI drops
+          the indicator from the DOM the moment the box is unticked, and there's
+          nothing left to animate out.
+        */}
       <BaseCheckbox.Indicator
         keepMounted
         className="flex text-current"
@@ -1573,22 +1385,20 @@ Single-line or multi-line code snippet with an optional title strip, syntax high
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add code`
-- npm dependencies: `@base-ui/react`, `motion`, `class-variance-authority`
+- npm dependencies: `@base-ui/react@^1.9.0`, `motion@^12.43.0`, `class-variance-authority@^0.7.1`
 - Registry dependencies: `utils`, `motion`, `highlight`
 
 ### `src/ui/code.tsx`
 
 ````tsx
 'use client';
-
 import { Button as BaseButton } from '@base-ui/react/button';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { type HTMLMotionProps, motion } from 'motion/react';
 import * as React from 'react';
-
 import { type Language, type TokenKind, tokenize } from '@/lib/highlight';
 import { useTapMotion } from '@/lib/motion';
-import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 const codeVariants = cva('flex w-full min-w-0 flex-col overflow-hidden font-mono font-medium', {
   variants: {
@@ -1609,7 +1419,6 @@ const codeVariants = cva('flex w-full min-w-0 flex-col overflow-hidden font-mono
     size: 'default'
   }
 });
-
 /**
  * How each size packs its rows. Separate from the cva above, which only sets the
  * type scale and the box's colours — these are the metrics the header, the snippet
@@ -1646,16 +1455,13 @@ const SIZES = {
     label: 'text-sm'
   }
 } as const;
-
 /**
  * `whitespace-pre` is the whole difference between the two modes: a block keeps
  * its line breaks, and a one-liner is forbidden from wrapping — it scrolls
  * sideways instead, so the row keeps its height and the copy button never moves.
  */
 const CONTENT = 'min-w-0 flex-1 overflow-x-auto whitespace-pre';
-
 const HEADER = 'flex items-center justify-between gap-2 border-b border-border font-semibold tracking-[-0.01em]';
-
 /**
  * Token colours. Three inks and no more, defined in the theme: the house blue for
  * language keywords, a violet for names, a green for literals. Comments and
@@ -1669,7 +1475,6 @@ const TOKEN_CLASS: Record<TokenKind, string> = {
   name: 'text-syntax-name',
   punctuation: 'text-muted-foreground'
 };
-
 /**
  * The confirmed state borrows --syntax-keyword rather than --primary: it's the
  * same house blue in light mode, but lifted in dark, where #0047ff as a 16px icon
@@ -1677,7 +1482,6 @@ const TOKEN_CLASS: Record<TokenKind, string> = {
  */
 const COPY_BUTTON =
   'inline-flex shrink-0 cursor-pointer items-center justify-center border border-transparent text-current transition-colors outline-none hover:bg-foreground/10 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset disabled:cursor-not-allowed disabled:opacity-40 data-[copied]:text-syntax-keyword [&_svg]:shrink-0';
-
 function CopyIcon() {
   return (
     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true">
@@ -1686,7 +1490,6 @@ function CopyIcon() {
     </svg>
   );
 }
-
 function CheckIcon() {
   return (
     <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true">
@@ -1694,7 +1497,6 @@ function CheckIcon() {
     </svg>
   );
 }
-
 export interface CodeCopyButtonProps extends Omit<React.ComponentProps<typeof BaseButton>, 'children'> {
   /** Text to copy. Falls back to the text content of `target`. */
   code?: string;
@@ -1718,7 +1520,6 @@ export interface CodeCopyButtonProps extends Omit<React.ComponentProps<typeof Ba
    */
   copiedDuration?: number;
 }
-
 /**
  * Copy-to-clipboard button. Rendered inside {@link Code} by default; export is
  * for placing one somewhere else — a card header, a table row — against a
@@ -1737,17 +1538,14 @@ export function CodeCopyButton({
 }: CodeCopyButtonProps) {
   const [copied, setCopied] = React.useState(false);
   const tap = useTapMotion();
-
   React.useEffect(() => {
     if (!copied) return;
     const timer = window.setTimeout(() => setCopied(false), copiedDuration);
     return () => window.clearTimeout(timer);
   }, [copied, copiedDuration]);
-
   async function writeToClipboard() {
     const text = code ?? target?.current?.textContent ?? '';
     if (!text) return;
-
     try {
       await navigator.clipboard.writeText(text);
     } catch {
@@ -1756,11 +1554,9 @@ export function CodeCopyButton({
       // that never landed.
       return;
     }
-
     setCopied(true);
     onCopied?.(text);
   }
-
   return (
     <BaseButton
       aria-label={copied ? copiedLabel : label}
@@ -1781,11 +1577,7 @@ export function CodeCopyButton({
     </BaseButton>
   );
 }
-
-export interface CodeProps
-  extends React.ComponentProps<'div'>,
-    VariantProps<typeof codeVariants>,
-    ContainerRadiusProps {
+export interface CodeProps extends React.ComponentProps<'div'>, VariantProps<typeof codeVariants> {
   /**
    * Text handed to the clipboard. Defaults to the rendered text content, so it
    * only needs setting when the children aren't the literal snippet — a
@@ -1817,7 +1609,6 @@ export interface CodeProps
   /** Called with the text that reached the clipboard. */
   onCopied?: (code: string) => void;
 }
-
 /**
  * A command, token or snippet, with a copy button and optional syntax colouring.
  * Plain styled container — not a Base UI primitive.
@@ -1826,7 +1617,6 @@ export function Code({
   className,
   variant,
   size,
-  radius,
   code,
   title,
   language,
@@ -1840,16 +1630,13 @@ export function Code({
   const setContentRef = (element: HTMLElement | null) => {
     contentRef.current = element;
   };
-
   const source = typeof children === 'string' ? children : undefined;
   const block = multiline ?? (code ?? source)?.includes('\n') ?? false;
   const metrics = SIZES[size ?? 'default'];
-
   const tokens = React.useMemo(
     () => (language && source !== undefined ? tokenize(source, language) : undefined),
     [language, source]
   );
-
   // Plain runs stay bare strings: fewer elements, and the copy button reads the
   // same text content either way.
   const content = tokens
@@ -1863,7 +1650,6 @@ export function Code({
         )
       )
     : children;
-
   const copyButton = copy ? (
     <CodeCopyButton
       code={code}
@@ -1873,11 +1659,10 @@ export function Code({
       className={metrics.button}
     />
   ) : null;
-
   return (
     <div
       data-multiline={block || undefined}
-      className={cn(codeVariants({ variant, size }), containerRadiusVariants({ radius }), className)}
+      className={cn(codeVariants({ variant, size }), 'rounded-surface', className)}
       {...props}
     >
       {title ? (
@@ -1910,12 +1695,10 @@ export function Code({
     </div>
   );
 }
-
 /** Stacked snippets — a run of one-liners read as a sequence to type in order. */
 export function CodeStack({ className, ...props }: React.ComponentProps<'div'>) {
   return <div className={cn('grid w-full gap-2', className)} {...props} />;
 }
-
 export { codeVariants };
 ````
 
@@ -1925,19 +1708,17 @@ Collapsible built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add collapsible`
-- npm dependencies: `@base-ui/react`
+- npm dependencies: `@base-ui/react@^1.9.0`
 - Registry dependencies: `utils`
 
 ### `src/ui/collapsible.tsx`
 
 ````tsx
 'use client';
-
 import { Collapsible as BaseCollapsible } from '@base-ui/react/collapsible';
 import { cva, type VariantProps } from 'class-variance-authority';
 import type * as React from 'react';
-
-import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 const collapsibleVariants = cva('', {
   variants: {
@@ -1950,15 +1731,12 @@ const collapsibleVariants = cva('', {
     variant: 'default'
   }
 });
-
 export interface CollapsibleProps
   extends React.ComponentProps<typeof BaseCollapsible.Root>,
     VariantProps<typeof collapsibleVariants> {}
-
 export function Collapsible({ className, variant, ...props }: CollapsibleProps) {
   return <BaseCollapsible.Root className={cn(collapsibleVariants({ variant }), className)} {...props} />;
 }
-
 export function CollapsibleTrigger({
   className,
   children,
@@ -1987,12 +1765,7 @@ export function CollapsibleTrigger({
     </BaseCollapsible.Trigger>
   );
 }
-
-export function CollapsiblePanel({
-  className,
-  radius,
-  ...props
-}: React.ComponentProps<typeof BaseCollapsible.Panel> & ContainerRadiusProps) {
+export function CollapsiblePanel({ className, ...props }: React.ComponentProps<typeof BaseCollapsible.Panel>) {
   return (
     <BaseCollapsible.Panel
       className={cn(
@@ -2003,14 +1776,13 @@ export function CollapsiblePanel({
         'transition-[height,opacity] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none',
         'data-[starting-style]:h-0 data-[starting-style]:opacity-0',
         'data-[ending-style]:h-0 data-[ending-style]:opacity-0',
-        containerRadiusVariants({ radius }),
+        'rounded-surface',
         className
       )}
       {...props}
     />
   );
 }
-
 export { collapsibleVariants };
 ````
 
@@ -2020,69 +1792,52 @@ Combobox built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add combobox`
-- npm dependencies: `@base-ui/react`
+- npm dependencies: `@base-ui/react@^1.9.0`
 - Registry dependencies: `utils`, `motion`
 
 ### `src/ui/combobox.tsx`
 
 ````tsx
 'use client';
-
 import { Combobox as BaseCombobox } from '@base-ui/react/combobox';
 import type * as React from 'react';
-
 import { useMotionPopupRender } from '@/lib/motion';
-import {
-  type ContainerRadiusProps,
-  cn,
-  containerRadiusVariants,
-  contentRadiusStyle,
-  NESTED_RADIUS,
-  type RadiusProps,
-  radiusVariants
-} from '@/lib/utils';
-
+import { cn, NESTED_RADIUS } from '@/lib/utils';
 export const Combobox = BaseCombobox.Root;
 export const ComboboxValue = BaseCombobox.Value;
-
-export function ComboboxInput({
-  className,
-  radius,
-  ...props
-}: React.ComponentProps<typeof BaseCombobox.Input> & RadiusProps) {
+export function ComboboxInput({ className, ...props }: React.ComponentProps<typeof BaseCombobox.Input>) {
   return (
     <BaseCombobox.Input
       className={cn(
-        'flex h-10 w-full border border-input bg-background px-3 py-2 text-sm leading-5 outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring',
-        radiusVariants({ radius }),
+        'flex h-9 w-full border border-input bg-background px-3 py-2 text-sm leading-5 outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring',
+        'rounded-control',
         className
       )}
       {...props}
     />
   );
 }
-
 export function ComboboxContent({
   className,
   children,
   sideOffset = 4,
-  radius,
   style,
   ...props
-}: React.ComponentProps<typeof BaseCombobox.Popup> & { sideOffset?: number } & ContainerRadiusProps) {
+}: React.ComponentProps<typeof BaseCombobox.Popup> & {
+  sideOffset?: number;
+}) {
   // A results list appearing under an input: no scale, it would look like a
   // zoom on text the user is actively reading. Just a short slide and fade.
   const renderPopup = useMotionPopupRender({ scale: 1, offset: 6 });
-
   return (
     <BaseCombobox.Portal>
       <BaseCombobox.Positioner sideOffset={sideOffset} className="z-50">
         <BaseCombobox.Popup
-          // Publishes `--content-radius` so items can stay concentric with the popup.
-          style={{ ...contentRadiusStyle(radius), ...style }}
+          // Nested items follow the fixed popup corner treatment.
+          style={style}
           className={cn(
-            'max-h-64 min-w-[var(--anchor-width)] overflow-y-auto border border-border bg-popover p-1 text-popover-foreground shadow-[0_10px_30px_var(--shadow-color)] outline-none',
-            containerRadiusVariants({ radius }),
+            'max-h-64 min-w-[var(--anchor-width)] overflow-y-auto border border-border bg-popover p-1 text-popover-foreground shadow-popup outline-none',
+            'rounded-surface',
             className
           )}
           render={renderPopup}
@@ -2097,7 +1852,6 @@ export function ComboboxContent({
     </BaseCombobox.Portal>
   );
 }
-
 export function ComboboxItem({ className, children, ...props }: React.ComponentProps<typeof BaseCombobox.Item>) {
   return (
     <BaseCombobox.Item
@@ -2121,43 +1875,37 @@ Context Menu built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add context-menu`
-- npm dependencies: `@base-ui/react`
+- npm dependencies: `@base-ui/react@^1.9.0`
 - Registry dependencies: `utils`, `motion`
 
 ### `src/ui/context-menu.tsx`
 
 ````tsx
 'use client';
-
 import { ContextMenu as BaseContextMenu } from '@base-ui/react/context-menu';
 import type * as React from 'react';
-
 import { useMotionPopupRender } from '@/lib/motion';
-import { type ContainerRadiusProps, cn, containerRadiusVariants, contentRadiusStyle, NESTED_RADIUS } from '@/lib/utils';
-
+import { cn, NESTED_RADIUS } from '@/lib/utils';
 export const ContextMenu = BaseContextMenu.Root;
 export const ContextMenuTrigger = BaseContextMenu.Trigger;
 export const ContextMenuGroup = BaseContextMenu.Group;
-
 export function ContextMenuContent({
   className,
   children,
-  radius,
   style,
   ...props
-}: React.ComponentProps<typeof BaseContextMenu.Popup> & ContainerRadiusProps) {
+}: React.ComponentProps<typeof BaseContextMenu.Popup>) {
   // Anchored to the pointer, so it grows from the click point with no slide.
   const renderPopup = useMotionPopupRender({ scale: 0.95, offset: 0 });
-
   return (
     <BaseContextMenu.Portal>
       <BaseContextMenu.Positioner className="z-50 outline-none">
         <BaseContextMenu.Popup
-          style={{ ...contentRadiusStyle(radius), ...style }}
+          style={style}
           className={cn(
-            'min-w-40 border border-border bg-popover p-1 text-popover-foreground shadow-[0_10px_30px_var(--shadow-color)] outline-none',
+            'min-w-40 border border-border bg-popover p-1 text-popover-foreground shadow-popup outline-none',
             '[transform-origin:var(--transform-origin)]',
-            containerRadiusVariants({ radius }),
+            'rounded-surface',
             className
           )}
           render={renderPopup}
@@ -2169,7 +1917,6 @@ export function ContextMenuContent({
     </BaseContextMenu.Portal>
   );
 }
-
 export function ContextMenuItem({ className, ...props }: React.ComponentProps<typeof BaseContextMenu.Item>) {
   return (
     <BaseContextMenu.Item
@@ -2184,7 +1931,6 @@ export function ContextMenuItem({ className, ...props }: React.ComponentProps<ty
     />
   );
 }
-
 export function ContextMenuSeparator({ className, ...props }: React.ComponentProps<'div'>) {
   return <div className={cn('-mx-1 my-1 h-px bg-border', className)} {...props} />;
 }
@@ -2196,36 +1942,25 @@ Dialog built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add dialog`
-- npm dependencies: `@base-ui/react`
+- npm dependencies: `@base-ui/react@^1.9.0`
 - Registry dependencies: `utils`, `motion`
 
 ### `src/ui/dialog.tsx`
 
 ````tsx
 'use client';
-
 import { Dialog as BaseDialog } from '@base-ui/react/dialog';
 import type * as React from 'react';
-
 import { useMotionBackdropRender, useMotionPopupRender } from '@/lib/motion';
-import { type ContainerRadiusProps, cn, containerRadiusVariants, type ShadowProps, shadowVariants } from '@/lib/utils';
-
+import { cn } from '@/lib/utils';
 export const Dialog = BaseDialog.Root;
 export const DialogTrigger = BaseDialog.Trigger;
 export const DialogClose = BaseDialog.Close;
 export const DialogPortal = BaseDialog.Portal;
-
-export function DialogContent({
-  className,
-  children,
-  radius,
-  shadow,
-  ...props
-}: React.ComponentProps<typeof BaseDialog.Popup> & ContainerRadiusProps & ShadowProps) {
+export function DialogContent({ className, children, ...props }: React.ComponentProps<typeof BaseDialog.Popup>) {
   const renderBackdrop = useMotionBackdropRender();
   // A dialog has no anchor to grow from, so it scales in place rather than sliding.
   const renderPopup = useMotionPopupRender({ scale: 0.97, offset: 0 });
-
   return (
     <BaseDialog.Portal>
       <BaseDialog.Backdrop className="fixed inset-0 z-50 bg-foreground/40" render={renderBackdrop} />
@@ -2233,10 +1968,10 @@ export function DialogContent({
         className={cn(
           // Tailwind centres with the standalone `translate` property, which
           // composes with the `transform` Motion writes — they don't collide.
-          'fixed left-1/2 top-1/2 z-50 grid w-full max-w-md -translate-x-1/2 -translate-y-1/2 gap-4',
+          'fixed left-1/2 top-1/2 z-50 grid w-[calc(100%-2rem)] max-w-md -translate-x-1/2 -translate-y-1/2 gap-4',
           'border border-border bg-background p-5 outline-none',
-          shadowVariants({ shadow }),
-          containerRadiusVariants({ radius }),
+          'shadow-modal',
+          'rounded-surface',
           className
         )}
         render={renderPopup}
@@ -2247,21 +1982,17 @@ export function DialogContent({
     </BaseDialog.Portal>
   );
 }
-
 export function DialogHeader({ className, ...props }: React.ComponentProps<'div'>) {
   return <div className={cn('flex flex-col gap-1', className)} {...props} />;
 }
-
 export function DialogFooter({ className, ...props }: React.ComponentProps<'div'>) {
   return <div className={cn('flex flex-col-reverse gap-2 sm:flex-row sm:justify-end', className)} {...props} />;
 }
-
 export function DialogTitle({ className, ...props }: React.ComponentProps<typeof BaseDialog.Title>) {
   return (
     <BaseDialog.Title className={cn('text-lg font-semibold leading-none tracking-[-0.02em]', className)} {...props} />
   );
 }
-
 export function DialogDescription({ className, ...props }: React.ComponentProps<typeof BaseDialog.Description>) {
   return <BaseDialog.Description className={cn('text-sm leading-6 text-muted-foreground', className)} {...props} />;
 }
@@ -2280,7 +2011,6 @@ Generic TanStack table with sorting, global filtering, pagination, page-size con
 
 ````tsx
 'use client';
-
 import {
   type ColumnDef,
   flexRender,
@@ -2295,14 +2025,12 @@ import {
   useReactTable
 } from '@tanstack/react-table';
 import { useState } from 'react';
-
-import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { Button } from '@/ui/button';
 import { Checkbox } from '@/ui/checkbox';
 import { Input } from '@/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select';
-
-export interface DataTableProps<TData> extends ContainerRadiusProps {
+export interface DataTableProps<TData> {
   columns: ColumnDef<TData>[];
   data: TData[];
   className?: string;
@@ -2314,12 +2042,10 @@ export interface DataTableProps<TData> extends ContainerRadiusProps {
   getRowId?: TableOptions<TData>['getRowId'];
   onRowSelectionChange?: OnChangeFn<RowSelectionState>;
 }
-
 export function DataTable<TData>({
   columns,
   data,
   className,
-  radius,
   searchPlaceholder = 'Search...',
   emptyMessage = 'No results.',
   initialPageSize = 10,
@@ -2331,7 +2057,6 @@ export function DataTable<TData>({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState('');
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
-
   const selectionColumn: ColumnDef<TData> = {
     id: 'select',
     enableHiding: false,
@@ -2353,7 +2078,6 @@ export function DataTable<TData>({
       />
     )
   };
-
   const table = useReactTable({
     data,
     columns: enableRowSelection ? [selectionColumn, ...columns] : columns,
@@ -2372,7 +2096,6 @@ export function DataTable<TData>({
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel()
   });
-
   return (
     <div className={cn('space-y-3', className)}>
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -2404,7 +2127,7 @@ export function DataTable<TData>({
         </div>
       </div>
 
-      <div className={cn('overflow-x-auto border border-border bg-background', containerRadiusVariants({ radius }))}>
+      <div className={cn('overflow-x-auto border border-border bg-background', 'rounded-surface')}>
         <table className="w-full border-collapse text-sm leading-5">
           <thead className="bg-secondary text-left">
             {table.getHeaderGroups().map((headerGroup) => (
@@ -2412,7 +2135,16 @@ export function DataTable<TData>({
                 {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
-                    className="h-11 whitespace-nowrap px-3 text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground"
+                    aria-sort={
+                      header.column.getCanSort()
+                        ? header.column.getIsSorted() === 'asc'
+                          ? 'ascending'
+                          : header.column.getIsSorted() === 'desc'
+                            ? 'descending'
+                            : 'none'
+                        : undefined
+                    }
+                    className="h-11 whitespace-nowrap px-3 text-xs font-medium text-muted-foreground"
                   >
                     {header.isPlaceholder ? null : header.column.getCanSort() ? (
                       <button
@@ -2421,13 +2153,24 @@ export function DataTable<TData>({
                         onClick={header.column.getToggleSortingHandler()}
                       >
                         {flexRender(header.column.columnDef.header, header.getContext())}
-                        <span aria-hidden="true" className="text-muted-foreground">
-                          {header.column.getIsSorted() === 'asc'
-                            ? '^'
-                            : header.column.getIsSorted() === 'desc'
-                              ? 'v'
-                              : '-'}
-                        </span>
+                        <svg
+                          viewBox="0 0 16 16"
+                          className="size-3.5 text-muted-foreground"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d={
+                              header.column.getIsSorted() === 'asc'
+                                ? 'm4 9 4-4 4 4'
+                                : header.column.getIsSorted() === 'desc'
+                                  ? 'm4 6 4 4 4-4'
+                                  : 'm5 6 3-3 3 3M5 10l3 3 3-3'
+                            }
+                          />
+                        </svg>
                       </button>
                     ) : (
                       flexRender(header.column.columnDef.header, header.getContext())
@@ -2466,8 +2209,8 @@ export function DataTable<TData>({
       <div className="flex flex-wrap items-center justify-between gap-3 text-sm leading-5">
         <span className="text-muted-foreground">
           {enableRowSelection
-            ? `${table.getFilteredSelectedRowModel().rows.length} of ${table.getFilteredRowModel().rows.length} row(s) selected`
-            : `${table.getFilteredRowModel().rows.length} row(s)`}
+            ? `${table.getFilteredSelectedRowModel().rows.length} of ${table.getFilteredRowModel().rows.length} selected`
+            : `${table.getFilteredRowModel().rows.length} rows`}
         </span>
         <div className="flex items-center gap-2">
           <span className="mr-2 text-muted-foreground">
@@ -2480,7 +2223,7 @@ export function DataTable<TData>({
             disabled={!table.getCanPreviousPage()}
             onClick={() => table.firstPage()}
           >
-            {'<<'}
+            <PageChevron direction="left" double />
           </Button>
           <Button
             variant="outline"
@@ -2489,7 +2232,7 @@ export function DataTable<TData>({
             disabled={!table.getCanPreviousPage()}
             onClick={() => table.previousPage()}
           >
-            {'<'}
+            <PageChevron direction="left" />
           </Button>
           <Button
             variant="outline"
@@ -2498,7 +2241,7 @@ export function DataTable<TData>({
             disabled={!table.getCanNextPage()}
             onClick={() => table.nextPage()}
           >
-            {'>'}
+            <PageChevron direction="right" />
           </Button>
           <Button
             variant="outline"
@@ -2507,11 +2250,20 @@ export function DataTable<TData>({
             disabled={!table.getCanNextPage()}
             onClick={() => table.lastPage()}
           >
-            {'>>'}
+            <PageChevron direction="right" double />
           </Button>
         </div>
       </div>
     </div>
+  );
+}
+
+function PageChevron({ direction, double }: { direction: 'left' | 'right'; double?: boolean }) {
+  return (
+    <svg viewBox="0 0 16 16" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+      <path d={direction === 'left' ? 'm10 4-4 4 4 4' : 'm6 4 4 4-4 4'} />
+      {double && <path d={direction === 'left' ? 'M3 3v10' : 'M13 3v10'} />}
+    </svg>
   );
 }
 ````
@@ -2522,19 +2274,16 @@ Drawer built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add drawer`
-- npm dependencies: `@base-ui/react`
+- npm dependencies: `@base-ui/react@^1.9.0`
 - Registry dependencies: `utils`
 
 ### `src/ui/drawer.tsx`
 
 ````tsx
 'use client';
-
 import { Drawer as BaseDrawer } from '@base-ui/react/drawer';
 import type * as React from 'react';
-
-import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
-
+import { cn } from '@/lib/utils';
 /**
  * Base UI dismisses a drawer along `swipeDirection`, which defaults to `'down'`.
  * This drawer is styled as a right-hand panel, so the default would have the user
@@ -2545,16 +2294,9 @@ import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/ut
 export function Drawer({ swipeDirection = 'right', ...props }: React.ComponentProps<typeof BaseDrawer.Root>) {
   return <BaseDrawer.Root swipeDirection={swipeDirection} {...props} />;
 }
-
 export const DrawerTrigger = BaseDrawer.Trigger;
 export const DrawerClose = BaseDrawer.Close;
-
-export function DrawerContent({
-  className,
-  children,
-  radius,
-  ...props
-}: React.ComponentProps<typeof BaseDrawer.Popup> & ContainerRadiusProps) {
+export function DrawerContent({ className, children, ...props }: React.ComponentProps<typeof BaseDrawer.Popup>) {
   return (
     <BaseDrawer.Portal>
       <BaseDrawer.Backdrop
@@ -2570,10 +2312,10 @@ export function DrawerContent({
         )}
       />
       {/*
-        The viewport is required, not optional decoration: without it Base UI
-        disables swipe-to-close and touch scroll locking outright, which would
-        make the swipe-tracking styles below dead code.
-      */}
+          The viewport is required, not optional decoration: without it Base UI
+          disables swipe-to-close and touch scroll locking outright, which would
+          make the swipe-tracking styles below dead code.
+        */}
       <BaseDrawer.Viewport className="fixed inset-y-0 right-0 z-50 flex">
         <BaseDrawer.Popup
           className={cn(
@@ -2592,7 +2334,7 @@ export function DrawerContent({
             'data-[starting-style]:[translate:100%_0] data-[ending-style]:[translate:100%_0]',
             // No easing while the finger is down — the sheet must track it 1:1.
             'data-[swiping]:transition-none',
-            containerRadiusVariants({ radius }),
+            'rounded-surface',
             'ui-drawer-content rounded-r-none [border-bottom-right-radius:0] [border-top-right-radius:0]',
             className
           )}
@@ -2604,13 +2346,11 @@ export function DrawerContent({
     </BaseDrawer.Portal>
   );
 }
-
 export function DrawerTitle({ className, ...props }: React.ComponentProps<typeof BaseDrawer.Title>) {
   return (
     <BaseDrawer.Title className={cn('text-lg font-semibold leading-none tracking-[-0.02em]', className)} {...props} />
   );
 }
-
 export function DrawerDescription({ className, ...props }: React.ComponentProps<typeof BaseDrawer.Description>) {
   return <BaseDrawer.Description className={cn('text-sm leading-6 text-muted-foreground', className)} {...props} />;
 }
@@ -2622,53 +2362,37 @@ Field built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add field`
-- npm dependencies: `@base-ui/react`
+- npm dependencies: `@base-ui/react@^1.9.0`
 - Registry dependencies: `utils`
 
 ### `src/ui/field.tsx`
 
 ````tsx
 'use client';
-
 import { Field as BaseField } from '@base-ui/react/field';
 import type * as React from 'react';
-
-import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
-
+import { cn } from '@/lib/utils';
 export function Field({ className, ...props }: React.ComponentProps<typeof BaseField.Root>) {
   return <BaseField.Root className={cn('flex flex-col gap-1.5', className)} {...props} />;
 }
-
 export function FieldLabel({ className, ...props }: React.ComponentProps<typeof BaseField.Label>) {
-  return (
-    <BaseField.Label
-      className={cn('cursor-pointer text-xs font-medium uppercase tracking-[0.08em] text-foreground', className)}
-      {...props}
-    />
-  );
+  return <BaseField.Label className={cn('cursor-pointer text-sm font-medium text-foreground', className)} {...props} />;
 }
-
-export function FieldControl({
-  className,
-  radius,
-  ...props
-}: React.ComponentProps<typeof BaseField.Control> & RadiusProps) {
+export function FieldControl({ className, ...props }: React.ComponentProps<typeof BaseField.Control>) {
   return (
     <BaseField.Control
       className={cn(
-        'flex h-10 w-full border border-input bg-background px-3 py-2 text-sm leading-5 outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring data-[invalid]:border-destructive data-[invalid]:bg-destructive/5',
-        radiusVariants({ radius }),
+        'flex h-9 w-full border border-input bg-background px-3 py-2 text-sm leading-5 outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring data-[invalid]:border-destructive data-[invalid]:bg-destructive/5',
+        'rounded-control',
         className
       )}
       {...props}
     />
   );
 }
-
 export function FieldDescription({ className, ...props }: React.ComponentProps<typeof BaseField.Description>) {
   return <BaseField.Description className={cn('text-xs text-muted-foreground', className)} {...props} />;
 }
-
 export function FieldError({ className, ...props }: React.ComponentProps<typeof BaseField.Error>) {
   return <BaseField.Error className={cn('text-xs font-medium text-destructive', className)} {...props} />;
 }
@@ -2680,19 +2404,17 @@ Fieldset built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add fieldset`
-- npm dependencies: `@base-ui/react`
+- npm dependencies: `@base-ui/react@^1.9.0`
 - Registry dependencies: `utils`
 
 ### `src/ui/fieldset.tsx`
 
 ````tsx
 'use client';
-
 import { Fieldset as BaseFieldset } from '@base-ui/react/fieldset';
 import { cva, type VariantProps } from 'class-variance-authority';
 import type * as React from 'react';
-
-import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 const fieldsetVariants = cva('relative flex flex-col gap-4 p-4', {
   variants: {
@@ -2706,21 +2428,12 @@ const fieldsetVariants = cva('relative flex flex-col gap-4 p-4', {
     variant: 'default'
   }
 });
-
 export interface FieldsetProps
   extends React.ComponentProps<typeof BaseFieldset.Root>,
-    VariantProps<typeof fieldsetVariants>,
-    ContainerRadiusProps {}
-
-export function Fieldset({ className, variant, radius, ...props }: FieldsetProps) {
-  return (
-    <BaseFieldset.Root
-      className={cn(fieldsetVariants({ variant }), containerRadiusVariants({ radius }), className)}
-      {...props}
-    />
-  );
+    VariantProps<typeof fieldsetVariants> {}
+export function Fieldset({ className, variant, ...props }: FieldsetProps) {
+  return <BaseFieldset.Root className={cn(fieldsetVariants({ variant }), 'rounded-surface', className)} {...props} />;
 }
-
 /**
  * Sits astride the fieldset's top border, interrupting it — the native `<legend>`
  * look. Base UI renders this part as a `<div>`, and a `<div>` gets none of the
@@ -2742,7 +2455,6 @@ export function FieldsetLegend({ className, ...props }: React.ComponentProps<typ
     />
   );
 }
-
 export { fieldsetVariants };
 ````
 
@@ -2752,19 +2464,16 @@ Form built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add form`
-- npm dependencies: `@base-ui/react`
+- npm dependencies: `@base-ui/react@^1.9.0`
 - Registry dependencies: `utils`
 
 ### `src/ui/form.tsx`
 
 ````tsx
 'use client';
-
 import { Form as BaseForm } from '@base-ui/react/form';
 import type * as React from 'react';
-
 import { cn } from '@/lib/utils';
-
 export function Form({ className, ...props }: React.ComponentProps<typeof BaseForm>) {
   return <BaseForm className={cn('flex flex-col gap-4', className)} {...props} />;
 }
@@ -2776,31 +2485,27 @@ Input built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add input`
-- npm dependencies: `@base-ui/react`
+- npm dependencies: `@base-ui/react@^1.9.0`
 - Registry dependencies: `utils`
 
 ### `src/ui/input.tsx`
 
 ````tsx
 'use client';
-
 import { Input as BaseInput } from '@base-ui/react/input';
 import type * as React from 'react';
-
-import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
-
-export type InputProps = React.ComponentProps<typeof BaseInput> & RadiusProps;
-
-export function Input({ className, radius, ...props }: InputProps) {
+import { cn } from '@/lib/utils';
+export type InputProps = React.ComponentProps<typeof BaseInput>;
+export function Input({ className, ...props }: InputProps) {
   return (
     <BaseInput
       className={cn(
-        'flex h-10 w-full border border-input bg-background px-3 py-2 text-sm leading-5 text-foreground outline-none transition-colors',
+        'ui-control flex h-9 w-full border border-input bg-background px-3 py-2 text-sm leading-5 text-foreground outline-none transition-colors',
         'placeholder:text-muted-foreground',
         'focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring',
         'disabled:cursor-not-allowed disabled:opacity-40',
         'data-[invalid]:border-destructive data-[invalid]:bg-destructive/5',
-        radiusVariants({ radius }),
+        'rounded-control',
         className
       )}
       {...props}
@@ -2815,45 +2520,41 @@ Menu built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add menu`
-- npm dependencies: `@base-ui/react`
+- npm dependencies: `@base-ui/react@^1.9.0`
 - Registry dependencies: `utils`, `motion`
 
 ### `src/ui/menu.tsx`
 
 ````tsx
 'use client';
-
 import { Menu as BaseMenu } from '@base-ui/react/menu';
 import type * as React from 'react';
-
 import { useMotionPopupRender } from '@/lib/motion';
-import { type ContainerRadiusProps, cn, containerRadiusVariants, contentRadiusStyle, NESTED_RADIUS } from '@/lib/utils';
-
+import { cn, NESTED_RADIUS } from '@/lib/utils';
 export const Menu = BaseMenu.Root;
 export const MenuTrigger = BaseMenu.Trigger;
 export const MenuGroup = BaseMenu.Group;
 export const SubmenuRoot = BaseMenu.SubmenuRoot;
-
 export function MenuContent({
   className,
   children,
   sideOffset = 6,
-  radius,
   style,
   ...props
-}: React.ComponentProps<typeof BaseMenu.Popup> & { sideOffset?: number } & ContainerRadiusProps) {
+}: React.ComponentProps<typeof BaseMenu.Popup> & {
+  sideOffset?: number;
+}) {
   const renderPopup = useMotionPopupRender();
-
   return (
     <BaseMenu.Portal>
       <BaseMenu.Positioner sideOffset={sideOffset} className="z-50 outline-none">
         <BaseMenu.Popup
-          style={{ ...contentRadiusStyle(radius), ...style }}
+          style={style}
           className={cn(
-            'min-w-40 border border-border bg-popover p-1 text-popover-foreground shadow-[0_10px_30px_var(--shadow-color)] outline-none',
+            'min-w-40 border border-border bg-popover p-1 text-popover-foreground shadow-popup outline-none',
             // Unfold from the trigger's edge instead of the popup's centre.
             '[transform-origin:var(--transform-origin)]',
-            containerRadiusVariants({ radius }),
+            'rounded-surface',
             className
           )}
           render={renderPopup}
@@ -2865,18 +2566,15 @@ export function MenuContent({
     </BaseMenu.Portal>
   );
 }
-
 const itemClasses = cn(
   'flex cursor-pointer select-none items-center gap-2 px-3 py-1.5 text-sm leading-5 outline-none',
   NESTED_RADIUS,
   'data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground',
   'data-[disabled]:pointer-events-none data-[disabled]:opacity-40'
 );
-
 export function MenuItem({ className, ...props }: React.ComponentProps<typeof BaseMenu.Item>) {
   return <BaseMenu.Item className={cn(itemClasses, className)} {...props} />;
 }
-
 export function MenuGroupLabel({ className, ...props }: React.ComponentProps<typeof BaseMenu.GroupLabel>) {
   return (
     <BaseMenu.GroupLabel
@@ -2885,11 +2583,9 @@ export function MenuGroupLabel({ className, ...props }: React.ComponentProps<typ
     />
   );
 }
-
 export function MenuSeparator({ className, ...props }: React.ComponentProps<'div'>) {
   return <div className={cn('-mx-1 my-1 h-px bg-border', className)} {...props} />;
 }
-
 export function MenuSubmenuTrigger({
   className,
   children,
@@ -2920,29 +2616,22 @@ Menubar built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add menubar`
-- npm dependencies: `@base-ui/react`
+- npm dependencies: `@base-ui/react@^1.9.0`
 - Registry dependencies: `utils`
 
 ### `src/ui/menubar.tsx`
 
 ````tsx
 'use client';
-
 import { Menubar as BaseMenubar } from '@base-ui/react/menubar';
 import type * as React from 'react';
-
-import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
-
-export function Menubar({
-  className,
-  radius,
-  ...props
-}: React.ComponentProps<typeof BaseMenubar> & ContainerRadiusProps) {
+import { cn } from '@/lib/utils';
+export function Menubar({ className, ...props }: React.ComponentProps<typeof BaseMenubar>) {
   return (
     <BaseMenubar
       className={cn(
         'flex items-center gap-0 overflow-hidden border border-border bg-background [&>*+*]:border-l',
-        containerRadiusVariants({ radius }),
+        'rounded-surface',
         className
       )}
       {...props}
@@ -2957,30 +2646,20 @@ Meter built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add meter`
-- npm dependencies: `@base-ui/react`
+- npm dependencies: `@base-ui/react@^1.9.0`
 - Registry dependencies: `utils`
 
 ### `src/ui/meter.tsx`
 
 ````tsx
 'use client';
-
 import { Meter as BaseMeter } from '@base-ui/react/meter';
 import type * as React from 'react';
-
-import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
-
-export function Meter({
-  className,
-  children,
-  radius,
-  ...props
-}: React.ComponentProps<typeof BaseMeter.Root> & RadiusProps) {
+import { cn } from '@/lib/utils';
+export function Meter({ className, children, ...props }: React.ComponentProps<typeof BaseMeter.Root>) {
   return (
     <BaseMeter.Root className={cn('flex w-full flex-col gap-1', className)} {...props}>
-      <BaseMeter.Track
-        className={cn('h-2 w-full overflow-hidden border border-border bg-secondary', radiusVariants({ radius }))}
-      >
+      <BaseMeter.Track className={cn('h-2 w-full overflow-hidden border border-border bg-secondary', 'rounded-full')}>
         {/* Width is CSS-driven for the same reason as Progress — see progress.tsx. */}
         <BaseMeter.Indicator className="h-full bg-primary transition-[width] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]" />
       </BaseMeter.Track>
@@ -2988,7 +2667,6 @@ export function Meter({
     </BaseMeter.Root>
   );
 }
-
 export function MeterLabel({ className, ...props }: React.ComponentProps<typeof BaseMeter.Label>) {
   return (
     <BaseMeter.Label
@@ -2997,7 +2675,6 @@ export function MeterLabel({ className, ...props }: React.ComponentProps<typeof 
     />
   );
 }
-
 export function MeterValue({ className, ...props }: React.ComponentProps<typeof BaseMeter.Value>) {
   return <BaseMeter.Value className={cn('text-xs tabular-nums text-muted-foreground', className)} {...props} />;
 }
@@ -3009,28 +2686,23 @@ Navigation Menu built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add navigation-menu`
-- npm dependencies: `@base-ui/react`
+- npm dependencies: `@base-ui/react@^1.9.0`
 - Registry dependencies: `utils`, `motion`
 
 ### `src/ui/navigation-menu.tsx`
 
 ````tsx
 'use client';
-
 import { NavigationMenu as BaseNavigationMenu } from '@base-ui/react/navigation-menu';
 import type * as React from 'react';
-
 import { useMotionPopupRender } from '@/lib/motion';
-import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
-
+import { cn } from '@/lib/utils';
 export function NavigationMenu({
   className,
   children,
-  radius,
   ...props
-}: React.ComponentProps<typeof BaseNavigationMenu.Root> & ContainerRadiusProps) {
+}: React.ComponentProps<typeof BaseNavigationMenu.Root>) {
   const renderPopup = useMotionPopupRender({ scale: 0.98, offset: 6 });
-
   return (
     <BaseNavigationMenu.Root className={cn('relative', className)} {...props}>
       {children}
@@ -3038,7 +2710,7 @@ export function NavigationMenu({
         <BaseNavigationMenu.Positioner className="z-50" sideOffset={8}>
           <BaseNavigationMenu.Popup
             className={cn(
-              'border border-border bg-popover text-popover-foreground shadow-[0_10px_30px_var(--shadow-color)] outline-none',
+              'border border-border bg-popover text-popover-foreground shadow-popup outline-none',
               // Base UI measures each panel and publishes the target box as CSS
               // variables (`auto` while a single panel is open, pixel values while
               // switching). Transitioning them is what makes the popup morph
@@ -3048,7 +2720,7 @@ export function NavigationMenu({
               'h-[var(--popup-height)] w-[var(--popup-width)] overflow-hidden',
               'transition-[width,height] duration-200 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none',
               '[transform-origin:var(--transform-origin)]',
-              containerRadiusVariants({ radius })
+              'rounded-surface'
             )}
             render={renderPopup}
           >
@@ -3059,13 +2731,10 @@ export function NavigationMenu({
     </BaseNavigationMenu.Root>
   );
 }
-
 export function NavigationMenuList({ className, ...props }: React.ComponentProps<typeof BaseNavigationMenu.List>) {
   return <BaseNavigationMenu.List className={cn('flex items-center gap-1', className)} {...props} />;
 }
-
 export const NavigationMenuItem = BaseNavigationMenu.Item;
-
 export function NavigationMenuTrigger({
   className,
   ...props
@@ -3080,7 +2749,6 @@ export function NavigationMenuTrigger({
     />
   );
 }
-
 export function NavigationMenuContent({
   className,
   ...props
@@ -3102,7 +2770,6 @@ export function NavigationMenuContent({
     />
   );
 }
-
 export function NavigationMenuLink({ className, ...props }: React.ComponentProps<typeof BaseNavigationMenu.Link>) {
   return (
     <BaseNavigationMenu.Link
@@ -3122,31 +2789,21 @@ Number Field built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add number-field`
-- npm dependencies: `@base-ui/react`
+- npm dependencies: `@base-ui/react@^1.9.0`
 - Registry dependencies: `utils`
 
 ### `src/ui/number-field.tsx`
 
 ````tsx
 'use client';
-
 import { NumberField as BaseNumberField } from '@base-ui/react/number-field';
 import type * as React from 'react';
-
-import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
-
-export function NumberField({
-  className,
-  radius,
-  ...props
-}: React.ComponentProps<typeof BaseNumberField.Root> & RadiusProps) {
+import { cn } from '@/lib/utils';
+export function NumberField({ className, ...props }: React.ComponentProps<typeof BaseNumberField.Root>) {
   return (
     <BaseNumberField.Root className={cn('inline-flex flex-col gap-1', className)} {...props}>
       <BaseNumberField.Group
-        className={cn(
-          'flex h-10 items-stretch overflow-hidden border border-input bg-background',
-          radiusVariants({ radius })
-        )}
+        className={cn('flex h-9 items-stretch overflow-hidden border border-input bg-background', 'rounded-control')}
       >
         <BaseNumberField.Decrement className="flex w-9 items-center justify-center border-r border-border text-lg outline-none transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset">
           −
@@ -3167,24 +2824,20 @@ OTP Field built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add otp-field`
-- npm dependencies: `@base-ui/react`
+- npm dependencies: `@base-ui/react@^1.9.0`
 - Registry dependencies: `utils`
 
 ### `src/ui/otp-field.tsx`
 
 ````tsx
 'use client';
-
 import { OTPField as BaseOTPField } from '@base-ui/react/otp-field';
 import type * as React from 'react';
-
-import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
-
-export interface OtpFieldProps extends Omit<React.ComponentProps<typeof BaseOTPField.Root>, 'length'>, RadiusProps {
+import { cn } from '@/lib/utils';
+export interface OtpFieldProps extends Omit<React.ComponentProps<typeof BaseOTPField.Root>, 'length'> {
   length?: number;
 }
-
-export function OtpField({ className, length = 6, radius, ...props }: OtpFieldProps) {
+export function OtpField({ className, length = 6, ...props }: OtpFieldProps) {
   return (
     <BaseOTPField.Root length={length} className={cn('flex gap-2', className)} {...props}>
       {Array.from({ length }).map((_, i) => (
@@ -3193,7 +2846,7 @@ export function OtpField({ className, length = 6, radius, ...props }: OtpFieldPr
           key={i}
           className={cn(
             'size-11 border border-input bg-background text-center text-lg tabular-nums outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring',
-            radiusVariants({ radius })
+            'rounded-control'
           )}
         />
       ))}
@@ -3208,44 +2861,39 @@ Popover built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add popover`
-- npm dependencies: `@base-ui/react`
+- npm dependencies: `@base-ui/react@^1.9.0`
 - Registry dependencies: `utils`, `motion`
 
 ### `src/ui/popover.tsx`
 
 ````tsx
 'use client';
-
 import { Popover as BasePopover } from '@base-ui/react/popover';
 import type * as React from 'react';
-
 import { useMotionPopupRender } from '@/lib/motion';
-import { type ContainerRadiusProps, cn, containerRadiusVariants, type ShadowProps, shadowVariants } from '@/lib/utils';
-
+import { cn } from '@/lib/utils';
 export const Popover = BasePopover.Root;
 export const PopoverTrigger = BasePopover.Trigger;
 export const PopoverClose = BasePopover.Close;
-
 export function PopoverContent({
   className,
   children,
   sideOffset = 8,
-  radius,
-  shadow,
   ...props
-}: React.ComponentProps<typeof BasePopover.Popup> & { sideOffset?: number } & ContainerRadiusProps & ShadowProps) {
+}: React.ComponentProps<typeof BasePopover.Popup> & {
+  sideOffset?: number;
+}) {
   const renderPopup = useMotionPopupRender();
-
   return (
     <BasePopover.Portal>
       <BasePopover.Positioner sideOffset={sideOffset} className="z-50">
         <BasePopover.Popup
           className={cn(
             'w-72 border border-border bg-popover p-3 text-popover-foreground outline-none',
-            shadowVariants({ shadow }),
+            'shadow-popup',
             // Grow out of the anchor rather than the popup's own centre.
             '[transform-origin:var(--transform-origin)]',
-            containerRadiusVariants({ radius }),
+            'rounded-surface',
             className
           )}
           render={renderPopup}
@@ -3264,13 +2912,11 @@ export function PopoverContent({
     </BasePopover.Portal>
   );
 }
-
 export function PopoverTitle({ className, ...props }: React.ComponentProps<typeof BasePopover.Title>) {
   return (
     <BasePopover.Title className={cn('text-sm font-semibold leading-none tracking-[-0.01em]', className)} {...props} />
   );
 }
-
 export function PopoverDescription({ className, ...props }: React.ComponentProps<typeof BasePopover.Description>) {
   return <BasePopover.Description className={cn('text-sm leading-6 text-muted-foreground', className)} {...props} />;
 }
@@ -3282,41 +2928,37 @@ Preview Card built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add preview-card`
-- npm dependencies: `@base-ui/react`
+- npm dependencies: `@base-ui/react@^1.9.0`
 - Registry dependencies: `utils`, `motion`
 
 ### `src/ui/preview-card.tsx`
 
 ````tsx
 'use client';
-
 import { PreviewCard as BasePreviewCard } from '@base-ui/react/preview-card';
 import type * as React from 'react';
-
 import { useMotionPopupRender } from '@/lib/motion';
-import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
-
+import { cn } from '@/lib/utils';
 export const PreviewCard = BasePreviewCard.Root;
 export const PreviewCardTrigger = BasePreviewCard.Trigger;
-
 export function PreviewCardContent({
   className,
   children,
   sideOffset = 8,
-  radius,
   ...props
-}: React.ComponentProps<typeof BasePreviewCard.Popup> & { sideOffset?: number } & ContainerRadiusProps) {
+}: React.ComponentProps<typeof BasePreviewCard.Popup> & {
+  sideOffset?: number;
+}) {
   // Hover-triggered, so it travels a little further than a click-opened popover.
   const renderPopup = useMotionPopupRender({ offset: 6 });
-
   return (
     <BasePreviewCard.Portal>
       <BasePreviewCard.Positioner sideOffset={sideOffset} className="z-50">
         <BasePreviewCard.Popup
           className={cn(
-            'w-72 border border-border bg-popover p-4 text-popover-foreground shadow-[0_10px_30px_var(--shadow-color)] outline-none',
+            'w-72 border border-border bg-popover p-4 text-popover-foreground shadow-popup outline-none',
             '[transform-origin:var(--transform-origin)]',
-            containerRadiusVariants({ radius }),
+            'rounded-surface',
             className
           )}
           render={renderPopup}
@@ -3336,29 +2978,21 @@ Progress built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add progress`
-- npm dependencies: `@base-ui/react`
+- npm dependencies: `@base-ui/react@^1.9.0`
 - Registry dependencies: `utils`
 
 ### `src/ui/progress.tsx`
 
 ````tsx
 'use client';
-
 import { Progress as BaseProgress } from '@base-ui/react/progress';
 import type * as React from 'react';
-
-import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
-
-export function Progress({
-  className,
-  children,
-  radius,
-  ...props
-}: React.ComponentProps<typeof BaseProgress.Root> & RadiusProps) {
+import { cn } from '@/lib/utils';
+export function Progress({ className, children, ...props }: React.ComponentProps<typeof BaseProgress.Root>) {
   return (
     <BaseProgress.Root className={cn('flex w-full flex-col gap-1', className)} {...props}>
       <BaseProgress.Track
-        className={cn('h-2 w-full overflow-hidden border border-border bg-secondary', radiusVariants({ radius }))}
+        className={cn('h-2 w-full overflow-hidden border border-border bg-secondary', 'rounded-full')}
       >
         {/*
           Width stays in CSS: Base UI writes the filled width as an inline style
@@ -3378,7 +3012,6 @@ export function Progress({
     </BaseProgress.Root>
   );
 }
-
 export function ProgressLabel({ className, ...props }: React.ComponentProps<typeof BaseProgress.Label>) {
   return (
     <BaseProgress.Label
@@ -3387,7 +3020,6 @@ export function ProgressLabel({ className, ...props }: React.ComponentProps<type
     />
   );
 }
-
 export function ProgressValue({ className, ...props }: React.ComponentProps<typeof BaseProgress.Value>) {
   return <BaseProgress.Value className={cn('text-xs tabular-nums text-muted-foreground', className)} {...props} />;
 }
@@ -3399,20 +3031,18 @@ Radio Group built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add radio-group`
-- npm dependencies: `@base-ui/react`, `motion`
+- npm dependencies: `@base-ui/react@^1.9.0`, `motion@^12.43.0`
 - Registry dependencies: `utils`, `motion`
 
 ### `src/ui/radio-group.tsx`
 
 ````tsx
 'use client';
-
 import { Radio as BaseRadio } from '@base-ui/react/radio';
 import { RadioGroup as BaseRadioGroup } from '@base-ui/react/radio-group';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { type HTMLMotionProps, motion } from 'motion/react';
 import type * as React from 'react';
-
 import { useControlTransition } from '@/lib/motion';
 import { cn } from '@/lib/utils';
 
@@ -3427,18 +3057,14 @@ const radioGroupVariants = cva('flex gap-2', {
     orientation: 'vertical'
   }
 });
-
 export interface RadioGroupProps
   extends React.ComponentProps<typeof BaseRadioGroup>,
     VariantProps<typeof radioGroupVariants> {}
-
 export function RadioGroup({ className, orientation, ...props }: RadioGroupProps) {
   return <BaseRadioGroup className={cn(radioGroupVariants({ orientation }), className)} {...props} />;
 }
-
 export function RadioGroupItem({ className, ...props }: React.ComponentProps<typeof BaseRadio.Root>) {
   const transition = useControlTransition();
-
   return (
     <BaseRadio.Root
       className={cn(
@@ -3466,7 +3092,6 @@ export function RadioGroupItem({ className, ...props }: React.ComponentProps<typ
     </BaseRadio.Root>
   );
 }
-
 export { radioGroupVariants };
 ````
 
@@ -3476,39 +3101,28 @@ Scroll Area built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add scroll-area`
-- npm dependencies: `@base-ui/react`
+- npm dependencies: `@base-ui/react@^1.9.0`
 - Registry dependencies: `utils`
 
 ### `src/ui/scroll-area.tsx`
 
 ````tsx
 'use client';
-
 import { ScrollArea as BaseScrollArea } from '@base-ui/react/scroll-area';
 import type * as React from 'react';
-
-import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
-
-export function ScrollArea({
-  className,
-  children,
-  radius,
-  ...props
-}: React.ComponentProps<typeof BaseScrollArea.Root> & ContainerRadiusProps) {
+import { cn } from '@/lib/utils';
+export function ScrollArea({ className, children, ...props }: React.ComponentProps<typeof BaseScrollArea.Root>) {
   return (
-    <BaseScrollArea.Root
-      className={cn('relative overflow-hidden', containerRadiusVariants({ radius }), className)}
-      {...props}
-    >
+    <BaseScrollArea.Root className={cn('relative overflow-hidden', 'rounded-surface', className)} {...props}>
       <BaseScrollArea.Viewport className="size-full overscroll-contain outline-none">
         {children}
       </BaseScrollArea.Viewport>
       {/*
-        Scrollbars rest invisible and fade in while the pointer is over the area
-        or the user is scrolling. Base UI reports both as data attributes, so this
-        is a CSS transition rather than Motion — there's no mount/unmount to
-        coordinate, and it keeps the scroll path free of React work.
-      */}
+          Scrollbars rest invisible and fade in while the pointer is over the area
+          or the user is scrolling. Base UI reports both as data attributes, so this
+          is a CSS transition rather than Motion — there's no mount/unmount to
+          coordinate, and it keeps the scroll path free of React work.
+        */}
       <BaseScrollArea.Scrollbar
         orientation="vertical"
         className={cn(
@@ -3541,44 +3155,27 @@ Select built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add select`
-- npm dependencies: `@base-ui/react`
+- npm dependencies: `@base-ui/react@^1.9.0`
 - Registry dependencies: `utils`, `motion`
 
 ### `src/ui/select.tsx`
 
 ````tsx
 'use client';
-
 import { Select as BaseSelect } from '@base-ui/react/select';
 import type * as React from 'react';
-
 import { useMotionPopupRender } from '@/lib/motion';
-import {
-  type ContainerRadiusProps,
-  cn,
-  containerRadiusVariants,
-  contentRadiusStyle,
-  NESTED_RADIUS,
-  type RadiusProps,
-  radiusVariants
-} from '@/lib/utils';
-
+import { cn, NESTED_RADIUS } from '@/lib/utils';
 export const Select = BaseSelect.Root;
 export const SelectValue = BaseSelect.Value;
-
-export function SelectTrigger({
-  className,
-  children,
-  radius,
-  ...props
-}: React.ComponentProps<typeof BaseSelect.Trigger> & RadiusProps) {
+export function SelectTrigger({ className, children, ...props }: React.ComponentProps<typeof BaseSelect.Trigger>) {
   return (
     <BaseSelect.Trigger
       className={cn(
-        'flex h-10 w-full items-center justify-between gap-2 border border-input bg-background px-3 py-2 text-sm leading-5 text-foreground outline-none',
+        'flex h-9 w-full items-center justify-between gap-2 border border-input bg-background px-3 py-2 text-sm leading-5 text-foreground outline-none',
         'focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring',
         'disabled:cursor-not-allowed disabled:opacity-40',
-        radiusVariants({ radius }),
+        'rounded-control',
         className
       )}
       {...props}
@@ -3599,29 +3196,21 @@ export function SelectTrigger({
     </BaseSelect.Trigger>
   );
 }
-
-export function SelectContent({
-  className,
-  children,
-  radius,
-  style,
-  ...props
-}: React.ComponentProps<typeof BaseSelect.Popup> & ContainerRadiusProps) {
+export function SelectContent({ className, children, style, ...props }: React.ComponentProps<typeof BaseSelect.Popup>) {
   // Unlike other popups, Select stays mounted after the first interaction. The
   // same open-state-driven animation covers both cases — the first open plays
   // `initial`, later ones animate between the two variants.
   const renderPopup = useMotionPopupRender();
-
   return (
     <BaseSelect.Portal>
       <BaseSelect.Positioner sideOffset={4} className="z-50">
         <BaseSelect.Popup
-          // Publishes `--content-radius` so items can stay concentric with the popup.
-          style={{ ...contentRadiusStyle(radius), ...style }}
+          // Nested items follow the fixed popup corner treatment.
+          style={style}
           className={cn(
-            'min-w-[var(--anchor-width)] border border-border bg-popover p-1 text-popover-foreground shadow-[0_10px_30px_var(--shadow-color)] outline-none',
+            'min-w-[var(--anchor-width)] border border-border bg-popover p-1 text-popover-foreground shadow-popup outline-none',
             '[transform-origin:var(--transform-origin)]',
-            containerRadiusVariants({ radius }),
+            'rounded-surface',
             className
           )}
           render={renderPopup}
@@ -3633,7 +3222,6 @@ export function SelectContent({
     </BaseSelect.Portal>
   );
 }
-
 export function SelectItem({ className, children, ...props }: React.ComponentProps<typeof BaseSelect.Item>) {
   return (
     <BaseSelect.Item
@@ -3669,21 +3257,17 @@ Separator built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add separator`
-- npm dependencies: `@base-ui/react`
+- npm dependencies: `@base-ui/react@^1.9.0`
 - Registry dependencies: `utils`
 
 ### `src/ui/separator.tsx`
 
 ````tsx
 'use client';
-
 import { Separator as BaseSeparator } from '@base-ui/react/separator';
 import type * as React from 'react';
-
 import { cn } from '@/lib/utils';
-
 export type SeparatorProps = React.ComponentProps<typeof BaseSeparator>;
-
 export function Separator({ className, ...props }: SeparatorProps) {
   return (
     <BaseSeparator
@@ -3703,33 +3287,29 @@ Slider built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add slider`
-- npm dependencies: `@base-ui/react`, `motion`
+- npm dependencies: `@base-ui/react@^1.9.0`, `motion@^12.43.0`
 - Registry dependencies: `utils`, `motion`
 
 ### `src/ui/slider.tsx`
 
 ````tsx
 'use client';
-
 import { Slider as BaseSlider } from '@base-ui/react/slider';
 import { type HTMLMotionProps, motion } from 'motion/react';
 import type * as React from 'react';
-
 import { useControlTransition } from '@/lib/motion';
-import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
-
-export function Slider({ className, radius, ...props }: React.ComponentProps<typeof BaseSlider.Root> & RadiusProps) {
+import { cn } from '@/lib/utils';
+export function Slider({ className, ...props }: React.ComponentProps<typeof BaseSlider.Root>) {
   const transition = useControlTransition();
-
   return (
     <BaseSlider.Root className={cn('relative w-full', className)} {...props}>
       <BaseSlider.Control className="flex w-full items-center py-3">
-        <BaseSlider.Track className={cn('h-1.5 w-full bg-border', radiusVariants({ radius }))}>
-          <BaseSlider.Indicator className={cn('bg-primary', radiusVariants({ radius }))} />
+        <BaseSlider.Track className={cn('h-1.5 w-full bg-border', 'rounded-full')}>
+          <BaseSlider.Indicator className={cn('bg-primary', 'rounded-full')} />
           <BaseSlider.Thumb
             className={cn(
               'size-4 border border-primary bg-background outline-none focus-visible:ring-2 focus-visible:ring-ring',
-              radiusVariants({ radius })
+              'rounded-full'
             )}
             render={(thumbProps, state) => (
               <motion.div
@@ -3747,7 +3327,6 @@ export function Slider({ className, radius, ...props }: React.ComponentProps<typ
     </BaseSlider.Root>
   );
 }
-
 export function SliderValue({ className, ...props }: React.ComponentProps<typeof BaseSlider.Value>) {
   return <BaseSlider.Value className={cn('text-xs tabular-nums text-muted-foreground', className)} {...props} />;
 }
@@ -3759,30 +3338,25 @@ Switch built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add switch`
-- npm dependencies: `@base-ui/react`, `motion`
+- npm dependencies: `@base-ui/react@^1.9.0`, `motion@^12.43.0`
 - Registry dependencies: `utils`, `motion`
 
 ### `src/ui/switch.tsx`
 
 ````tsx
 'use client';
-
 import { Switch as BaseSwitch } from '@base-ui/react/switch';
 import { type HTMLMotionProps, motion } from 'motion/react';
 import type * as React from 'react';
-
 import { useControlTransition } from '@/lib/motion';
-import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 /** Thumb travel, in px, matching `h-6 w-11` track and `size-4` thumb. */
 const THUMB_OFF = 4;
 const THUMB_ON = 24;
-
-export type SwitchProps = React.ComponentProps<typeof BaseSwitch.Root> & RadiusProps;
-
-export function Switch({ className, radius, ...props }: SwitchProps) {
+export type SwitchProps = React.ComponentProps<typeof BaseSwitch.Root>;
+export function Switch({ className, ...props }: SwitchProps) {
   const transition = useControlTransition();
-
   return (
     <BaseSwitch.Root
       className={cn(
@@ -3790,7 +3364,7 @@ export function Switch({ className, radius, ...props }: SwitchProps) {
         'focus-visible:ring-2 focus-visible:ring-ring',
         'data-[checked]:border-primary data-[checked]:bg-primary',
         'disabled:cursor-not-allowed disabled:opacity-40',
-        radiusVariants({ radius }),
+        'rounded-full',
         className
       )}
       {...props}
@@ -3798,7 +3372,7 @@ export function Switch({ className, radius, ...props }: SwitchProps) {
       <BaseSwitch.Thumb
         className={cn(
           'block size-4 bg-foreground transition-colors data-[checked]:bg-primary-foreground',
-          radiusVariants({ radius })
+          'rounded-full'
         )}
         render={(thumbProps, state) => (
           <motion.span
@@ -3822,24 +3396,20 @@ Tabs built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add tabs`
-- npm dependencies: `@base-ui/react`, `motion`
+- npm dependencies: `@base-ui/react@^1.9.0`, `motion@^12.43.0`
 - Registry dependencies: `utils`, `motion`
 
 ### `src/ui/tabs.tsx`
 
 ````tsx
 'use client';
-
 import { Tabs as BaseTabs } from '@base-ui/react/tabs';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { type HTMLMotionProps, motion } from 'motion/react';
 import type * as React from 'react';
-
 import { transitions, useControlTransition } from '@/lib/motion';
 import { cn } from '@/lib/utils';
-
 export const Tabs = BaseTabs.Root;
-
 const tabsListVariants = cva('relative inline-flex items-center', {
   variants: {
     variant: {
@@ -3855,7 +3425,6 @@ const tabsListVariants = cva('relative inline-flex items-center', {
     variant: 'default'
   }
 });
-
 /**
  * The indicator is the same element in every variant, restyled — which is what
  * lets it animate between tabs. The `muted` variant grows it to a full-height
@@ -3873,9 +3442,7 @@ const tabsIndicatorVariants = cva('absolute left-0 z-0', {
     variant: 'default'
   }
 });
-
 export type TabsVariant = NonNullable<VariantProps<typeof tabsListVariants>['variant']>;
-
 export function TabsList({
   className,
   variant,
@@ -3889,7 +3456,6 @@ export function TabsList({
     </BaseTabs.List>
   );
 }
-
 export function TabsIndicator({
   className,
   variant,
@@ -3912,7 +3478,6 @@ export function TabsIndicator({
     />
   );
 }
-
 export function TabsTab({ className, ...props }: React.ComponentProps<typeof BaseTabs.Tab>) {
   return (
     <BaseTabs.Tab
@@ -3928,10 +3493,8 @@ export function TabsTab({ className, ...props }: React.ComponentProps<typeof Bas
     />
   );
 }
-
 export function TabsPanel({ className, ...props }: React.ComponentProps<typeof BaseTabs.Panel>) {
   const transition = useControlTransition(transitions.enter);
-
   return (
     <BaseTabs.Panel
       className={cn('mt-4 outline-none focus-visible:ring-2 focus-visible:ring-ring', className)}
@@ -3951,7 +3514,6 @@ export function TabsPanel({ className, ...props }: React.ComponentProps<typeof B
     />
   );
 }
-
 export { tabsIndicatorVariants, tabsListVariants };
 ````
 
@@ -3961,22 +3523,18 @@ Toast built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add toast`
-- npm dependencies: `@base-ui/react`
+- npm dependencies: `@base-ui/react@^1.9.0`
 - Registry dependencies: `utils`
 
 ### `src/ui/toast.tsx`
 
 ````tsx
 'use client';
-
 import { Toast as BaseToast } from '@base-ui/react/toast';
 import { cva, type VariantProps } from 'class-variance-authority';
-
-import { type ContainerRadiusProps, cn, containerRadiusVariants, type ShadowProps, shadowVariants } from '@/lib/utils';
-
+import { cn } from '@/lib/utils';
 export const ToastProvider = BaseToast.Provider;
 export const useToast = BaseToast.useToastManager;
-
 const viewportVariants = cva('fixed z-50 flex outline-none', {
   variants: {
     position: {
@@ -3993,9 +3551,7 @@ const viewportVariants = cva('fixed z-50 flex outline-none', {
     position: 'bottom-right'
   }
 });
-
 export type ToastPosition = NonNullable<VariantProps<typeof viewportVariants>['position']>;
-
 /**
  * Which way a toast travels as it arrives and leaves — outward, toward whichever
  * edge it's anchored to.
@@ -4008,21 +3564,18 @@ const enterFrom: Record<ToastPosition, string> = {
   'top-left': 'data-[starting-style]:[translate:-100%_0] data-[ending-style]:[translate:-100%_0]',
   'top-center': 'data-[starting-style]:[translate:0_-100%] data-[ending-style]:[translate:0_-100%]'
 };
-
-interface ToastListProps extends ContainerRadiusProps, ShadowProps {
+interface ToastListProps {
   position: ToastPosition;
 }
-
-function ToastList({ radius, shadow, position }: ToastListProps) {
+function ToastList({ position }: ToastListProps) {
   const { toasts } = BaseToast.useToastManager();
-
   return toasts.map((toast) => (
     <BaseToast.Root
       key={toast.id}
       toast={toast}
       className={cn(
         'relative w-80 border border-border bg-background p-4 text-foreground',
-        shadowVariants({ shadow }),
+        'shadow-popup',
         // Toast motion is CSS rather than Motion, and deliberately so: during a
         // swipe Base UI drives this element by writing `transform` directly, so a
         // `motion.div` — which owns `transform` — would stop the toast following
@@ -4037,7 +3590,7 @@ function ToastList({ radius, shadow, position }: ToastListProps) {
         enterFrom[position],
         // While a finger is down the toast must track it exactly, with no easing.
         'data-[swiping]:transition-none',
-        containerRadiusVariants({ radius })
+        'rounded-surface'
       )}
     >
       <BaseToast.Title className="pr-6 text-sm font-semibold leading-none tracking-[-0.01em]" />
@@ -4051,8 +3604,7 @@ function ToastList({ radius, shadow, position }: ToastListProps) {
     </BaseToast.Root>
   ));
 }
-
-export interface ToasterProps extends ContainerRadiusProps, ShadowProps {
+export interface ToasterProps {
   /**
    * Screen corner the stack is anchored to. Also sets the direction toasts travel
    * as they arrive and leave.
@@ -4060,17 +3612,15 @@ export interface ToasterProps extends ContainerRadiusProps, ShadowProps {
    */
   position?: ToastPosition;
 }
-
-export function Toaster({ radius, shadow = 'md', position = 'bottom-right' }: ToasterProps) {
+export function Toaster({ position = 'bottom-right' }: ToasterProps) {
   return (
     <BaseToast.Portal>
       <BaseToast.Viewport className={viewportVariants({ position })}>
-        <ToastList radius={radius} shadow={shadow} position={position} />
+        <ToastList position={position} />
       </BaseToast.Viewport>
     </BaseToast.Portal>
   );
 }
-
 export { viewportVariants as toastViewportVariants };
 ````
 
@@ -4080,29 +3630,22 @@ Toggle Group built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add toggle-group`
-- npm dependencies: `@base-ui/react`
+- npm dependencies: `@base-ui/react@^1.9.0`
 - Registry dependencies: `utils`
 
 ### `src/ui/toggle-group.tsx`
 
 ````tsx
 'use client';
-
 import { ToggleGroup as BaseToggleGroup } from '@base-ui/react/toggle-group';
 import type * as React from 'react';
-
-import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
-
-export function ToggleGroup({
-  className,
-  radius,
-  ...props
-}: React.ComponentProps<typeof BaseToggleGroup> & ContainerRadiusProps) {
+import { cn } from '@/lib/utils';
+export function ToggleGroup({ className, ...props }: React.ComponentProps<typeof BaseToggleGroup>) {
   return (
     <BaseToggleGroup
       className={cn(
-        'inline-flex items-center gap-0 overflow-hidden border border-border [&>.ui-radius]:!rounded-none [&>*]:border-0 [&>*+*]:border-l',
-        containerRadiusVariants({ radius }),
+        'inline-flex items-center gap-0 overflow-hidden border border-border [&>*]:rounded-none [&>*]:border-0 [&>*+*]:border-l',
+        'rounded-surface',
         className
       )}
       {...props}
@@ -4117,24 +3660,20 @@ Toggle built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add toggle`
-- npm dependencies: `@base-ui/react`, `motion`
+- npm dependencies: `@base-ui/react@^1.9.0`, `motion@^12.43.0`
 - Registry dependencies: `utils`, `motion`
 
 ### `src/ui/toggle.tsx`
 
 ````tsx
 'use client';
-
 import { Toggle as BaseToggle } from '@base-ui/react/toggle';
 import { type HTMLMotionProps, motion } from 'motion/react';
 import type * as React from 'react';
-
 import { useTapMotion } from '@/lib/motion';
-import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
-
-export function Toggle({ className, radius, ...props }: React.ComponentProps<typeof BaseToggle> & RadiusProps) {
+import { cn } from '@/lib/utils';
+export function Toggle({ className, ...props }: React.ComponentProps<typeof BaseToggle>) {
   const tap = useTapMotion();
-
   return (
     <BaseToggle
       render={(toggleProps) => <motion.button {...(toggleProps as HTMLMotionProps<'button'>)} {...tap} />}
@@ -4144,7 +3683,7 @@ export function Toggle({ className, radius, ...props }: React.ComponentProps<typ
         'focus-visible:ring-2 focus-visible:ring-ring',
         'data-[pressed]:border-primary data-[pressed]:bg-primary data-[pressed]:text-primary-foreground',
         'disabled:pointer-events-none disabled:opacity-40',
-        radiusVariants({ radius }),
+        'rounded-control',
         className
       )}
       {...props}
@@ -4159,57 +3698,39 @@ Toolbar built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add toolbar`
-- npm dependencies: `@base-ui/react`
+- npm dependencies: `@base-ui/react@^1.9.0`
 - Registry dependencies: `utils`
 
 ### `src/ui/toolbar.tsx`
 
 ````tsx
 'use client';
-
 import { Toolbar as BaseToolbar } from '@base-ui/react/toolbar';
 import type * as React from 'react';
-
-import { type ContainerRadiusProps, cn, containerRadiusVariants, type RadiusProps, radiusVariants } from '@/lib/utils';
-
-export function Toolbar({
-  className,
-  radius,
-  ...props
-}: React.ComponentProps<typeof BaseToolbar.Root> & ContainerRadiusProps) {
+import { cn } from '@/lib/utils';
+export function Toolbar({ className, ...props }: React.ComponentProps<typeof BaseToolbar.Root>) {
   return (
     <BaseToolbar.Root
-      className={cn(
-        'flex items-center gap-1 border border-border bg-background p-1',
-        containerRadiusVariants({ radius }),
-        className
-      )}
+      className={cn('flex items-center gap-1 border border-border bg-background p-1', 'rounded-surface', className)}
       {...props}
     />
   );
 }
-
 export const ToolbarGroup = BaseToolbar.Group;
-
-export function ToolbarButton({
-  className,
-  radius,
-  ...props
-}: React.ComponentProps<typeof BaseToolbar.Button> & RadiusProps) {
+export function ToolbarButton({ className, ...props }: React.ComponentProps<typeof BaseToolbar.Button>) {
   return (
     <BaseToolbar.Button
       className={cn(
         'inline-flex h-8 items-center justify-center gap-2 border border-transparent px-2 text-sm font-medium tracking-[-0.01em] outline-none transition-colors',
         'hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring data-[pressed]:bg-primary data-[pressed]:text-primary-foreground',
         'disabled:pointer-events-none disabled:opacity-40',
-        radiusVariants({ radius }),
+        'rounded-control',
         className
       )}
       {...props}
     />
   );
 }
-
 export function ToolbarLink({ className, ...props }: React.ComponentProps<typeof BaseToolbar.Link>) {
   return (
     <BaseToolbar.Link
@@ -4218,7 +3739,6 @@ export function ToolbarLink({ className, ...props }: React.ComponentProps<typeof
     />
   );
 }
-
 export function ToolbarSeparator({ className, ...props }: React.ComponentProps<typeof BaseToolbar.Separator>) {
   return <BaseToolbar.Separator className={cn('mx-1 h-6 w-px bg-border', className)} {...props} />;
 }
@@ -4230,19 +3750,17 @@ Tooltip built on Base UI.
 
 - Type: `registry:ui`
 - Install: `npx @ternetin/ui add tooltip`
-- npm dependencies: `@base-ui/react`
+- npm dependencies: `@base-ui/react@^1.9.0`
 - Registry dependencies: `utils`, `motion`
 
 ### `src/ui/tooltip.tsx`
 
 ````tsx
 'use client';
-
 import { Tooltip as BaseTooltip } from '@base-ui/react/tooltip';
 import type * as React from 'react';
-
 import { transitions, useMotionPopupRender } from '@/lib/motion';
-import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 /**
  * Base UI waits 600ms before showing a tooltip. That's long enough that a hover
@@ -4254,7 +3772,6 @@ import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/ut
  */
 const OPEN_DELAY = 200;
 const CLOSE_DELAY = 100;
-
 export function TooltipProvider({
   delay = OPEN_DELAY,
   closeDelay = CLOSE_DELAY,
@@ -4262,9 +3779,7 @@ export function TooltipProvider({
 }: BaseTooltip.Provider.Props) {
   return <BaseTooltip.Provider delay={delay} closeDelay={closeDelay} {...props} />;
 }
-
 export const Tooltip = BaseTooltip.Root;
-
 /**
  * Carries the same delay default as {@link TooltipProvider}, so a tooltip used
  * without a provider is just as responsive. A provider, when present, still wins
@@ -4273,14 +3788,14 @@ export const Tooltip = BaseTooltip.Root;
 export function TooltipTrigger({ delay = OPEN_DELAY, ...props }: BaseTooltip.Trigger.Props) {
   return <BaseTooltip.Trigger delay={delay} {...props} />;
 }
-
 export function TooltipContent({
   className,
   sideOffset = 8,
   children,
-  radius,
   ...props
-}: React.ComponentProps<typeof BaseTooltip.Popup> & { sideOffset?: number } & ContainerRadiusProps) {
+}: React.ComponentProps<typeof BaseTooltip.Popup> & {
+  sideOffset?: number;
+}) {
   // Tooltips are the lightest surface in the library: barely any scale, and a
   // faster curve than the rest, since they follow the pointer around.
   const renderPopup = useMotionPopupRender({
@@ -4288,7 +3803,6 @@ export function TooltipContent({
     offset: 3,
     transition: { duration: transitions.fade.duration, ease: 'easeOut' }
   });
-
   return (
     <BaseTooltip.Portal>
       <BaseTooltip.Positioner sideOffset={sideOffset} className="z-50">
@@ -4296,7 +3810,7 @@ export function TooltipContent({
           className={cn(
             'border border-border bg-foreground px-2 py-1 text-xs font-medium leading-none tracking-[-0.01em] text-background',
             '[transform-origin:var(--transform-origin)]',
-            containerRadiusVariants({ radius }),
+            'rounded-surface',
             className
           )}
           render={renderPopup}
@@ -4323,11 +3837,8 @@ Globs an SVG from its children and renders it as live, animatable ASCII art by r
 
 ````tsx
 'use client';
-
 import * as React from 'react';
-
 import { cn } from '@/lib/utils';
-
 /** Brightness ramps, dark → light. */
 export const ASCII_RAMPS = {
   standard: ' .:-=+*#%@',
@@ -4337,7 +3848,6 @@ export const ASCII_RAMPS = {
   binary: '01',
   dots: ' ·•●'
 } as const;
-
 export interface AsciiSvgProps extends Omit<React.ComponentProps<'pre'>, 'children'> {
   /** The SVG (or any node containing one) to ASCII-fy. Rendered off-screen and sampled. */
   children: React.ReactNode;
@@ -4354,7 +3864,6 @@ export interface AsciiSvgProps extends Omit<React.ComponentProps<'pre'>, 'childr
   /** Invert the ramp (light shapes on a dark ground). */
   invert?: boolean;
 }
-
 /**
  * Globs an SVG out of its children, rasterizes it to an offscreen canvas and maps
  * per-cell brightness onto an ASCII ramp — the classic image-to-ASCII trick, applied
@@ -4378,7 +3887,6 @@ export function AsciiSvg({
 }: AsciiSvgProps) {
   const hostRef = React.useRef<HTMLDivElement>(null);
   const [art, setArt] = React.useState('');
-
   // Reserve the box before first paint with a same-size blank grid, so the ASCII
   // filling in on the first (async) sample doesn't resize the layout and jump.
   const useIsoLayout = typeof window !== 'undefined' ? React.useLayoutEffect : React.useEffect;
@@ -4394,28 +3902,23 @@ export function AsciiSvg({
     // Placeholder only — run once on mount.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   // biome-ignore lint/correctness/useExhaustiveDependencies: children re-runs sampling when the SVG source changes.
   React.useEffect(() => {
     const host = hostRef.current;
     if (!host || typeof window === 'undefined') return;
-
     let stopped = false;
     let timer = 0;
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     if (!ctx) return;
-
     const sample = () =>
       new Promise<void>((resolve) => {
         const svg = host.querySelector(select) as SVGSVGElement | null;
         if (!svg) return resolve();
-
         const rect = svg.getBoundingClientRect();
         const w = rect.width || svg.viewBox?.baseVal?.width || 100;
         const h = rect.height || svg.viewBox?.baseVal?.height || 100;
         const rows = Math.max(1, Math.round(cols * (h / w) * 0.5)); // 0.5 ≈ char aspect
-
         let markup = new XMLSerializer().serializeToString(svg);
         markup = markup
           // Theme surfaces read as the knockout (black), so holes stay holes.
@@ -4424,11 +3927,9 @@ export function AsciiSvg({
           .replace(/var\([^)]*\)/gi, '#ffffff');
         if (!/<svg[^>]*\swidth=/i.test(markup)) markup = markup.replace('<svg', `<svg width="${w}"`);
         if (!/<svg[^>]*\sheight=/i.test(markup)) markup = markup.replace('<svg', `<svg height="${h}"`);
-
         const img = new Image();
         const blob = new Blob([markup], { type: 'image/svg+xml' });
         const url = URL.createObjectURL(blob);
-
         img.onload = () => {
           const m = 4; // super-sample each cell
           canvas.width = cols * m;
@@ -4437,7 +3938,6 @@ export function AsciiSvg({
           ctx.fillRect(0, 0, canvas.width, canvas.height);
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
           const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-
           let out = '';
           for (let y = 0; y < rows; y++) {
             for (let x = 0; x < cols; x++) {
@@ -4454,7 +3954,6 @@ export function AsciiSvg({
             }
             out += '\n';
           }
-
           URL.revokeObjectURL(url);
           if (!stopped) setArt(out);
           resolve();
@@ -4465,20 +3964,17 @@ export function AsciiSvg({
         };
         img.src = url;
       });
-
     const loop = async () => {
       if (stopped) return;
       await sample();
       if (!stopped && live) timer = window.setTimeout(loop, 1000 / fps);
     };
     loop();
-
     return () => {
       stopped = true;
       window.clearTimeout(timer);
     };
   }, [children, cols, chars, select, live, fps, invert]);
-
   return (
     <>
       {/* Off-screen source: laid out & animated by the browser, sampled each frame. */}
@@ -4500,6 +3996,1082 @@ export function AsciiSvg({
         {art}
       </pre>
     </>
+  );
+}
+````
+
+## Page Layout (`page-layout`)
+
+Shared page container, title, description, actions, and sections.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add page-layout`
+- npm dependencies: none
+- Registry dependencies: `utils`
+
+### `src/ui/page-layout.tsx`
+
+````tsx
+import type * as React from 'react';
+import { cn } from '@/lib/utils';
+
+export function PageContainer({ className, ...props }: React.ComponentProps<'div'>) {
+  return (
+    <div className={cn('mx-auto w-full max-w-7xl space-y-8 px-4 py-6 sm:px-6 lg:px-8 lg:py-8', className)} {...props} />
+  );
+}
+export function PageHeader({ className, ...props }: React.ComponentProps<'header'>) {
+  return <header className={cn('flex flex-wrap items-start justify-between gap-4', className)} {...props} />;
+}
+export function PageTitle({ className, ...props }: React.ComponentProps<'h1'>) {
+  return <h1 className={cn('text-2xl font-semibold tracking-tight sm:text-3xl', className)} {...props} />;
+}
+export function PageDescription({ className, ...props }: React.ComponentProps<'p'>) {
+  return <p className={cn('mt-2 max-w-prose text-sm leading-6 text-muted-foreground', className)} {...props} />;
+}
+export function PageActions({ className, ...props }: React.ComponentProps<'div'>) {
+  return <div className={cn('flex flex-wrap items-center gap-2', className)} {...props} />;
+}
+export function PageSection({ className, ...props }: React.ComponentProps<'section'>) {
+  return <section className={cn('space-y-4', className)} {...props} />;
+}
+````
+
+## Auth Layout (`auth-layout`)
+
+Centered responsive authentication composition, without auth logic.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add auth-layout`
+- npm dependencies: none
+- Registry dependencies: `utils`
+
+### `src/ui/auth-layout.tsx`
+
+````tsx
+import type * as React from 'react';
+import { cn } from '@/lib/utils';
+
+export function AuthLayout({ className, children, ...props }: React.ComponentProps<'main'>) {
+  return (
+    <main className={cn('grid min-h-dvh place-items-center bg-background px-4 py-10 sm:px-6', className)} {...props}>
+      <div className="w-full max-w-md space-y-6">{children}</div>
+    </main>
+  );
+}
+````
+
+## App Shell (`app-shell`)
+
+Application header, body, and independent main scroll region.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add app-shell`
+- npm dependencies: none
+- Registry dependencies: `utils`
+
+### `src/ui/app-shell.tsx`
+
+````tsx
+import type * as React from 'react';
+import { cn } from '@/lib/utils';
+
+export function AppShell({ className, ...props }: React.ComponentProps<'div'>) {
+  return <div className={cn('flex h-dvh min-h-0 flex-col overflow-hidden bg-background', className)} {...props} />;
+}
+export function AppHeader({ className, ...props }: React.ComponentProps<'header'>) {
+  return (
+    <header
+      className={cn('flex h-14 shrink-0 items-center gap-3 border-b border-border bg-card px-4 sm:px-6', className)}
+      {...props}
+    />
+  );
+}
+export function AppBody({ className, ...props }: React.ComponentProps<'div'>) {
+  return <div className={cn('relative flex min-h-0 min-w-0 flex-1', className)} {...props} />;
+}
+export function AppMain({ className, ...props }: React.ComponentProps<'main'>) {
+  return <main className={cn('min-h-0 min-w-0 flex-1 overflow-y-auto', className)} {...props} />;
+}
+````
+
+## Sidebar (`sidebar`)
+
+Composable app-owned navigation links, buttons, and sidebar regions.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add sidebar`
+- npm dependencies: none
+- Registry dependencies: `utils`
+
+### `src/ui/sidebar.tsx`
+
+````tsx
+import type * as React from 'react';
+import { cn } from '@/lib/utils';
+
+export function Sidebar({ className, ...props }: React.ComponentProps<'aside'>) {
+  return <aside className={cn('flex w-56 shrink-0 flex-col border-r border-border bg-card', className)} {...props} />;
+}
+export function SidebarHeader({ className, ...props }: React.ComponentProps<'div'>) {
+  return (
+    <div
+      className={cn('flex min-h-14 shrink-0 items-center justify-between gap-3 border-b border-border px-4', className)}
+      {...props}
+    />
+  );
+}
+export function SidebarContent({ className, ...props }: React.ComponentProps<'nav'>) {
+  return <nav className={cn('min-h-0 flex-1 space-y-1 overflow-y-auto p-2', className)} {...props} />;
+}
+export function SidebarFooter({ className, ...props }: React.ComponentProps<'div'>) {
+  return (
+    <div className={cn('shrink-0 border-t border-border p-4 text-xs text-muted-foreground', className)} {...props} />
+  );
+}
+const itemClass =
+  'ui-control flex min-h-9 w-full items-center gap-3 rounded-control px-3 py-2 text-left text-sm transition-colors outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring [&_svg]:size-4 [&_svg]:shrink-0';
+export function SidebarLink({ active, className, ...props }: React.ComponentProps<'a'> & { active?: boolean }) {
+  return (
+    <a
+      aria-current={active ? 'page' : undefined}
+      className={cn(itemClass, active && 'bg-accent font-medium text-accent-foreground', className)}
+      {...props}
+    />
+  );
+}
+export function SidebarButton({ active, className, ...props }: React.ComponentProps<'button'> & { active?: boolean }) {
+  return (
+    <button
+      type="button"
+      aria-pressed={active}
+      className={cn(itemClass, 'cursor-pointer', active && 'bg-accent font-medium text-accent-foreground', className)}
+      {...props}
+    />
+  );
+}
+````
+
+## Sidebar Drawer (`sidebar-drawer`)
+
+Accessible controlled mobile navigation with focus restoration.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add sidebar-drawer`
+- npm dependencies: `@base-ui/react@^1.9.0`
+- Registry dependencies: `utils`
+
+### `src/ui/sidebar-drawer.tsx`
+
+````tsx
+'use client';
+
+import { Dialog } from '@base-ui/react/dialog';
+import * as React from 'react';
+import { cn } from '@/lib/utils';
+
+export interface SidebarDrawerProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  children: React.ReactNode;
+  title?: string;
+  className?: string;
+}
+
+export function SidebarDrawer({ open, onOpenChange, title = 'Navigation', className, children }: SidebarDrawerProps) {
+  React.useEffect(() => {
+    const media = window.matchMedia('(min-width: 1024px)');
+    const closeOnDesktop = () => {
+      if (media.matches && open) onOpenChange(false);
+    };
+    closeOnDesktop();
+    media.addEventListener('change', closeOnDesktop);
+    return () => media.removeEventListener('change', closeOnDesktop);
+  }, [open, onOpenChange]);
+
+  return (
+    <Dialog.Root open={open} onOpenChange={onOpenChange}>
+      <Dialog.Portal>
+        <Dialog.Backdrop className="fixed inset-0 z-50 bg-foreground/40 transition-opacity duration-150 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0 motion-reduce:transition-none" />
+        <Dialog.Popup
+          className={cn(
+            'fixed inset-y-0 left-0 z-50 flex w-72 max-w-[calc(100%-3rem)] flex-col bg-card shadow-modal outline-none transition-transform duration-200 data-[ending-style]:-translate-x-full data-[starting-style]:-translate-x-full motion-reduce:transition-none',
+            className
+          )}
+        >
+          <div className="flex h-14 shrink-0 items-center justify-between border-b border-border px-4">
+            <Dialog.Title className="text-sm font-semibold">{title}</Dialog.Title>
+            <Dialog.Close
+              className="ui-control grid size-9 place-items-center rounded-control hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring"
+              aria-label="Close navigation"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                className="size-4"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.75"
+                aria-hidden="true"
+              >
+                <path d="m6 6 12 12M18 6 6 18" />
+              </svg>
+            </Dialog.Close>
+          </div>
+          {children}
+        </Dialog.Popup>
+      </Dialog.Portal>
+    </Dialog.Root>
+  );
+}
+````
+
+## Split Pane (`split-pane`)
+
+Controlled responsive list/detail panes with mobile focus management.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add split-pane`
+- npm dependencies: none
+- Registry dependencies: `utils`
+
+### `src/ui/split-pane.tsx`
+
+````tsx
+'use client';
+
+import * as React from 'react';
+import { cn } from '@/lib/utils';
+
+type Pane = 'primary' | 'secondary';
+
+export function SplitPane({
+  activePane = 'primary',
+  className,
+  onFocusCapture,
+  ...props
+}: React.ComponentProps<'div'> & { activePane?: Pane }) {
+  const root = React.useRef<HTMLDivElement>(null);
+  const previous = React.useRef(activePane);
+  const focused = React.useRef<Partial<Record<Pane, HTMLElement>>>({});
+
+  React.useEffect(() => {
+    if (previous.current !== activePane && window.matchMedia('(max-width: 1023px)').matches) {
+      const panel = root.current?.querySelector<HTMLElement>(`[data-pane="${activePane}"]`);
+      const remembered = focused.current[activePane];
+      if (remembered?.isConnected && panel?.contains(remembered)) remembered.focus();
+      else panel?.focus();
+    }
+    previous.current = activePane;
+  }, [activePane]);
+
+  return (
+    <div
+      ref={root}
+      data-active-pane={activePane}
+      onFocusCapture={(event) => {
+        const target = event.target;
+        const pane = target.closest<HTMLElement>('[data-pane]')?.dataset.pane as Pane | undefined;
+        if (pane) focused.current[pane] = target;
+        onFocusCapture?.(event);
+      }}
+      className={cn(
+        'group/split grid min-h-0 min-w-0 flex-1 grid-cols-1 lg:grid-cols-[minmax(18rem,24rem)_minmax(0,1fr)]',
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
+export function SplitPanePrimary({ className, ...props }: React.ComponentProps<'section'>) {
+  return (
+    <section
+      data-pane="primary"
+      tabIndex={-1}
+      className={cn(
+        'flex min-h-0 min-w-0 flex-col border-r border-border outline-none group-data-[active-pane=secondary]/split:hidden lg:group-data-[active-pane=secondary]/split:flex',
+        className
+      )}
+      {...props}
+    />
+  );
+}
+export function SplitPaneSecondary({ className, ...props }: React.ComponentProps<'section'>) {
+  return (
+    <section
+      data-pane="secondary"
+      tabIndex={-1}
+      className={cn(
+        'flex min-h-0 min-w-0 flex-col bg-card outline-none group-data-[active-pane=primary]/split:hidden lg:group-data-[active-pane=primary]/split:flex',
+        className
+      )}
+      {...props}
+    />
+  );
+}
+````
+
+## Settings Section (`settings-section`)
+
+Consistent settings heading, description, body, and actions.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add settings-section`
+- npm dependencies: none
+- Registry dependencies: `utils`
+
+### `src/ui/settings-section.tsx`
+
+````tsx
+import type * as React from 'react';
+import { cn } from '@/lib/utils';
+
+export function SettingsSection({
+  title,
+  description,
+  actions,
+  children,
+  headingLevel = 2,
+  className,
+  ...props
+}: Omit<React.ComponentProps<'section'>, 'title'> & {
+  title: React.ReactNode;
+  description?: React.ReactNode;
+  actions?: React.ReactNode;
+  headingLevel?: 2 | 3;
+}) {
+  const Heading = headingLevel === 3 ? 'h3' : 'h2';
+  return (
+    <section className={cn('space-y-4 border-b border-border py-6 last:border-b-0', className)} {...props}>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <Heading className="text-sm font-semibold">{title}</Heading>
+          {description && <p className="mt-1 max-w-prose text-sm leading-6 text-muted-foreground">{description}</p>}
+        </div>
+        {actions}
+      </div>
+      {children}
+    </section>
+  );
+}
+````
+
+## Stat (`stat`)
+
+Compact, accessible dashboard label/value composition.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add stat`
+- npm dependencies: none
+- Registry dependencies: `utils`
+
+### `src/ui/stat.tsx`
+
+````tsx
+import type * as React from 'react';
+import { cn } from '@/lib/utils';
+
+export function Stat({
+  label,
+  value,
+  hint,
+  className,
+  ...props
+}: React.ComponentProps<'dl'> & { label: React.ReactNode; value: React.ReactNode; hint?: React.ReactNode }) {
+  return (
+    <dl className={cn('min-w-0 rounded-surface border border-border bg-card p-4', className)} {...props}>
+      <dt className="text-sm text-muted-foreground">{label}</dt>
+      <dd className="mt-2 text-2xl font-semibold tabular-nums tracking-tight">{value}</dd>
+      {hint && <dd className="mt-1 text-xs text-muted-foreground">{hint}</dd>}
+    </dl>
+  );
+}
+````
+
+## Badge (`badge`)
+
+Text-first semantic status label.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add badge`
+- npm dependencies: none
+- Registry dependencies: `utils`
+
+### `src/ui/badge.tsx`
+
+````tsx
+import type * as React from 'react';
+import { cn } from '@/lib/utils';
+
+const tones = {
+  neutral: 'bg-muted text-muted-foreground',
+  success: 'bg-success-muted text-success',
+  warning: 'bg-warning-muted text-warning',
+  danger: 'bg-destructive/10 text-destructive',
+  info: 'bg-info-muted text-info'
+};
+export function Badge({
+  tone = 'neutral',
+  className,
+  ...props
+}: React.ComponentProps<'span'> & { tone?: keyof typeof tones }) {
+  return (
+    <span
+      className={cn(
+        'inline-flex items-center gap-1.5 rounded-control px-2 py-0.5 text-xs font-medium',
+        tones[tone],
+        className
+      )}
+      {...props}
+    />
+  );
+}
+````
+
+## Alert (`alert`)
+
+Inline informational, success, warning, or error feedback.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add alert`
+- npm dependencies: none
+- Registry dependencies: `utils`
+
+### `src/ui/alert.tsx`
+
+````tsx
+import type * as React from 'react';
+import { cn } from '@/lib/utils';
+
+const tones = {
+  info: 'border-info/30 bg-info-muted text-info',
+  success: 'border-success/30 bg-success-muted text-success',
+  warning: 'border-warning/30 bg-warning-muted text-warning',
+  danger: 'border-destructive/30 bg-destructive/5 text-destructive'
+};
+export function Alert({
+  tone = 'info',
+  className,
+  role,
+  ...props
+}: React.ComponentProps<'div'> & { tone?: keyof typeof tones }) {
+  return (
+    <div
+      role={role ?? (tone === 'danger' ? 'alert' : undefined)}
+      className={cn('rounded-surface border p-4 text-sm leading-6', tones[tone], className)}
+      {...props}
+    />
+  );
+}
+````
+
+## Empty State (`empty-state`)
+
+Empty or recovery state with an explanation and optional next action.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add empty-state`
+- npm dependencies: none
+- Registry dependencies: `utils`
+
+### `src/ui/empty-state.tsx`
+
+````tsx
+import type * as React from 'react';
+import { cn } from '@/lib/utils';
+
+export function EmptyState({
+  title,
+  description,
+  icon,
+  action,
+  className,
+  ...props
+}: Omit<React.ComponentProps<'div'>, 'title'> & {
+  title: React.ReactNode;
+  description?: React.ReactNode;
+  icon?: React.ReactNode;
+  action?: React.ReactNode;
+}) {
+  return (
+    <div
+      className={cn('flex min-h-48 flex-col items-center justify-center gap-3 px-6 py-10 text-center', className)}
+      {...props}
+    >
+      {icon && <div className="text-muted-foreground [&_svg]:size-7">{icon}</div>}
+      <h2 className="text-base font-semibold">{title}</h2>
+      {description && <p className="max-w-sm text-sm leading-6 text-muted-foreground">{description}</p>}
+      {action && <div className="mt-1">{action}</div>}
+    </div>
+  );
+}
+````
+
+## Spinner (`spinner`)
+
+Accessible progress feedback for a small pending action.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add spinner`
+- npm dependencies: none
+- Registry dependencies: `utils`
+
+### `src/ui/spinner.tsx`
+
+````tsx
+import type * as React from 'react';
+import { cn } from '@/lib/utils';
+
+export function Spinner({
+  label = 'Loading…',
+  className,
+  ...props
+}: React.ComponentProps<'span'> & { label?: string }) {
+  return (
+    <span
+      role="status"
+      className={cn('inline-flex items-center gap-2 text-sm text-muted-foreground', className)}
+      {...props}
+    >
+      <svg
+        viewBox="0 0 24 24"
+        className="size-4 animate-spin motion-reduce:animate-none"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        aria-hidden="true"
+      >
+        <circle cx="12" cy="12" r="9" opacity=".25" />
+        <path d="M12 3a9 9 0 0 1 9 9" />
+      </svg>
+      <span>{label}</span>
+    </span>
+  );
+}
+````
+
+## Skeleton (`skeleton`)
+
+Reduced-motion-aware content loading placeholder.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add skeleton`
+- npm dependencies: none
+- Registry dependencies: `utils`
+
+### `src/ui/skeleton.tsx`
+
+````tsx
+import type * as React from 'react';
+import { cn } from '@/lib/utils';
+
+export function Skeleton({ className, ...props }: React.ComponentProps<'div'>) {
+  return (
+    <div
+      aria-hidden="true"
+      className={cn('animate-pulse rounded-control bg-muted motion-reduce:animate-none', className)}
+      {...props}
+    />
+  );
+}
+````
+
+## Input Group (`input-group`)
+
+Joined inputs and addons with automatic outer corners.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add input-group`
+- npm dependencies: none
+- Registry dependencies: `utils`
+
+### `src/ui/input-group.tsx`
+
+````tsx
+import type * as React from 'react';
+import { cn } from '@/lib/utils';
+
+export function InputGroup({ className, ...props }: React.ComponentProps<'div'>) {
+  return (
+    <div
+      className={cn('ui-input-group flex min-w-0 items-stretch [&>input]:min-w-0 [&>input]:flex-1', className)}
+      {...props}
+    />
+  );
+}
+export function InputAddon({ className, ...props }: React.ComponentProps<'span'>) {
+  return (
+    <span
+      className={cn(
+        'inline-flex shrink-0 items-center rounded-control border border-input bg-muted px-3 text-sm text-muted-foreground',
+        className
+      )}
+      {...props}
+    />
+  );
+}
+````
+
+## Textarea (`textarea`)
+
+Native multiline input with shared field states.
+
+- Type: `registry:ui`
+- Install: `npx @ternetin/ui add textarea`
+- npm dependencies: none
+- Registry dependencies: `utils`
+
+### `src/ui/textarea.tsx`
+
+````tsx
+import type * as React from 'react';
+import { cn } from '@/lib/utils';
+
+export function Textarea({ className, ...props }: React.ComponentProps<'textarea'>) {
+  return (
+    <textarea
+      className={cn(
+        'flex min-h-28 w-full resize-y rounded-control border border-input bg-background px-3 py-2 text-sm leading-6 outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-40 aria-invalid:border-destructive aria-invalid:bg-destructive/5',
+        className
+      )}
+      {...props}
+    />
+  );
+}
+````
+
+## Authentication Example (`auth-example`)
+
+Complete centered authentication form with illustrative local submission.
+
+- Type: `registry:block`
+- Install: `npx @ternetin/ui add auth-example`
+- npm dependencies: none
+- Registry dependencies: `auth-layout`, `alert`, `button`, `card`, `input`
+
+### `src/ui/auth-example.tsx`
+
+````tsx
+'use client';
+
+import * as React from 'react';
+import { Alert } from '@/ui/alert';
+import { AuthLayout } from '@/ui/auth-layout';
+import { Button } from '@/ui/button';
+import { Card, CardDescription, CardHeader, CardTitle } from '@/ui/card';
+import { Input } from '@/ui/input';
+
+/** A complete presentation example. Connect submission to your app's auth flow. */
+export function AuthExample() {
+  const [submitted, setSubmitted] = React.useState(false);
+  return (
+    <AuthLayout>
+      <div className="flex items-center justify-between text-sm">
+        <a href="/examples" className="font-semibold text-primary underline-offset-4 hover:underline">
+          internet-ui
+        </a>
+        <span className="text-muted-foreground">Authentication example</span>
+      </div>
+      <Card padding="lg">
+        <CardHeader>
+          <CardTitle>Welcome back</CardTitle>
+          <CardDescription>Sign in to your workspace.</CardDescription>
+        </CardHeader>
+        <form
+          className="space-y-4"
+          onSubmit={(event) => {
+            event.preventDefault();
+            setSubmitted(true);
+          }}
+        >
+          <div className="space-y-2">
+            <label htmlFor="example-email" className="text-sm font-medium">
+              Email
+            </label>
+            <Input
+              id="example-email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              placeholder="you@example.com"
+              required
+            />
+          </div>
+          <div className="space-y-2">
+            <label htmlFor="example-password" className="text-sm font-medium">
+              Password
+            </label>
+            <Input id="example-password" name="password" type="password" autoComplete="current-password" required />
+          </div>
+          <Button type="submit" className="w-full">
+            Sign in
+          </Button>
+          {submitted && (
+            <Alert role="status">
+              This example does not send credentials. Connect your authentication handler here.
+            </Alert>
+          )}
+        </form>
+      </Card>
+      <p className="text-center text-xs leading-5 text-muted-foreground">
+        Illustrative form. No account is created and no credentials are sent.
+      </p>
+    </AuthLayout>
+  );
+}
+````
+
+## Admin Example (`admin-example`)
+
+Complete metrics and filterable table page with fictional data.
+
+- Type: `registry:block`
+- Install: `npx @ternetin/ui add admin-example`
+- npm dependencies: none
+- Registry dependencies: `badge`, `button`, `card`, `data-table`, `page-layout`, `stat`
+
+### `src/ui/admin-example.tsx`
+
+````tsx
+'use client';
+
+import type { ColumnDef } from '@tanstack/react-table';
+import { Badge } from '@/ui/badge';
+import { Button } from '@/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/ui/card';
+import { DataTable } from '@/ui/data-table';
+import { PageActions, PageContainer, PageDescription, PageHeader, PageTitle } from '@/ui/page-layout';
+import { Stat } from '@/ui/stat';
+
+const services = [
+  { name: 'docs', endpoint: 'docs.example.com', status: 'Connected', requests: 1248 },
+  { name: 'preview', endpoint: 'preview.example.com', status: 'Connected', requests: 326 },
+  { name: 'development', endpoint: 'dev.example.com', status: 'Offline', requests: 0 },
+  { name: 'webhook', endpoint: 'hooks.example.com', status: 'Connected', requests: 87 }
+];
+const columns: ColumnDef<(typeof services)[number]>[] = [
+  {
+    accessorKey: 'name',
+    header: 'Service',
+    cell: ({ row }) => (
+      <div>
+        <span className="font-medium">{row.original.name}</span>
+        <p className="mt-0.5 text-xs text-muted-foreground">{row.original.endpoint}</p>
+      </div>
+    )
+  },
+  {
+    accessorKey: 'status',
+    header: 'Status',
+    cell: ({ row }) => (
+      <Badge tone={row.original.status === 'Connected' ? 'success' : 'neutral'}>{row.original.status}</Badge>
+    )
+  },
+  {
+    accessorKey: 'requests',
+    header: 'Requests',
+    cell: ({ row }) => <span className="tabular-nums">{row.original.requests.toLocaleString('en')}</span>
+  }
+];
+
+/** Fictional fixture data; no service or account requests are made. */
+export function AdminExample() {
+  return (
+    <PageContainer>
+      <PageHeader>
+        <div>
+          <PageTitle>Services</PageTitle>
+          <PageDescription>
+            A compact admin layout with shared metrics, status labels, and a searchable table.
+          </PageDescription>
+        </div>
+        <PageActions>
+          <Button variant="outline" render={<a href="/examples" />}>
+            All examples
+          </Button>
+        </PageActions>
+      </PageHeader>
+      <div className="grid gap-4 sm:grid-cols-3">
+        <Stat label="Services" value={4} />
+        <Stat label="Connected" value={3} />
+        <Stat label="Requests" value="1,661" hint="Fictional example data" />
+      </div>
+      <Card padding="none">
+        <CardHeader className="border-b border-border p-5">
+          <CardTitle>Service directory</CardTitle>
+        </CardHeader>
+        <CardContent className="p-4">
+          <DataTable
+            columns={columns}
+            data={services}
+            getRowId={(service) => service.name}
+            enableRowSelection={false}
+            initialPageSize={5}
+            pageSizeOptions={[5, 10, 20]}
+            searchPlaceholder="Find a service"
+            emptyMessage="No services match your search."
+          />
+        </CardContent>
+      </Card>
+    </PageContainer>
+  );
+}
+````
+
+## Settings Example (`settings-example`)
+
+Complete settings form, joined input, switch, and local feedback.
+
+- Type: `registry:block`
+- Install: `npx @ternetin/ui add settings-example`
+- npm dependencies: none
+- Registry dependencies: `alert`, `button`, `input`, `input-group`, `page-layout`, `settings-section`, `switch`
+
+### `src/ui/settings-example.tsx`
+
+````tsx
+'use client';
+
+import * as React from 'react';
+import { Alert } from '@/ui/alert';
+import { Button } from '@/ui/button';
+import { Input } from '@/ui/input';
+import { InputAddon, InputGroup } from '@/ui/input-group';
+import { PageContainer, PageDescription, PageHeader, PageTitle } from '@/ui/page-layout';
+import { SettingsSection } from '@/ui/settings-section';
+import { Switch } from '@/ui/switch';
+
+export function SettingsExample() {
+  const [saved, setSaved] = React.useState(false);
+  return (
+    <PageContainer className="max-w-3xl">
+      <PageHeader>
+        <div>
+          <PageTitle>Workspace settings</PageTitle>
+          <PageDescription>Example settings. Changes stay in this page and are not sent to a server.</PageDescription>
+        </div>
+        <Button variant="outline" render={<a href="/examples" />}>
+          All examples
+        </Button>
+      </PageHeader>
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+          setSaved(true);
+        }}
+      >
+        <SettingsSection title="General" description="The name and address people use to identify this workspace.">
+          <div className="max-w-md space-y-2">
+            <label htmlFor="workspace-name" className="font-medium">
+              Workspace name
+            </label>
+            <Input id="workspace-name" defaultValue="Development" required />
+          </div>
+          <div className="max-w-md space-y-2">
+            <label htmlFor="workspace-address" className="font-medium">
+              Address
+            </label>
+            <InputGroup>
+              <Input id="workspace-address" defaultValue="development" required />
+              <InputAddon>.example.com</InputAddon>
+            </InputGroup>
+          </div>
+        </SettingsSection>
+        <SettingsSection title="Notifications" description="Choose which updates matter to you.">
+          <label className="flex max-w-md items-center justify-between gap-4">
+            <span>Service status changes</span>
+            <Switch defaultChecked aria-label="Notify about service status changes" />
+          </label>
+        </SettingsSection>
+        <div className="flex items-center justify-end pt-6">
+          <Button type="submit">Save changes</Button>
+        </div>
+        {saved && (
+          <Alert tone="success" role="status" className="mt-4">
+            Saved in this example only.
+          </Alert>
+        )}
+      </form>
+    </PageContainer>
+  );
+}
+````
+
+## Workspace Example (`workspace-example`)
+
+Complete responsive sidebar/list/detail workspace with fictional messages.
+
+- Type: `registry:block`
+- Install: `npx @ternetin/ui add workspace-example`
+- npm dependencies: none
+- Registry dependencies: `app-shell`, `button`, `empty-state`, `input`, `sidebar`, `sidebar-drawer`, `split-pane`
+
+### `src/ui/workspace-example.tsx`
+
+````tsx
+'use client';
+
+import * as React from 'react';
+import { AppBody, AppHeader, AppMain, AppShell } from '@/ui/app-shell';
+import { Button } from '@/ui/button';
+import { EmptyState } from '@/ui/empty-state';
+import { Input } from '@/ui/input';
+import { Sidebar, SidebarButton, SidebarContent, SidebarFooter, SidebarHeader } from '@/ui/sidebar';
+import { SidebarDrawer } from '@/ui/sidebar-drawer';
+import { SplitPane, SplitPanePrimary, SplitPaneSecondary } from '@/ui/split-pane';
+
+const messages = [
+  {
+    id: 'release',
+    sender: 'Release notes',
+    subject: 'Your workspace is ready',
+    text: 'This is a complete responsive layout example. The sidebar, list, and detail pane are composed from independent components.'
+  },
+  {
+    id: 'welcome',
+    sender: 'Example team',
+    subject: 'A quieter place to work',
+    text: 'Select a message on a narrow screen, then use Back to return to the list. Keyboard focus returns to the item you selected.'
+  },
+  {
+    id: 'review',
+    sender: 'Design review',
+    subject: 'Shared foundations',
+    text: 'Consistent typography, borders, corners, and spacing let the content lead. This example contains fictional data only.'
+  }
+];
+
+export function WorkspaceExample() {
+  const [selected, setSelected] = React.useState<string | null>(null);
+  const [folder, setFolder] = React.useState('Inbox');
+  const [navigationOpen, setNavigationOpen] = React.useState(false);
+  const [search, setSearch] = React.useState('');
+  const detail = messages.find((message) => message.id === selected);
+  const filtered =
+    folder === 'Inbox'
+      ? messages.filter((message) =>
+          `${message.sender} ${message.subject}`.toLowerCase().includes(search.toLowerCase())
+        )
+      : [];
+  const navigation = (
+    <>
+      <SidebarContent aria-label="Example folders">
+        {['Inbox', 'Archive', 'Trash'].map((name) => (
+          <SidebarButton
+            key={name}
+            active={folder === name}
+            onClick={() => {
+              setFolder(name);
+              setSelected(null);
+              setNavigationOpen(false);
+            }}
+          >
+            {name}
+          </SidebarButton>
+        ))}
+      </SidebarContent>
+      <SidebarFooter>Fictional example data</SidebarFooter>
+    </>
+  );
+
+  return (
+    <AppShell>
+      <AppHeader>
+        <Button
+          variant="ghost"
+          size="icon"
+          aria-label="Open navigation"
+          className="lg:hidden"
+          onClick={() => setNavigationOpen(true)}
+        >
+          <svg
+            viewBox="0 0 24 24"
+            className="size-4"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.75"
+            aria-hidden="true"
+          >
+            <path d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </Button>
+        <span className="font-semibold">Workspace example</span>
+        <a className="ml-auto text-sm text-primary hover:underline" href="/examples">
+          All examples
+        </a>
+      </AppHeader>
+      <AppBody>
+        <Sidebar className="hidden lg:flex">
+          <SidebarHeader>
+            <span className="font-medium">Folders</span>
+          </SidebarHeader>
+          {navigation}
+        </Sidebar>
+        <SidebarDrawer open={navigationOpen} onOpenChange={setNavigationOpen} title="Folders">
+          {navigation}
+        </SidebarDrawer>
+        <AppMain className="flex overflow-hidden">
+          <SplitPane activePane={selected ? 'secondary' : 'primary'}>
+            <SplitPanePrimary aria-label="Message list">
+              <div className="space-y-3 border-b border-border p-4">
+                <h1 className="text-base font-semibold">{folder}</h1>
+                <Input
+                  aria-label="Search messages"
+                  type="search"
+                  placeholder="Search messages"
+                  value={search}
+                  onChange={(event) => setSearch(event.target.value)}
+                />
+              </div>
+              <div className="min-h-0 flex-1 overflow-y-auto">
+                {filtered.length ? (
+                  filtered.map((message) => (
+                    <button
+                      type="button"
+                      key={message.id}
+                      onClick={() => setSelected(message.id)}
+                      className={`flex w-full cursor-pointer flex-col gap-1 border-b border-border p-4 text-left outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring ${selected === message.id ? 'bg-accent' : ''}`}
+                    >
+                      <span className="text-xs text-muted-foreground">{message.sender}</span>
+                      <span className="font-medium">{message.subject}</span>
+                      <span className="line-clamp-2 text-xs leading-5 text-muted-foreground">{message.text}</span>
+                    </button>
+                  ))
+                ) : (
+                  <EmptyState
+                    title={search ? 'No matches' : 'Folder is empty'}
+                    description={search ? 'Try another search term.' : 'Choose Inbox to explore the example messages.'}
+                  />
+                )}
+              </div>
+            </SplitPanePrimary>
+            <SplitPaneSecondary aria-label="Message detail">
+              {detail ? (
+                <>
+                  <div className="flex min-h-14 items-center border-b border-border px-4">
+                    <Button variant="ghost" size="sm" className="lg:hidden" onClick={() => setSelected(null)}>
+                      Back to messages
+                    </Button>
+                    <span className="hidden text-xs text-muted-foreground lg:inline">Illustrative message</span>
+                  </div>
+                  <article className="min-h-0 flex-1 space-y-4 overflow-y-auto p-5 sm:p-8">
+                    <p className="text-sm text-muted-foreground">{detail.sender}</p>
+                    <h2 className="text-xl font-semibold">{detail.subject}</h2>
+                    <p className="max-w-prose text-sm leading-7">{detail.text}</p>
+                  </article>
+                </>
+              ) : (
+                <EmptyState
+                  className="flex-1"
+                  title="Select a message"
+                  description="Choose a message from the list to read it here."
+                />
+              )}
+            </SplitPaneSecondary>
+          </SplitPane>
+        </AppMain>
+      </AppBody>
+    </AppShell>
   );
 }
 ````

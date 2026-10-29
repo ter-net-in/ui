@@ -1,6 +1,7 @@
 ---
+
 name: internet-ui
-description: Add or modify internet-ui React components in projects using Base UI and Tailwind CSS v4. Use when asked to install internet-ui, add UI components, configure internet-ui.json, change project-wide radius or shadow defaults, or discover components from ui.ter.net.in.
+description: Add or modify internet-ui React components in projects using Base UI and Tailwind CSS v4. Use when asked to install internet-ui, add UI components, configure internet-ui.json, compose shared layouts, or discover components from ui.ter.net.in.
 ---
 
 # internet-ui
@@ -10,13 +11,13 @@ Use internet-ui as source-owned code. The CLI copies files into the target proje
 ## Inspect before changing
 
 1. Work from the target project root.
-2. Read `internet-ui.json` if it exists. Respect its registry, aliases, output paths, TypeScript mode, and defaults.
+2. Read `internet-ui.json` if it exists. Respect its registry, aliases, output paths, and TypeScript mode.
 3. Check target component files for local edits before adding or updating anything.
 4. Read `https://ui.ter.net.in/llms.txt` when component names are unknown. Use its full source catalog only when source inspection is needed.
 
 ## Initialize
 
-If `internet-ui.json` does not exist, initialize non-interactively only when detected defaults are correct:
+If `internet-ui.json` does not exist, initialize non-interactively only when detected paths and aliases are correct:
 
 ```bash
 npx @ternetin/ui init --yes
@@ -42,35 +43,17 @@ For local or forked registries:
 npx @ternetin/ui add button --registry <origin>
 ```
 
-## Configure defaults
+## Shared rules and layouts
 
-`internet-ui.json` supports project-wide source defaults:
+Use the fixed role rules: 6px controls, 8px containers, square structural seams, and shadows only for floating surfaces. Do not add radius/shadow props or a configuration defaults block. Older `defaults` blocks are ignored with a migration notice. Read https://ui.ter.net.in/migration before reconciling older copied components and themes.
 
-```json
-{
-  "defaults": {
-    "radius": "md",
-    "containerRadius": "md",
-    "shadow": "sm"
-  }
-}
-```
-
-- `radius`: `none`, `sm`, `md`, `lg`, or `full`
-- `containerRadius`: `none`, `sm`, `md`, or `lg`; derived from `radius` when omitted
-- `shadow`: `none`, `sm`, `md`, `lg`, or `xl`
-
-After changing defaults, update only generated defaults source:
-
-```bash
-npx @ternetin/ui add ui-defaults --overwrite
-```
+Available layouts include `page-layout`, `auth-layout`, `app-shell`, `sidebar`, `sidebar-drawer`, `split-pane`, and `settings-section`. Complete `auth-example`, `admin-example`, `settings-example`, and `workspace-example` blocks show composition with fictional local data. Routing, authentication, and state stay in the consuming application.
 
 ## Modify generated UI
 
 - Preserve Base UI behavior, accessibility, state attributes, and composition APIs.
 - Use target aliases from `internet-ui.json`; do not restore registry authoring aliases blindly.
-- Reuse local `cn`, variant helpers, motion helpers, and design tokens.
+- Reuse local `cn`, motion helpers, and design tokens.
 - Keep Tailwind CSS v4 conventions already present in target project.
 - Treat installed files as application source. Match local style and abstractions instead of registry source when they differ.
 

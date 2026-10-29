@@ -5,8 +5,8 @@
   "title": "Toggle",
   "description": "Toggle built on Base UI.",
   "dependencies": [
-    "@base-ui/react",
-    "motion"
+    "@base-ui/react@^1.9.0",
+    "motion@^12.43.0"
   ],
   "registryDependencies": [
     "utils",
@@ -16,7 +16,7 @@
     {
       "path": "src/ui/toggle.tsx",
       "type": "registry:ui",
-      "content": "'use client';\n\nimport { Toggle as BaseToggle } from '@base-ui/react/toggle';\nimport { type HTMLMotionProps, motion } from 'motion/react';\nimport type * as React from 'react';\n\nimport { useTapMotion } from '@/lib/motion';\nimport { cn, type RadiusProps, radiusVariants } from '@/lib/utils';\n\nexport function Toggle({ className, radius, ...props }: React.ComponentProps<typeof BaseToggle> & RadiusProps) {\n  const tap = useTapMotion();\n\n  return (\n    <BaseToggle\n      render={(toggleProps) => <motion.button {...(toggleProps as HTMLMotionProps<'button'>)} {...tap} />}\n      className={cn(\n        'inline-flex h-10 items-center justify-center gap-2 border border-border bg-background px-3 text-sm font-medium tracking-[-0.01em] text-foreground outline-none transition-colors',\n        'hover:bg-accent hover:text-accent-foreground',\n        'focus-visible:ring-2 focus-visible:ring-ring',\n        'data-[pressed]:border-primary data-[pressed]:bg-primary data-[pressed]:text-primary-foreground',\n        'disabled:pointer-events-none disabled:opacity-40',\n        radiusVariants({ radius }),\n        className\n      )}\n      {...props}\n    />\n  );\n}\n"
+      "content": "'use client';\nimport { Toggle as BaseToggle } from '@base-ui/react/toggle';\nimport { type HTMLMotionProps, motion } from 'motion/react';\nimport type * as React from 'react';\nimport { useTapMotion } from '@/lib/motion';\nimport { cn } from '@/lib/utils';\nexport function Toggle({ className, ...props }: React.ComponentProps<typeof BaseToggle>) {\n  const tap = useTapMotion();\n  return (\n    <BaseToggle\n      render={(toggleProps) => <motion.button {...(toggleProps as HTMLMotionProps<'button'>)} {...tap} />}\n      className={cn(\n        'inline-flex h-10 items-center justify-center gap-2 border border-border bg-background px-3 text-sm font-medium tracking-[-0.01em] text-foreground outline-none transition-colors',\n        'hover:bg-accent hover:text-accent-foreground',\n        'focus-visible:ring-2 focus-visible:ring-ring',\n        'data-[pressed]:border-primary data-[pressed]:bg-primary data-[pressed]:text-primary-foreground',\n        'disabled:pointer-events-none disabled:opacity-40',\n        'rounded-control',\n        className\n      )}\n      {...props}\n    />\n  );\n}\n"
     }
   ]
 }

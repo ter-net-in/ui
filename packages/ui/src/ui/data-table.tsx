@@ -1,5 +1,4 @@
 'use client';
-
 import {
   type ColumnDef,
   flexRender,
@@ -14,14 +13,12 @@ import {
   useReactTable
 } from '@tanstack/react-table';
 import { useState } from 'react';
-
-import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { Button } from '@/ui/button';
 import { Checkbox } from '@/ui/checkbox';
 import { Input } from '@/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select';
-
-export interface DataTableProps<TData> extends ContainerRadiusProps {
+export interface DataTableProps<TData> {
   columns: ColumnDef<TData>[];
   data: TData[];
   className?: string;
@@ -33,12 +30,10 @@ export interface DataTableProps<TData> extends ContainerRadiusProps {
   getRowId?: TableOptions<TData>['getRowId'];
   onRowSelectionChange?: OnChangeFn<RowSelectionState>;
 }
-
 export function DataTable<TData>({
   columns,
   data,
   className,
-  radius,
   searchPlaceholder = 'Search...',
   emptyMessage = 'No results.',
   initialPageSize = 10,
@@ -50,7 +45,6 @@ export function DataTable<TData>({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState('');
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
-
   const selectionColumn: ColumnDef<TData> = {
     id: 'select',
     enableHiding: false,
@@ -72,7 +66,6 @@ export function DataTable<TData>({
       />
     )
   };
-
   const table = useReactTable({
     data,
     columns: enableRowSelection ? [selectionColumn, ...columns] : columns,
@@ -91,7 +84,6 @@ export function DataTable<TData>({
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel()
   });
-
   return (
     <div className={cn('space-y-3', className)}>
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -123,7 +115,7 @@ export function DataTable<TData>({
         </div>
       </div>
 
-      <div className={cn('overflow-x-auto border border-border bg-background', containerRadiusVariants({ radius }))}>
+      <div className={cn('overflow-x-auto border border-border bg-background', 'rounded-surface')}>
         <table className="w-full border-collapse text-sm leading-5">
           <thead className="bg-secondary text-left">
             {table.getHeaderGroups().map((headerGroup) => (
@@ -131,7 +123,16 @@ export function DataTable<TData>({
                 {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
-                    className="h-11 whitespace-nowrap px-3 text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground"
+                    aria-sort={
+                      header.column.getCanSort()
+                        ? header.column.getIsSorted() === 'asc'
+                          ? 'ascending'
+                          : header.column.getIsSorted() === 'desc'
+                            ? 'descending'
+                            : 'none'
+                        : undefined
+                    }
+                    className="h-11 whitespace-nowrap px-3 text-xs font-medium text-muted-foreground"
                   >
                     {header.isPlaceholder ? null : header.column.getCanSort() ? (
                       <button
@@ -140,13 +141,24 @@ export function DataTable<TData>({
                         onClick={header.column.getToggleSortingHandler()}
                       >
                         {flexRender(header.column.columnDef.header, header.getContext())}
-                        <span aria-hidden="true" className="text-muted-foreground">
-                          {header.column.getIsSorted() === 'asc'
-                            ? '^'
-                            : header.column.getIsSorted() === 'desc'
-                              ? 'v'
-                              : '-'}
-                        </span>
+                        <svg
+                          viewBox="0 0 16 16"
+                          className="size-3.5 text-muted-foreground"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d={
+                              header.column.getIsSorted() === 'asc'
+                                ? 'm4 9 4-4 4 4'
+                                : header.column.getIsSorted() === 'desc'
+                                  ? 'm4 6 4 4 4-4'
+                                  : 'm5 6 3-3 3 3M5 10l3 3 3-3'
+                            }
+                          />
+                        </svg>
                       </button>
                     ) : (
                       flexRender(header.column.columnDef.header, header.getContext())
@@ -185,8 +197,8 @@ export function DataTable<TData>({
       <div className="flex flex-wrap items-center justify-between gap-3 text-sm leading-5">
         <span className="text-muted-foreground">
           {enableRowSelection
-            ? `${table.getFilteredSelectedRowModel().rows.length} of ${table.getFilteredRowModel().rows.length} row(s) selected`
-            : `${table.getFilteredRowModel().rows.length} row(s)`}
+            ? `${table.getFilteredSelectedRowModel().rows.length} of ${table.getFilteredRowModel().rows.length} selected`
+            : `${table.getFilteredRowModel().rows.length} rows`}
         </span>
         <div className="flex items-center gap-2">
           <span className="mr-2 text-muted-foreground">
@@ -199,7 +211,7 @@ export function DataTable<TData>({
             disabled={!table.getCanPreviousPage()}
             onClick={() => table.firstPage()}
           >
-            {'<<'}
+            <PageChevron direction="left" double />
           </Button>
           <Button
             variant="outline"
@@ -208,7 +220,7 @@ export function DataTable<TData>({
             disabled={!table.getCanPreviousPage()}
             onClick={() => table.previousPage()}
           >
-            {'<'}
+            <PageChevron direction="left" />
           </Button>
           <Button
             variant="outline"
@@ -217,7 +229,7 @@ export function DataTable<TData>({
             disabled={!table.getCanNextPage()}
             onClick={() => table.nextPage()}
           >
-            {'>'}
+            <PageChevron direction="right" />
           </Button>
           <Button
             variant="outline"
@@ -226,10 +238,19 @@ export function DataTable<TData>({
             disabled={!table.getCanNextPage()}
             onClick={() => table.lastPage()}
           >
-            {'>>'}
+            <PageChevron direction="right" double />
           </Button>
         </div>
       </div>
     </div>
+  );
+}
+
+function PageChevron({ direction, double }: { direction: 'left' | 'right'; double?: boolean }) {
+  return (
+    <svg viewBox="0 0 16 16" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+      <path d={direction === 'left' ? 'm10 4-4 4 4 4' : 'm6 4 4 4-4 4'} />
+      {double && <path d={direction === 'left' ? 'M3 3v10' : 'M13 3v10'} />}
+    </svg>
   );
 }

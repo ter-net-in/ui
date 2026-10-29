@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.ter.net.in/schema/registry-item.json",
+  "name": "badge",
+  "type": "registry:ui",
+  "title": "Badge",
+  "description": "Text-first semantic status label.",
+  "dependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/ui/badge.tsx",
+      "type": "registry:ui",
+      "content": "import type * as React from 'react';\nimport { cn } from '@/lib/utils';\n\nconst tones = {\n  neutral: 'bg-muted text-muted-foreground',\n  success: 'bg-success-muted text-success',\n  warning: 'bg-warning-muted text-warning',\n  danger: 'bg-destructive/10 text-destructive',\n  info: 'bg-info-muted text-info'\n};\nexport function Badge({\n  tone = 'neutral',\n  className,\n  ...props\n}: React.ComponentProps<'span'> & { tone?: keyof typeof tones }) {\n  return (\n    <span\n      className={cn(\n        'inline-flex items-center gap-1.5 rounded-control px-2 py-0.5 text-xs font-medium',\n        tones[tone],\n        className\n      )}\n      {...props}\n    />\n  );\n}\n"
+    }
+  ]
+}

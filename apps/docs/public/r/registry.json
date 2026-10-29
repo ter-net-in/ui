@@ -9,16 +9,10 @@
       "description": "internet-ui design tokens (Tailwind v4). Import once from your global stylesheet."
     },
     {
-      "name": "ui-defaults",
-      "type": "registry:lib",
-      "title": "Variant defaults",
-      "description": "Project-wide default radius and shadow. Values are substituted from the `defaults` block of internet-ui.json at install time."
-    },
-    {
       "name": "utils",
       "type": "registry:lib",
       "title": "cn utility",
-      "description": "clsx + tailwind-merge class combiner and shared radius variants used by every component."
+      "description": "Shared clsx/tailwind-merge utility and fixed nested-popup geometry."
     },
     {
       "name": "motion",
@@ -66,7 +60,7 @@
       "name": "card",
       "type": "registry:ui",
       "title": "Card",
-      "description": "Composable Card with variant, radius, padding and decorative corner-bracket options. Plain styled container — not a Base UI primitive."
+      "description": "Composable flat card with semantic variants, shared geometry, and optional public-page corner brackets."
     },
     {
       "name": "checkbox-group",
@@ -277,6 +271,120 @@
       "type": "registry:ui",
       "title": "ASCII SVG",
       "description": "Globs an SVG from its children and renders it as live, animatable ASCII art by rasterizing to a canvas and mapping brightness onto a character ramp."
+    },
+    {
+      "name": "page-layout",
+      "type": "registry:ui",
+      "title": "Page Layout",
+      "description": "Shared page container, title, description, actions, and sections."
+    },
+    {
+      "name": "auth-layout",
+      "type": "registry:ui",
+      "title": "Auth Layout",
+      "description": "Centered responsive authentication composition, without auth logic."
+    },
+    {
+      "name": "app-shell",
+      "type": "registry:ui",
+      "title": "App Shell",
+      "description": "Application header, body, and independent main scroll region."
+    },
+    {
+      "name": "sidebar",
+      "type": "registry:ui",
+      "title": "Sidebar",
+      "description": "Composable app-owned navigation links, buttons, and sidebar regions."
+    },
+    {
+      "name": "sidebar-drawer",
+      "type": "registry:ui",
+      "title": "Sidebar Drawer",
+      "description": "Accessible controlled mobile navigation with focus restoration."
+    },
+    {
+      "name": "split-pane",
+      "type": "registry:ui",
+      "title": "Split Pane",
+      "description": "Controlled responsive list/detail panes with mobile focus management."
+    },
+    {
+      "name": "settings-section",
+      "type": "registry:ui",
+      "title": "Settings Section",
+      "description": "Consistent settings heading, description, body, and actions."
+    },
+    {
+      "name": "stat",
+      "type": "registry:ui",
+      "title": "Stat",
+      "description": "Compact, accessible dashboard label/value composition."
+    },
+    {
+      "name": "badge",
+      "type": "registry:ui",
+      "title": "Badge",
+      "description": "Text-first semantic status label."
+    },
+    {
+      "name": "alert",
+      "type": "registry:ui",
+      "title": "Alert",
+      "description": "Inline informational, success, warning, or error feedback."
+    },
+    {
+      "name": "empty-state",
+      "type": "registry:ui",
+      "title": "Empty State",
+      "description": "Empty or recovery state with an explanation and optional next action."
+    },
+    {
+      "name": "spinner",
+      "type": "registry:ui",
+      "title": "Spinner",
+      "description": "Accessible progress feedback for a small pending action."
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:ui",
+      "title": "Skeleton",
+      "description": "Reduced-motion-aware content loading placeholder."
+    },
+    {
+      "name": "input-group",
+      "type": "registry:ui",
+      "title": "Input Group",
+      "description": "Joined inputs and addons with automatic outer corners."
+    },
+    {
+      "name": "textarea",
+      "type": "registry:ui",
+      "title": "Textarea",
+      "description": "Native multiline input with shared field states."
+    },
+    {
+      "name": "auth-example",
+      "type": "registry:block",
+      "title": "Authentication Example",
+      "description": "Complete centered authentication form with illustrative local submission."
+    },
+    {
+      "name": "admin-example",
+      "type": "registry:block",
+      "title": "Admin Example",
+      "description": "Complete metrics and filterable table page with fictional data."
+    },
+    {
+      "name": "settings-example",
+      "type": "registry:block",
+      "title": "Settings Example",
+      "description": "Complete settings form, joined input, switch, and local feedback."
+    },
+    {
+      "name": "workspace-example",
+      "type": "registry:block",
+      "title": "Workspace Example",
+      "description": "Complete responsive sidebar/list/detail workspace with fictional messages."
     }
   ]
 }

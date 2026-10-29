@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.ter.net.in/schema/registry-item.json",
+  "name": "settings-example",
+  "type": "registry:block",
+  "title": "Settings Example",
+  "description": "Complete settings form, joined input, switch, and local feedback.",
+  "dependencies": [],
+  "registryDependencies": [
+    "alert",
+    "button",
+    "input",
+    "input-group",
+    "page-layout",
+    "settings-section",
+    "switch"
+  ],
+  "files": [
+    {
+      "path": "src/ui/settings-example.tsx",
+      "type": "registry:ui",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport { Alert } from '@/ui/alert';\nimport { Button } from '@/ui/button';\nimport { Input } from '@/ui/input';\nimport { InputAddon, InputGroup } from '@/ui/input-group';\nimport { PageContainer, PageDescription, PageHeader, PageTitle } from '@/ui/page-layout';\nimport { SettingsSection } from '@/ui/settings-section';\nimport { Switch } from '@/ui/switch';\n\nexport function SettingsExample() {\n  const [saved, setSaved] = React.useState(false);\n  return (\n    <PageContainer className=\"max-w-3xl\">\n      <PageHeader>\n        <div>\n          <PageTitle>Workspace settings</PageTitle>\n          <PageDescription>Example settings. Changes stay in this page and are not sent to a server.</PageDescription>\n        </div>\n        <Button variant=\"outline\" render={<a href=\"/examples\" />}>\n          All examples\n        </Button>\n      </PageHeader>\n      <form\n        onSubmit={(event) => {\n          event.preventDefault();\n          setSaved(true);\n        }}\n      >\n        <SettingsSection title=\"General\" description=\"The name and address people use to identify this workspace.\">\n          <div className=\"max-w-md space-y-2\">\n            <label htmlFor=\"workspace-name\" className=\"font-medium\">\n              Workspace name\n            </label>\n            <Input id=\"workspace-name\" defaultValue=\"Development\" required />\n          </div>\n          <div className=\"max-w-md space-y-2\">\n            <label htmlFor=\"workspace-address\" className=\"font-medium\">\n              Address\n            </label>\n            <InputGroup>\n              <Input id=\"workspace-address\" defaultValue=\"development\" required />\n              <InputAddon>.example.com</InputAddon>\n            </InputGroup>\n          </div>\n        </SettingsSection>\n        <SettingsSection title=\"Notifications\" description=\"Choose which updates matter to you.\">\n          <label className=\"flex max-w-md items-center justify-between gap-4\">\n            <span>Service status changes</span>\n            <Switch defaultChecked aria-label=\"Notify about service status changes\" />\n          </label>\n        </SettingsSection>\n        <div className=\"flex items-center justify-end pt-6\">\n          <Button type=\"submit\">Save changes</Button>\n        </div>\n        {saved && (\n          <Alert tone=\"success\" role=\"status\" className=\"mt-4\">\n            Saved in this example only.\n          </Alert>\n        )}\n      </form>\n    </PageContainer>\n  );\n}\n"
+    }
+  ]
+}

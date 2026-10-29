@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-
 import { Button } from '@/ui/button';
 import {
   Dialog,
@@ -17,34 +16,27 @@ const meta = {
   component: Dialog,
   tags: ['autodocs']
 } satisfies Meta<typeof Dialog>;
-
 export default meta;
 type Story = StoryObj<typeof meta>;
-
-export const Playground: StoryObj<{ radius: 'none' | 'sm' | 'md' | 'lg'; shadow: 'none' | 'sm' | 'md' | 'lg' | 'xl' }> =
-  {
-    args: { radius: 'md', shadow: 'sm' },
-    argTypes: {
-      radius: { control: 'inline-radio', options: ['none', 'sm', 'md', 'lg'] },
-      shadow: { control: 'inline-radio', options: ['none', 'sm', 'md', 'lg', 'xl'] }
-    },
-    render: ({ radius, shadow }) => (
-      <Dialog>
-        <DialogTrigger render={<Button variant="outline">Open dialog</Button>} />
-        <DialogContent radius={radius} shadow={shadow}>
-          <DialogHeader>
-            <DialogTitle>Ship it?</DialogTitle>
-            <DialogDescription>This will deploy to the internet.</DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <DialogClose render={<Button variant="ghost">Cancel</Button>} />
-            <DialogClose render={<Button>Confirm</Button>} />
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    )
-  };
-
+export const Playground: StoryObj = {
+  args: {},
+  argTypes: {},
+  render: () => (
+    <Dialog>
+      <DialogTrigger render={<Button variant="outline">Open dialog</Button>} />
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Ship it?</DialogTitle>
+          <DialogDescription>This will deploy to the internet.</DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <DialogClose render={<Button variant="ghost">Cancel</Button>} />
+          <DialogClose render={<Button>Confirm</Button>} />
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
+};
 export const WithBody: Story = {
   render: () => (
     <Dialog>

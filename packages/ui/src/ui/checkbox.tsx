@@ -1,19 +1,11 @@
 'use client';
-
 import { Checkbox as BaseCheckbox } from '@base-ui/react/checkbox';
 import { type HTMLMotionProps, motion } from 'motion/react';
 import type * as React from 'react';
-
 import { transitions, useControlTransition } from '@/lib/motion';
-import { cn, type RadiusProps, radiusVariants } from '@/lib/utils';
-
-export function Checkbox({
-  className,
-  radius,
-  ...props
-}: React.ComponentProps<typeof BaseCheckbox.Root> & RadiusProps) {
+import { cn } from '@/lib/utils';
+export function Checkbox({ className, ...props }: React.ComponentProps<typeof BaseCheckbox.Root>) {
   const transition = useControlTransition();
-
   return (
     <BaseCheckbox.Root
       className={cn(
@@ -21,16 +13,16 @@ export function Checkbox({
         'focus-visible:ring-2 focus-visible:ring-ring',
         'data-[checked]:border-primary data-[checked]:bg-primary data-[checked]:text-primary-foreground',
         'disabled:cursor-not-allowed disabled:opacity-40',
-        radiusVariants({ radius }),
+        'rounded-control',
         className
       )}
       {...props}
     >
       {/*
-        `keepMounted` so the tick can animate both ways. Without it Base UI drops
-        the indicator from the DOM the moment the box is unticked, and there's
-        nothing left to animate out.
-      */}
+          `keepMounted` so the tick can animate both ways. Without it Base UI drops
+          the indicator from the DOM the moment the box is unticked, and there's
+          nothing left to animate out.
+        */}
       <BaseCheckbox.Indicator
         keepMounted
         className="flex text-current"

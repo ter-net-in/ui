@@ -1,30 +1,19 @@
 'use client';
-
 import { ScrollArea as BaseScrollArea } from '@base-ui/react/scroll-area';
 import type * as React from 'react';
-
-import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
-
-export function ScrollArea({
-  className,
-  children,
-  radius,
-  ...props
-}: React.ComponentProps<typeof BaseScrollArea.Root> & ContainerRadiusProps) {
+import { cn } from '@/lib/utils';
+export function ScrollArea({ className, children, ...props }: React.ComponentProps<typeof BaseScrollArea.Root>) {
   return (
-    <BaseScrollArea.Root
-      className={cn('relative overflow-hidden', containerRadiusVariants({ radius }), className)}
-      {...props}
-    >
+    <BaseScrollArea.Root className={cn('relative overflow-hidden', 'rounded-surface', className)} {...props}>
       <BaseScrollArea.Viewport className="size-full overscroll-contain outline-none">
         {children}
       </BaseScrollArea.Viewport>
       {/*
-        Scrollbars rest invisible and fade in while the pointer is over the area
-        or the user is scrolling. Base UI reports both as data attributes, so this
-        is a CSS transition rather than Motion — there's no mount/unmount to
-        coordinate, and it keeps the scroll path free of React work.
-      */}
+          Scrollbars rest invisible and fade in while the pointer is over the area
+          or the user is scrolling. Base UI reports both as data attributes, so this
+          is a CSS transition rather than Motion — there's no mount/unmount to
+          coordinate, and it keeps the scroll path free of React work.
+        */}
       <BaseScrollArea.Scrollbar
         orientation="vertical"
         className={cn(

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.ter.net.in/schema/registry-item.json",
+  "name": "auth-layout",
+  "type": "registry:ui",
+  "title": "Auth Layout",
+  "description": "Centered responsive authentication composition, without auth logic.",
+  "dependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/ui/auth-layout.tsx",
+      "type": "registry:ui",
+      "content": "import type * as React from 'react';\nimport { cn } from '@/lib/utils';\n\nexport function AuthLayout({ className, children, ...props }: React.ComponentProps<'main'>) {\n  return (\n    <main className={cn('grid min-h-dvh place-items-center bg-background px-4 py-10 sm:px-6', className)} {...props}>\n      <div className=\"w-full max-w-md space-y-6\">{children}</div>\n    </main>\n  );\n}\n"
+    }
+  ]
+}

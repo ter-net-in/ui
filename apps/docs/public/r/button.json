@@ -5,19 +5,17 @@
   "title": "Button",
   "description": "Button built on Base UI.",
   "dependencies": [
-    "@base-ui/react",
-    "class-variance-authority",
-    "motion"
+    "@base-ui/react@^1.9.0",
+    "class-variance-authority@^0.7.1"
   ],
   "registryDependencies": [
-    "utils",
-    "motion"
+    "utils"
   ],
   "files": [
     {
       "path": "src/ui/button.tsx",
       "type": "registry:ui",
-      "content": "'use client';\n\nimport { Button as BaseButton } from '@base-ui/react/button';\nimport { cva, type VariantProps } from 'class-variance-authority';\nimport { type HTMLMotionProps, motion } from 'motion/react';\nimport type * as React from 'react';\n\nimport { useTapMotion } from '@/lib/motion';\nimport { cn, type RadiusProps, radiusVariants } from '@/lib/utils';\n\nconst buttonVariants = cva(\n  'inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap border font-medium tracking-[-0.01em] transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:pointer-events-none disabled:opacity-40 [&_svg]:size-4 [&_svg]:shrink-0',\n  {\n    variants: {\n      variant: {\n        default: 'border-primary bg-primary text-primary-foreground hover:bg-background hover:text-primary',\n        outline:\n          'border-border bg-background text-foreground hover:border-primary hover:bg-accent hover:text-accent-foreground',\n        ghost: 'border-transparent bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground',\n        destructive:\n          'border-destructive bg-destructive text-destructive-foreground hover:bg-destructive/10 hover:text-destructive'\n      },\n      size: {\n        default: 'h-10 px-4 text-sm',\n        sm: 'h-8 px-3 text-xs',\n        lg: 'h-12 px-6 text-base',\n        icon: 'size-10'\n      }\n    },\n    defaultVariants: {\n      variant: 'default',\n      size: 'default'\n    }\n  }\n);\n\nexport interface ButtonProps\n  extends React.ComponentProps<typeof BaseButton>,\n    VariantProps<typeof buttonVariants>,\n    RadiusProps {}\n\nexport function Button({ className, variant, size, radius, ...props }: ButtonProps) {\n  const tap = useTapMotion();\n\n  return (\n    <BaseButton\n      className={cn(buttonVariants({ variant, size }), radiusVariants({ radius }), className)}\n      render={(buttonProps) => <motion.button {...(buttonProps as HTMLMotionProps<'button'>)} {...tap} />}\n      {...props}\n    />\n  );\n}\n\nexport { buttonVariants };\n"
+      "content": "'use client';\nimport { Button as BaseButton } from '@base-ui/react/button';\nimport { cva, type VariantProps } from 'class-variance-authority';\n\nimport type * as React from 'react';\n\nimport { cn } from '@/lib/utils';\n\nconst buttonVariants = cva(\n  'ui-control inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap border font-medium tracking-[-0.01em] transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:pointer-events-none disabled:opacity-40 [&_svg]:size-4 [&_svg]:shrink-0',\n  {\n    variants: {\n      variant: {\n        default: 'border-primary bg-primary text-primary-foreground hover:bg-primary/90',\n        outline:\n          'border-border bg-background text-foreground hover:border-primary hover:bg-accent hover:text-accent-foreground',\n        ghost: 'border-transparent bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground',\n        destructive: 'border-destructive bg-destructive text-destructive-foreground hover:bg-destructive/90'\n      },\n      size: {\n        default: 'h-9 px-3.5 text-sm',\n        sm: 'h-8 px-3 text-xs',\n        lg: 'h-11 px-5 text-sm',\n        icon: 'size-9'\n      }\n    },\n    defaultVariants: {\n      variant: 'default',\n      size: 'default'\n    }\n  }\n);\nexport interface ButtonProps extends React.ComponentProps<typeof BaseButton>, VariantProps<typeof buttonVariants> {}\nexport function Button({ className, variant, size, ...props }: ButtonProps) {\n  return <BaseButton className={cn(buttonVariants({ variant, size }), 'rounded-control', className)} {...props} />;\n}\nexport { buttonVariants };\n"
     }
   ]
 }

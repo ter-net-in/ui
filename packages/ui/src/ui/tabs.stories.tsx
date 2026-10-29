@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-
 import { Tabs, TabsList, TabsPanel, TabsTab } from '@/ui/tabs';
 
 const meta = {
@@ -7,11 +6,11 @@ const meta = {
   component: Tabs,
   tags: ['autodocs']
 } satisfies Meta<typeof Tabs>;
-
 export default meta;
 type Story = StoryObj<typeof meta>;
-
-export const Playground: StoryObj<{ variant: 'default' | 'muted' | 'ghost' }> = {
+export const Playground: StoryObj<{
+  variant: 'default' | 'muted' | 'ghost';
+}> = {
   args: { variant: 'default' },
   argTypes: { variant: { control: 'inline-radio', options: ['default', 'muted', 'ghost'] } },
   render: ({ variant }) => (
@@ -25,7 +24,6 @@ export const Playground: StoryObj<{ variant: 'default' | 'muted' | 'ghost' }> = 
     </Tabs>
   )
 };
-
 export const ThreeTabs: Story = {
   render: () => (
     <Tabs defaultValue="a" className="w-full max-w-md">
@@ -40,7 +38,6 @@ export const ThreeTabs: Story = {
     </Tabs>
   )
 };
-
 export const Muted: Story = {
   render: () => (
     <Tabs defaultValue="overview" className="w-full max-w-md">
@@ -55,7 +52,6 @@ export const Muted: Story = {
     </Tabs>
   )
 };
-
 export const Ghost: Story = {
   render: () => (
     <Tabs defaultValue="overview" className="w-full max-w-md">

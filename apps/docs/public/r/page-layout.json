@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.ter.net.in/schema/registry-item.json",
+  "name": "page-layout",
+  "type": "registry:ui",
+  "title": "Page Layout",
+  "description": "Shared page container, title, description, actions, and sections.",
+  "dependencies": [],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/ui/page-layout.tsx",
+      "type": "registry:ui",
+      "content": "import type * as React from 'react';\nimport { cn } from '@/lib/utils';\n\nexport function PageContainer({ className, ...props }: React.ComponentProps<'div'>) {\n  return (\n    <div className={cn('mx-auto w-full max-w-7xl space-y-8 px-4 py-6 sm:px-6 lg:px-8 lg:py-8', className)} {...props} />\n  );\n}\nexport function PageHeader({ className, ...props }: React.ComponentProps<'header'>) {\n  return <header className={cn('flex flex-wrap items-start justify-between gap-4', className)} {...props} />;\n}\nexport function PageTitle({ className, ...props }: React.ComponentProps<'h1'>) {\n  return <h1 className={cn('text-2xl font-semibold tracking-tight sm:text-3xl', className)} {...props} />;\n}\nexport function PageDescription({ className, ...props }: React.ComponentProps<'p'>) {\n  return <p className={cn('mt-2 max-w-prose text-sm leading-6 text-muted-foreground', className)} {...props} />;\n}\nexport function PageActions({ className, ...props }: React.ComponentProps<'div'>) {\n  return <div className={cn('flex flex-wrap items-center gap-2', className)} {...props} />;\n}\nexport function PageSection({ className, ...props }: React.ComponentProps<'section'>) {\n  return <section className={cn('space-y-4', className)} {...props} />;\n}\n"
+    }
+  ]
+}

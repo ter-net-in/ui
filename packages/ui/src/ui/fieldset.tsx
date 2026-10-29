@@ -1,10 +1,8 @@
 'use client';
-
 import { Fieldset as BaseFieldset } from '@base-ui/react/fieldset';
 import { cva, type VariantProps } from 'class-variance-authority';
 import type * as React from 'react';
-
-import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 const fieldsetVariants = cva('relative flex flex-col gap-4 p-4', {
   variants: {
@@ -18,21 +16,12 @@ const fieldsetVariants = cva('relative flex flex-col gap-4 p-4', {
     variant: 'default'
   }
 });
-
 export interface FieldsetProps
   extends React.ComponentProps<typeof BaseFieldset.Root>,
-    VariantProps<typeof fieldsetVariants>,
-    ContainerRadiusProps {}
-
-export function Fieldset({ className, variant, radius, ...props }: FieldsetProps) {
-  return (
-    <BaseFieldset.Root
-      className={cn(fieldsetVariants({ variant }), containerRadiusVariants({ radius }), className)}
-      {...props}
-    />
-  );
+    VariantProps<typeof fieldsetVariants> {}
+export function Fieldset({ className, variant, ...props }: FieldsetProps) {
+  return <BaseFieldset.Root className={cn(fieldsetVariants({ variant }), 'rounded-surface', className)} {...props} />;
 }
-
 /**
  * Sits astride the fieldset's top border, interrupting it — the native `<legend>`
  * look. Base UI renders this part as a `<div>`, and a `<div>` gets none of the
@@ -54,5 +43,4 @@ export function FieldsetLegend({ className, ...props }: React.ComponentProps<typ
     />
   );
 }
-
 export { fieldsetVariants };

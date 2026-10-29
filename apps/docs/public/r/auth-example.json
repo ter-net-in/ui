@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.ter.net.in/schema/registry-item.json",
+  "name": "auth-example",
+  "type": "registry:block",
+  "title": "Authentication Example",
+  "description": "Complete centered authentication form with illustrative local submission.",
+  "dependencies": [],
+  "registryDependencies": [
+    "auth-layout",
+    "alert",
+    "button",
+    "card",
+    "input"
+  ],
+  "files": [
+    {
+      "path": "src/ui/auth-example.tsx",
+      "type": "registry:ui",
+      "content": "'use client';\n\nimport * as React from 'react';\nimport { Alert } from '@/ui/alert';\nimport { AuthLayout } from '@/ui/auth-layout';\nimport { Button } from '@/ui/button';\nimport { Card, CardDescription, CardHeader, CardTitle } from '@/ui/card';\nimport { Input } from '@/ui/input';\n\n/** A complete presentation example. Connect submission to your app's auth flow. */\nexport function AuthExample() {\n  const [submitted, setSubmitted] = React.useState(false);\n  return (\n    <AuthLayout>\n      <div className=\"flex items-center justify-between text-sm\">\n        <a href=\"/examples\" className=\"font-semibold text-primary underline-offset-4 hover:underline\">\n          internet-ui\n        </a>\n        <span className=\"text-muted-foreground\">Authentication example</span>\n      </div>\n      <Card padding=\"lg\">\n        <CardHeader>\n          <CardTitle>Welcome back</CardTitle>\n          <CardDescription>Sign in to your workspace.</CardDescription>\n        </CardHeader>\n        <form\n          className=\"space-y-4\"\n          onSubmit={(event) => {\n            event.preventDefault();\n            setSubmitted(true);\n          }}\n        >\n          <div className=\"space-y-2\">\n            <label htmlFor=\"example-email\" className=\"text-sm font-medium\">\n              Email\n            </label>\n            <Input\n              id=\"example-email\"\n              name=\"email\"\n              type=\"email\"\n              autoComplete=\"email\"\n              placeholder=\"you@example.com\"\n              required\n            />\n          </div>\n          <div className=\"space-y-2\">\n            <label htmlFor=\"example-password\" className=\"text-sm font-medium\">\n              Password\n            </label>\n            <Input id=\"example-password\" name=\"password\" type=\"password\" autoComplete=\"current-password\" required />\n          </div>\n          <Button type=\"submit\" className=\"w-full\">\n            Sign in\n          </Button>\n          {submitted && (\n            <Alert role=\"status\">\n              This example does not send credentials. Connect your authentication handler here.\n            </Alert>\n          )}\n        </form>\n      </Card>\n      <p className=\"text-center text-xs leading-5 text-muted-foreground\">\n        Illustrative form. No account is created and no credentials are sent.\n      </p>\n    </AuthLayout>\n  );\n}\n"
+    }
+  ]
+}

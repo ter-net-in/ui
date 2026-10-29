@@ -1,10 +1,8 @@
 'use client';
-
 import { Collapsible as BaseCollapsible } from '@base-ui/react/collapsible';
 import { cva, type VariantProps } from 'class-variance-authority';
 import type * as React from 'react';
-
-import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 
 const collapsibleVariants = cva('', {
   variants: {
@@ -17,15 +15,12 @@ const collapsibleVariants = cva('', {
     variant: 'default'
   }
 });
-
 export interface CollapsibleProps
   extends React.ComponentProps<typeof BaseCollapsible.Root>,
     VariantProps<typeof collapsibleVariants> {}
-
 export function Collapsible({ className, variant, ...props }: CollapsibleProps) {
   return <BaseCollapsible.Root className={cn(collapsibleVariants({ variant }), className)} {...props} />;
 }
-
 export function CollapsibleTrigger({
   className,
   children,
@@ -54,12 +49,7 @@ export function CollapsibleTrigger({
     </BaseCollapsible.Trigger>
   );
 }
-
-export function CollapsiblePanel({
-  className,
-  radius,
-  ...props
-}: React.ComponentProps<typeof BaseCollapsible.Panel> & ContainerRadiusProps) {
+export function CollapsiblePanel({ className, ...props }: React.ComponentProps<typeof BaseCollapsible.Panel>) {
   return (
     <BaseCollapsible.Panel
       className={cn(
@@ -70,12 +60,11 @@ export function CollapsiblePanel({
         'transition-[height,opacity] duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none',
         'data-[starting-style]:h-0 data-[starting-style]:opacity-0',
         'data-[ending-style]:h-0 data-[ending-style]:opacity-0',
-        containerRadiusVariants({ radius }),
+        'rounded-surface',
         className
       )}
       {...props}
     />
   );
 }
-
 export { collapsibleVariants };

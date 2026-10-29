@@ -1,19 +1,14 @@
 'use client';
-
 import { NavigationMenu as BaseNavigationMenu } from '@base-ui/react/navigation-menu';
 import type * as React from 'react';
-
 import { useMotionPopupRender } from '@/lib/motion';
-import { type ContainerRadiusProps, cn, containerRadiusVariants } from '@/lib/utils';
-
+import { cn } from '@/lib/utils';
 export function NavigationMenu({
   className,
   children,
-  radius,
   ...props
-}: React.ComponentProps<typeof BaseNavigationMenu.Root> & ContainerRadiusProps) {
+}: React.ComponentProps<typeof BaseNavigationMenu.Root>) {
   const renderPopup = useMotionPopupRender({ scale: 0.98, offset: 6 });
-
   return (
     <BaseNavigationMenu.Root className={cn('relative', className)} {...props}>
       {children}
@@ -21,7 +16,7 @@ export function NavigationMenu({
         <BaseNavigationMenu.Positioner className="z-50" sideOffset={8}>
           <BaseNavigationMenu.Popup
             className={cn(
-              'border border-border bg-popover text-popover-foreground shadow-[0_10px_30px_var(--shadow-color)] outline-none',
+              'border border-border bg-popover text-popover-foreground shadow-popup outline-none',
               // Base UI measures each panel and publishes the target box as CSS
               // variables (`auto` while a single panel is open, pixel values while
               // switching). Transitioning them is what makes the popup morph
@@ -31,7 +26,7 @@ export function NavigationMenu({
               'h-[var(--popup-height)] w-[var(--popup-width)] overflow-hidden',
               'transition-[width,height] duration-200 ease-[cubic-bezier(0.32,0.72,0,1)] motion-reduce:transition-none',
               '[transform-origin:var(--transform-origin)]',
-              containerRadiusVariants({ radius })
+              'rounded-surface'
             )}
             render={renderPopup}
           >
@@ -42,13 +37,10 @@ export function NavigationMenu({
     </BaseNavigationMenu.Root>
   );
 }
-
 export function NavigationMenuList({ className, ...props }: React.ComponentProps<typeof BaseNavigationMenu.List>) {
   return <BaseNavigationMenu.List className={cn('flex items-center gap-1', className)} {...props} />;
 }
-
 export const NavigationMenuItem = BaseNavigationMenu.Item;
-
 export function NavigationMenuTrigger({
   className,
   ...props
@@ -63,7 +55,6 @@ export function NavigationMenuTrigger({
     />
   );
 }
-
 export function NavigationMenuContent({
   className,
   ...props
@@ -85,7 +76,6 @@ export function NavigationMenuContent({
     />
   );
 }
-
 export function NavigationMenuLink({ className, ...props }: React.ComponentProps<typeof BaseNavigationMenu.Link>) {
   return (
     <BaseNavigationMenu.Link

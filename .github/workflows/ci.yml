@@ -35,6 +35,11 @@ jobs:
       - name: Browser regression tests
         run: bun run --filter '@internet-ui/docs' test:browser
 
+      - name: Build production containers
+        run: |
+          docker build --target docs --tag internet-ui-docs:ci .
+          docker build --target storybook --tag internet-ui-storybook:ci .
+
   deploy:
     if: github.ref == 'refs/heads/main'
     needs: check

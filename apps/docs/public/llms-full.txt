@@ -1697,7 +1697,7 @@ export function Code({
 }
 /** Stacked snippets — a run of one-liners read as a sequence to type in order. */
 export function CodeStack({ className, ...props }: React.ComponentProps<'div'>) {
-  return <div className={cn('grid w-full gap-2', className)} {...props} />;
+  return <div role="group" className={cn('grid w-full gap-2', className)} {...props} />;
 }
 export { codeVariants };
 ````

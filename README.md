@@ -51,7 +51,7 @@ skills            instructions for coding agents
 
 ## Development
 
-Requires [Bun](https://bun.sh) 1.3.13 or newer.
+Requires [Bun](https://bun.sh) 1.3.13 or newer and Node.js. Production containers build Next.js and Storybook with Node 24.
 
 ```bash
 bun install
@@ -84,7 +84,7 @@ Agent Skills-compatible clients can load [`skills/internet-ui/SKILL.md`](skills/
 
 ## Deployment
 
-`Dockerfile` shares one Bun build stage, then emits separate `docs` and `storybook` export targets. Compose copies their static files into host directories:
+`Dockerfile` uses Bun for the frozen dependency install and registry generation, then Node 24 for the Next.js and Storybook builds. Separate `docs` and `storybook` targets export static files. Compose copies their static files into host directories:
 
 ```text
 deploy/ui         Next.js static export

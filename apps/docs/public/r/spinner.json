@@ -4,15 +4,18 @@
   "type": "registry:ui",
   "title": "Spinner",
   "description": "Accessible progress feedback for a small pending action.",
-  "dependencies": [],
+  "dependencies": [
+    "lucide-react@^0.577.0"
+  ],
   "registryDependencies": [
-    "utils"
+    "utils",
+    "icon"
   ],
   "files": [
     {
       "path": "src/ui/spinner.tsx",
       "type": "registry:ui",
-      "content": "import type * as React from 'react';\nimport { cn } from '@/lib/utils';\n\nexport function Spinner({\n  label = 'Loading…',\n  className,\n  ...props\n}: React.ComponentProps<'span'> & { label?: string }) {\n  return (\n    <span\n      role=\"status\"\n      className={cn('inline-flex items-center gap-2 text-sm text-muted-foreground', className)}\n      {...props}\n    >\n      <svg\n        viewBox=\"0 0 24 24\"\n        className=\"size-4 animate-spin motion-reduce:animate-none\"\n        fill=\"none\"\n        stroke=\"currentColor\"\n        strokeWidth=\"2\"\n        aria-hidden=\"true\"\n      >\n        <circle cx=\"12\" cy=\"12\" r=\"9\" opacity=\".25\" />\n        <path d=\"M12 3a9 9 0 0 1 9 9\" />\n      </svg>\n      <span>{label}</span>\n    </span>\n  );\n}\n"
+      "content": "'use client';\nimport { LoaderCircle } from 'lucide-react';\nimport type * as React from 'react';\nimport { cn } from '@/lib/utils';\nimport { Icon } from '@/ui/icon';\n\nexport function Spinner({\n  label = 'Loading…',\n  className,\n  ...props\n}: React.ComponentProps<'span'> & { label?: string }) {\n  return (\n    <span\n      role=\"status\"\n      className={cn('inline-flex items-center gap-2 text-sm text-muted-foreground', className)}\n      {...props}\n    >\n      <Icon icon={LoaderCircle} className=\"animate-spin motion-reduce:animate-none\" />\n      <span>{label}</span>\n    </span>\n  );\n}\n"
     }
   ]
 }

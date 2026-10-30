@@ -385,6 +385,18 @@
       "type": "registry:block",
       "title": "Workspace Example",
       "description": "Complete responsive sidebar/list/detail workspace with fictional messages."
+    },
+    {
+      "name": "icon",
+      "type": "registry:ui",
+      "title": "Icon",
+      "description": "Lucide icons with shared size and stroke weight. Use named imports to keep bundles small."
+    },
+    {
+      "name": "rich-text-editor",
+      "type": "registry:ui",
+      "title": "Rich Text Editor",
+      "description": "Tiptap editor with bold, italic, underline, lists, links, quotes, clear formatting, and undo/redo. Emits HTML and plain text."
     }
   ]
 }

@@ -1,8 +1,10 @@
 'use client';
 
 import { Dialog } from '@base-ui/react/dialog';
+import { X } from 'lucide-react';
 import * as React from 'react';
 import { cn } from '@/lib/utils';
+import { Icon } from '@/ui/icon';
 
 export interface SidebarDrawerProps {
   open: boolean;
@@ -39,16 +41,7 @@ export function SidebarDrawer({ open, onOpenChange, title = 'Navigation', classN
               className="ui-control grid size-9 place-items-center rounded-control hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring"
               aria-label="Close navigation"
             >
-              <svg
-                viewBox="0 0 24 24"
-                className="size-4"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.75"
-                aria-hidden="true"
-              >
-                <path d="m6 6 12 12M18 6 6 18" />
-              </svg>
+              <Icon icon={X} />
             </Dialog.Close>
           </div>
           {children}

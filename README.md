@@ -124,3 +124,15 @@ The command rebuilds the CLI before publishing `@ternetin/ui` publicly. npm reje
 ## License
 
 MIT
+
+### Rich text and icons
+
+```sh
+npx @ternetin/ui add rich-text-editor icon
+```
+
+`RichTextEditor` takes an HTML `value` and emits `{ html, text }` through `onChange`. It supports classic formatting and keyboard shortcuts, uses SSR-safe Tiptap initialization, and includes Lucide toolbar icons. Sanitize HTML at the application's send/render boundary; never render arbitrary stored HTML directly. See [/examples/editor](https://ui.ter.net.in/examples/editor).
+
+Use named imports from `lucide-react` with the optional shared `Icon` component (16px, 1.75px stroke). Label icon-only controls and keep decorative icons hidden from assistive technology. See [/icons](https://ui.ter.net.in/icons).
+
+Existing installations can copy the four `--color-action*` tokens from the current theme into their `@theme` block. Updated buttons include the same blue fallbacks, so installing the editor does not require overwriting your theme.

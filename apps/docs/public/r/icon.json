@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ui.ter.net.in/schema/registry-item.json",
+  "name": "icon",
+  "type": "registry:ui",
+  "title": "Icon",
+  "description": "Lucide icons with shared size and stroke weight. Use named imports to keep bundles small.",
+  "dependencies": [
+    "lucide-react@^0.577.0"
+  ],
+  "registryDependencies": [
+    "utils"
+  ],
+  "files": [
+    {
+      "path": "src/ui/icon.tsx",
+      "type": "registry:ui",
+      "content": "import type { LucideIcon, LucideProps } from 'lucide-react';\nimport { cn } from '@/lib/utils';\n\n/** Pass a named Lucide import so unused icons stay out of the bundle. Label the control for decorative icons. */\nexport function Icon({ icon: Component, className, ...props }: LucideProps & { icon: LucideIcon }) {\n  return (\n    <Component\n      size={16}\n      strokeWidth={1.75}\n      aria-hidden={props['aria-label'] || props['aria-labelledby'] ? undefined : true}\n      className={cn('shrink-0', className)}\n      {...props}\n    />\n  );\n}\n"
+    }
+  ]
+}

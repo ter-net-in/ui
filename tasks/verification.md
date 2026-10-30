@@ -39,6 +39,10 @@ Mail required preserving an already-live Stalwart route before deployment. A sep
 
 Live application revisions: ui `a79a68d9e7c4fb163f25f9c714a89e412787c919`; auth `1e49dba2126da8c7fb5dde1a70d4878d6ba78a87`; rok `4dbe788abe9127261779f27a95dc42779f034aaf`. All three deployment workflows succeeded. The live registry serves 64 items and all 9 browser tests pass against the production examples. The public Storybook dialog uses 8px corners, the dark popup theme, fixed elevation, and restores trigger focus after Escape. A fresh anonymous Mail sign-in reaches the live auth login form with its OAuth handoff intact.
 
-The published 0.1 CLI also initializes/installs all 4 new blocks from the new registry and its installed source passes TypeScript. CLI 0.2 publication is awaiting npm's interactive second-factor approval; no npm account security settings were changed.
+The published 0.1 CLI also initializes/installs all 4 new blocks from the new registry and its installed source passes TypeScript. CLI 0.2.0 was published through npm's interactive approval flow and is the public latest tag. Its public package checksum matches the reviewed release tarball; no npm account security settings were changed.
 
 The final live accessibility check found unsupported names on generic code/wordmark wrappers. CodeStack now exposes a group for its optional accessible name; rok's wordmark uses a native heading, and its brand graphic receives an accessible name. These changes preserve the visual presentation.
+
+## Release completion
+
+The final documentation theme action uses the same visible and accessible label in both states. Its regression test covers toggling and persisted selection after reload. A fresh public npm install initialized a clean React project and installed all four example blocks plus Code from the live registry. The installed source passed TypeScript and the config contains no visual defaults. The npm tarball checksum is `28628c1733fb35381d53b4eb3c07da7c75c7d3a6`, matching the reviewed artifact. The theme regression failed against the earlier live action name and passes with the fix, alongside the original nine browser tests. Final handoff verifies live semantic labels and preserves existing worktree contents.

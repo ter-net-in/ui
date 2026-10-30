@@ -1,6 +1,6 @@
 # UI standardization tasks
 
-Implementation authorized through live deployment. Work is in progress. Follow [the plan](plan.md), [the specification](../SPEC.md), and each repository's local instructions. The dependencies below are task ids, not separate worktrees or agent assignments.
+Implementation authorized through live deployment. Implementation, publication, and live deployment are complete. Follow [the plan](plan.md), [the specification](../SPEC.md), and each repository's local instructions. The dependencies below are task ids, not separate worktrees or agent assignments.
 
 Each component slice normally touches its source, story, registry catalog, and generated output. Generated files count as required output, not an excuse to omit them. Split broad app migrations into the listed screens and avoid formatting unrelated files.
 
@@ -134,4 +134,4 @@ Each component slice normally touches its source, story, registry catalog, and g
   - Acceptance: every changed app/source/install path has evidence; baseline failures and unresolved advisories are explicit; unrelated diffs remain intact.
   - Verify: SPEC command matrix, scoped `git diff --check`, keyboard/theme/mobile checks, generated-registry reproducibility.
   - Files: verification notes and fixes justified by actual failures. Depends: F2.
-- [ ] Final checkpoint — Review the complete result; prepare publication/deployment as a separate action with rollback information. Depends: F3.
+- [x] Final checkpoint — Review the complete result; prepare publication/deployment as a separate action with rollback information. Depends: F3.

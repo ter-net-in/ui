@@ -33,7 +33,7 @@ export const useTheme = () => React.useContext(ThemeContext);
 export function ThemeToggle() {
   const { dark, toggle } = useTheme();
   return (
-    <Button variant="ghost" size="sm" onClick={toggle} aria-label="Dark theme" aria-pressed={dark}>
+    <Button variant="ghost" size="sm" onClick={toggle}>
       {dark ? 'Light theme' : 'Dark theme'}
     </Button>
   );

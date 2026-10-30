@@ -81,3 +81,5 @@ npx @ternetin/ui add button input dialog
 - [Admin Example](https://ui.ter.net.in/r/admin-example.json): Complete metrics and filterable table page with fictional data.
 - [Settings Example](https://ui.ter.net.in/r/settings-example.json): Complete settings form, joined input, switch, and local feedback.
 - [Workspace Example](https://ui.ter.net.in/r/workspace-example.json): Complete responsive sidebar/list/detail workspace with fictional messages.
+- [Icon](https://ui.ter.net.in/r/icon.json): Lucide icons with shared size and stroke weight. Use named imports to keep bundles small.
+- [Rich Text Editor](https://ui.ter.net.in/r/rich-text-editor.json): Tiptap editor with bold, italic, underline, lists, links, quotes, clear formatting, and undo/redo. Emits HTML and plain text.

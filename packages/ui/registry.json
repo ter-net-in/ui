@@ -247,8 +247,8 @@
       "type": "registry:ui",
       "title": "Data Table",
       "description": "Generic TanStack table with sorting, global filtering, pagination, page-size controls, and row selection.",
-      "dependencies": ["@tanstack/react-table@^8.21.3"],
-      "registryDependencies": ["utils", "button", "checkbox", "input", "select"],
+      "dependencies": ["@tanstack/react-table@^8.21.3", "lucide-react@^0.577.0"],
+      "registryDependencies": ["utils", "button", "checkbox", "input", "select", "icon"],
       "files": [
         {
           "path": "src/ui/data-table.tsx",
@@ -695,8 +695,8 @@
       "type": "registry:ui",
       "title": "Sidebar Drawer",
       "description": "Accessible controlled mobile navigation with focus restoration.",
-      "dependencies": ["@base-ui/react@^1.9.0"],
-      "registryDependencies": ["utils"],
+      "dependencies": ["@base-ui/react@^1.9.0", "lucide-react@^0.577.0"],
+      "registryDependencies": ["utils", "icon"],
       "files": [
         {
           "path": "src/ui/sidebar-drawer.tsx",
@@ -793,8 +793,8 @@
       "type": "registry:ui",
       "title": "Spinner",
       "description": "Accessible progress feedback for a small pending action.",
-      "dependencies": [],
-      "registryDependencies": ["utils"],
+      "dependencies": ["lucide-react@^0.577.0"],
+      "registryDependencies": ["utils", "icon"],
       "files": [
         {
           "path": "src/ui/spinner.tsx",
@@ -904,6 +904,39 @@
       "files": [
         {
           "path": "src/ui/workspace-example.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "icon",
+      "type": "registry:ui",
+      "title": "Icon",
+      "description": "Lucide icons with shared size and stroke weight. Use named imports to keep bundles small.",
+      "dependencies": ["lucide-react@^0.577.0"],
+      "registryDependencies": ["utils"],
+      "files": [
+        {
+          "path": "src/ui/icon.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "rich-text-editor",
+      "type": "registry:ui",
+      "title": "Rich Text Editor",
+      "description": "Tiptap editor with bold, italic, underline, lists, links, quotes, clear formatting, and undo/redo. Emits HTML and plain text.",
+      "dependencies": [
+        "@tiptap/react@^3.32.1",
+        "@tiptap/pm@^3.32.1",
+        "@tiptap/starter-kit@^3.32.1",
+        "lucide-react@^0.577.0"
+      ],
+      "registryDependencies": ["utils", "button", "icon", "input", "toolbar"],
+      "files": [
+        {
+          "path": "src/ui/rich-text-editor.tsx",
           "type": "registry:ui"
         }
       ]

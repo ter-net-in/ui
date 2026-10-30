@@ -5,6 +5,7 @@ const examples = [
   ['auth', 'Authentication', 'A centered form with accessible fields and local feedback.'],
   ['admin', 'Administration', 'Metrics, semantic statuses, and a searchable, sortable service table.'],
   ['settings', 'Settings', 'Grouped settings, joined inputs, switches, and form feedback.'],
+  ['editor', 'Rich text editor', 'Classic formatting controls with HTML and plain-text output.'],
   ['workspace', 'Workspace', 'Responsive navigation, a message list, and a detail pane.']
 ];
 
@@ -33,7 +34,7 @@ export default function ExamplesPage() {
                 <h2 className="text-lg font-semibold group-hover:text-primary">{title}</h2>
                 <p className="text-sm leading-6 text-muted-foreground">{description}</p>
                 <code className="block overflow-x-auto pt-1 text-xs text-muted-foreground">
-                  npx @ternetin/ui add {name}-example
+                  npx @ternetin/ui add {name === 'editor' ? 'rich-text-editor' : `${name}-example`}
                 </code>
               </a>
             ))}

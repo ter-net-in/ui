@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- Add a source-owned Tiptap rich text editor with classic controls and HTML/plain-text output.
+- Standardize Lucide icons and provide an icon catalog and usage guidance.
+- Strengthen primary actions with a fixed blue finish in both themes.
+- Remove the component browser’s wide-screen left gutter.
+
+
 ## 0.2.0
 
 This is a breaking source-copy update. Controls use fixed 6px corners, containers use 8px corners, and floating surfaces use fixed elevation. Radius/shadow props, CLI defaults substitution, and preview controls are removed. Existing config defaults produce a migration notice; updating the CLI does not rewrite installed source.

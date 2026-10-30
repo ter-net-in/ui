@@ -12,10 +12,20 @@ import {
   type TableOptions,
   useReactTable
 } from '@tanstack/react-table';
+import {
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+  ChevronsUpDown,
+  ChevronUp
+} from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/ui/button';
 import { Checkbox } from '@/ui/checkbox';
+import { Icon } from '@/ui/icon';
 import { Input } from '@/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/ui/select';
 export interface DataTableProps<TData> {
@@ -141,24 +151,16 @@ export function DataTable<TData>({
                         onClick={header.column.getToggleSortingHandler()}
                       >
                         {flexRender(header.column.columnDef.header, header.getContext())}
-                        <svg
-                          viewBox="0 0 16 16"
+                        <Icon
+                          icon={
+                            header.column.getIsSorted() === 'asc'
+                              ? ChevronUp
+                              : header.column.getIsSorted() === 'desc'
+                                ? ChevronDown
+                                : ChevronsUpDown
+                          }
                           className="size-3.5 text-muted-foreground"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          aria-hidden="true"
-                        >
-                          <path
-                            d={
-                              header.column.getIsSorted() === 'asc'
-                                ? 'm4 9 4-4 4 4'
-                                : header.column.getIsSorted() === 'desc'
-                                  ? 'm4 6 4 4 4-4'
-                                  : 'm5 6 3-3 3 3M5 10l3 3 3-3'
-                            }
-                          />
-                        </svg>
+                        />
                       </button>
                     ) : (
                       flexRender(header.column.columnDef.header, header.getContext())
@@ -248,9 +250,6 @@ export function DataTable<TData>({
 
 function PageChevron({ direction, double }: { direction: 'left' | 'right'; double?: boolean }) {
   return (
-    <svg viewBox="0 0 16 16" className="size-4" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-      <path d={direction === 'left' ? 'm10 4-4 4 4 4' : 'm6 4 4 4-4 4'} />
-      {double && <path d={direction === 'left' ? 'M3 3v10' : 'M13 3v10'} />}
-    </svg>
+    <Icon icon={direction === 'left' ? (double ? ChevronsLeft : ChevronLeft) : double ? ChevronsRight : ChevronRight} />
   );
 }

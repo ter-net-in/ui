@@ -10,7 +10,7 @@ export default function ComponentsPage() {
   return (
     <>
       <SiteHeader />
-      <main className="mx-auto max-w-[100rem]">
+      <main className="w-full">
         <ComponentBrowser components={components} />
       </main>
     </>

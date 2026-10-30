@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Improve rich-editor touch targets at 320–390px and on coarse pointers; restore typing focus after link editing.
+
 - Add a source-owned Tiptap rich text editor with classic controls and HTML/plain-text output.
 - Standardize Lucide icons and provide an icon catalog and usage guidance.
 - Strengthen primary actions with a fixed blue finish in both themes.

@@ -81,3 +81,20 @@ test('classic list and mark controls work with keyboard navigation and undo', as
   await page.keyboard.press('ArrowRight');
   await expect(page.getByRole('button', { name: 'Italic', exact: true })).toBeFocused();
 });
+
+test('mobile editor exposes 44px controls at narrow widths', async ({ page }) => {
+  await page.goto('/examples/editor');
+  for (const width of [320, 360, 390]) {
+    await page.setViewportSize({ width, height: 844 });
+    const button = page.getByRole('button', { name: 'Bold', exact: true });
+    const box = await button.boundingBox();
+    expect(box?.width).toBeGreaterThanOrEqual(44);
+    expect(box?.height).toBeGreaterThanOrEqual(44);
+  }
+  const editor = page.getByRole('textbox', { name: 'Message', exact: true });
+  await editor.fill('Selection');
+  await editor.press('ControlOrMeta+a');
+  await page.getByRole('button', { name: 'Insert link', exact: true }).click();
+  await page.keyboard.press('Escape');
+  await expect(editor).toBeFocused();
+});

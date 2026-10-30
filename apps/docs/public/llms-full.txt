@@ -5158,6 +5158,7 @@ export function RichTextEditor({
   const [url, setUrl] = useState('');
   const [linkError, setLinkError] = useState('');
   const linkInput = useRef<HTMLInputElement>(null);
+  const restoreEditorFocus = useRef(false);
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
@@ -5184,7 +5185,7 @@ export function RichTextEditor({
         ...(labels['aria-labelledby'] ? { 'aria-labelledby': labels['aria-labelledby'] } : {}),
         'aria-required': String(Boolean(required)),
         class:
-          'min-h-56 p-4 text-sm leading-6 outline-none break-words [&_p]:my-2 [&_p:first-child]:mt-0 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_li_p]:my-0 [&_blockquote]:border-l [&_blockquote]:border-border [&_blockquote]:pl-4 [&_blockquote]:text-muted-foreground [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-2'
+          'min-h-56 p-4 text-base sm:text-sm leading-6 outline-none break-words [&_p]:my-2 [&_p:first-child]:mt-0 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6 [&_li_p]:my-0 [&_blockquote]:border-l [&_blockquote]:border-border [&_blockquote]:pl-4 [&_blockquote]:text-muted-foreground [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-2'
       }
     },
     onUpdate: ({ editor }) => onChange({ html: editor.getHTML(), text: editor.getText({ blockSeparator: '\n' }) })
@@ -5251,10 +5252,22 @@ export function RichTextEditor({
       run: () => editor?.chain().focus().toggleBlockquote().run()
     }
   ];
+  useEffect(() => {
+    if (linkOpen || !restoreEditorFocus.current) return;
+    restoreEditorFocus.current = false;
+    let second = 0;
+    const first = requestAnimationFrame(() => {
+      second = requestAnimationFrame(() => editor?.commands.focus());
+    });
+    return () => {
+      cancelAnimationFrame(first);
+      cancelAnimationFrame(second);
+    };
+  }, [editor, linkOpen]);
   function closeLink() {
+    restoreEditorFocus.current = true;
     setLinkOpen(false);
     setLinkError('');
-    editor?.commands.focus();
   }
   function applyLink() {
     if (!/^(https?:\/\/[^\s]+|mailto:[^\s@]+@[^\s@]+)$/i.test(url.trim())) {
@@ -5274,11 +5287,11 @@ export function RichTextEditor({
     >
       <Toolbar
         aria-label="Text formatting"
-        className="flex-wrap rounded-b-none rounded-t-control border-0 border-b bg-muted/50 p-1.5"
+        className="grid grid-cols-[repeat(auto-fit,minmax(2.75rem,1fr))] gap-1 rounded-b-none rounded-t-control border-0 border-b bg-muted/50 p-1.5 sm:flex sm:flex-wrap"
       >
         {controls.map(({ label, icon, active, run }, i) => (
           <span key={label} className="contents">
-            {i === 4 && <ToolbarSeparator />}
+            {i === 4 && <ToolbarSeparator className="hidden sm:block" />}
             <ToolbarButton
               type="button"
               aria-label={label}
@@ -5287,13 +5300,13 @@ export function RichTextEditor({
               disabled={!editor || disabled}
               onMouseDown={(e) => e.preventDefault()}
               onClick={run}
-              className="size-8 p-0 aria-pressed:bg-accent aria-pressed:text-accent-foreground"
+              className="h-11 w-full p-0 sm:size-8 pointer-coarse:min-h-11 pointer-coarse:min-w-11 aria-pressed:bg-accent aria-pressed:text-accent-foreground"
             >
               <Icon icon={icon} />
             </ToolbarButton>
           </span>
         ))}
-        <ToolbarSeparator />
+        <ToolbarSeparator className="hidden sm:block" />
         <ToolbarButton
           type="button"
           aria-label="Insert link"
@@ -5306,7 +5319,7 @@ export function RichTextEditor({
             setLinkError('');
             setLinkOpen(true);
           }}
-          className="size-8 p-0 aria-pressed:bg-accent aria-pressed:text-accent-foreground"
+          className="h-11 w-full p-0 sm:size-8 pointer-coarse:min-h-11 pointer-coarse:min-w-11 aria-pressed:bg-accent aria-pressed:text-accent-foreground"
         >
           <Icon icon={Link} />
         </ToolbarButton>
@@ -5317,7 +5330,7 @@ export function RichTextEditor({
           disabled={!state?.link || disabled}
           onMouseDown={(e) => e.preventDefault()}
           onClick={() => editor?.chain().focus().extendMarkRange('link').unsetLink().run()}
-          className="size-8 p-0"
+          className="h-11 w-full p-0 sm:size-8 pointer-coarse:min-h-11 pointer-coarse:min-w-11"
         >
           <Icon icon={Unlink} />
         </ToolbarButton>
@@ -5328,11 +5341,11 @@ export function RichTextEditor({
           disabled={!editor || disabled}
           onMouseDown={(e) => e.preventDefault()}
           onClick={() => editor?.chain().focus().unsetAllMarks().clearNodes().run()}
-          className="size-8 p-0"
+          className="h-11 w-full p-0 sm:size-8 pointer-coarse:min-h-11 pointer-coarse:min-w-11"
         >
           <Icon icon={RemoveFormatting} />
         </ToolbarButton>
-        <ToolbarSeparator />
+        <ToolbarSeparator className="hidden sm:block" />
         <ToolbarButton
           type="button"
           aria-label="Undo"
@@ -5340,7 +5353,7 @@ export function RichTextEditor({
           disabled={!state?.undo || disabled}
           onMouseDown={(e) => e.preventDefault()}
           onClick={() => editor?.chain().focus().undo().run()}
-          className="size-8 p-0"
+          className="h-11 w-full p-0 sm:size-8 pointer-coarse:min-h-11 pointer-coarse:min-w-11"
         >
           <Icon icon={Undo2} />
         </ToolbarButton>
@@ -5351,7 +5364,7 @@ export function RichTextEditor({
           disabled={!state?.redo || disabled}
           onMouseDown={(e) => e.preventDefault()}
           onClick={() => editor?.chain().focus().redo().run()}
-          className="size-8 p-0"
+          className="h-11 w-full p-0 sm:size-8 pointer-coarse:min-h-11 pointer-coarse:min-w-11"
         >
           <Icon icon={Redo2} />
         </ToolbarButton>
